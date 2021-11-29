@@ -48,7 +48,7 @@ struct Border {
 };
 
 struct Param {
-    size_t nodes;                                                               /// Количетсво узлов
+    size_t nodes;                                                               /// Количество узлов
     size_t elems;                                                               /// Количество елементов
     size_t areas;                                                               /// Количество областей
     size_t conds;                                                               /// Количество краевых условий
@@ -87,9 +87,11 @@ private:
 
 public:
     FEM(std::filesystem::path _path) {
+
         assert(readFile(_path));                                                /// Читаем входные данные
-        portrait();                                                             /// Создаём портрет
+        portrait(true);                                                         /// Создаём портрет
         writeFile("output" / _path.filename());                                 /// Записываем результаты
+
     }
     ~FEM() { }
 
@@ -97,13 +99,13 @@ public:
 
 private:
     bool readFile(const std::filesystem::path& );
-    void portrait();
+    void portrait(const bool isWriteList = false);
 
     void writeFile(const std::filesystem::path& ) const;
     void resize();
 };
 
-void FEM::portrait() {
+void FEM::portrait(const bool isWriteList) {
 
     /// Используем set для уникальных index конечных элементов
     std::vector<std::set<size_t>> list(_size.nodes);
@@ -118,25 +120,38 @@ void FEM::portrait() {
         }
     }
 
-    std::cout << std::endl;
-    for (size_t i = 0; i < list.size(); i++)
-    {
-        std::cout << i << ':' << ' ';
-        for (size_t j : list[i])
-            std::cout << j << ' ';
-
-        std::cout << std::endl;
-    }
-    std::cout << std::endl;
-
     ig[0] = ig[1] = 0;
     for (size_t i = 2; i < ig.size(); i++)
         ig[i] = ig[i - 1] + list[i - 1].size();
 
-    jg.resize(ig[_size.nodes]);
-    for (size_t i = 1, index = 0; i < jg.size(); i++)
-        for (size_t j : list[i])
-            jg[index++] = j;
+    jg.resize(ig[_size.nodes]);                                                 /// Выделение памяти происходит здесь, т.к.
+    for (size_t index = 0, i = 1; i < list.size(); i++)                         /// размер jd равен последнему элементу ig
+    for (size_t value : list[i])
+        jg[index++] = value;
+
+    if (isWriteList) {
+        std::cout << "list: " << '\n';
+        for (size_t i = 0; i < list.size(); i++) {
+            std::cout << i << ':' << ' ';
+            for (size_t j : list[i])
+                std::cout << j << ' ';
+            std::cout << std::endl;
+        }
+    }
+
+/// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ///
+    // std::cout << std::endl;
+    // std::cout << "ig: " << '\n';
+    // for (size_t i = 0; i < ig.size(); i++)
+    //     std::cout << ig[i] << ' ';
+    // std::cout << std::endl;
+/// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ///
+    // std::cout << std::endl;
+    // std::cout << "jg: " << '\n';
+    // for (size_t i = 0; i < jg.size(); i++)
+    //     std::cout << jg[i] << ' ';
+    // std::cout << std::endl;
+/// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ///
 }
 
 void FEM::printAll() const {
@@ -258,6 +273,7 @@ bool FEM::readFile(const std::filesystem::path& path) {
 
 void FEM::writeFile(const std::filesystem::path& _path) const {
     std::filesystem::create_directories(_path);
+
 
 }
 
