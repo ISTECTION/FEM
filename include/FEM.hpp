@@ -19,6 +19,7 @@
 #include <vector>
 #include <string>
 #include <array>
+#include <set>
 
 #define _UNION_BEGIN namespace Union {
 #define _UNION_END                   }
@@ -71,8 +72,8 @@ private:
     std::vector<Union::Border>   borders;                                       /// Вектор краевых условий
 
 
-    // std::vector<size_t> ig;
-    // std::vector<size_t> jg;
+    std::vector<size_t> ig;
+    std::vector<size_t> jg;
 
     // std::vector<double> gg;
     // std::vector<double> di;
@@ -86,18 +87,57 @@ private:
 
 public:
     FEM(std::filesystem::path _path) {
-        assert(readFile(_path));
-        writeFile("output" / _path.filename());
+        assert(readFile(_path));                                                /// Читаем входные данные
+        portrait();                                                             /// Создаём портрет
+        writeFile("output" / _path.filename());                                 /// Записываем результаты
     }
     ~FEM() { }
 
     void printAll() const;
 
 private:
+    bool readFile(const std::filesystem::path& );
+    void portrait();
+
     void writeFile(const std::filesystem::path& ) const;
-    bool readFile (const std::filesystem::path& );
     void resize();
 };
+
+void FEM::portrait() {
+
+    /// Используем set для уникальных index конечных элементов
+    std::vector<std::set<size_t>> list(_size.nodes);
+
+    for (size_t el = 0; el < _size.elems; el++) {
+        for (size_t point = 0; point < 3; point++) {
+            for (size_t i = point + 1; i < 3; i++) {
+                size_t idx1 = { elems[el].nodeIdx[point] };
+                size_t idx2 = { elems[el].nodeIdx[  i  ] };
+                list[std::max(idx1, idx2)].insert(std::min(idx1, idx2));
+            }
+        }
+    }
+
+    std::cout << std::endl;
+    for (size_t i = 0; i < list.size(); i++)
+    {
+        std::cout << i << ':' << ' ';
+        for (size_t j : list[i])
+            std::cout << j << ' ';
+
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
+
+    ig[0] = ig[1] = 0;
+    for (size_t i = 2; i < ig.size(); i++)
+        ig[i] = ig[i - 1] + list[i - 1].size();
+
+    jg.resize(ig[_size.nodes]);
+    for (size_t i = 1, index = 0; i < jg.size(); i++)
+        for (size_t j : list[i])
+            jg[index++] = j;
+}
 
 void FEM::printAll() const {
     const size_t LENGTH = 20;
@@ -216,7 +256,6 @@ bool FEM::readFile(const std::filesystem::path& path) {
 // gg.resize(ig.back());
 
 
-
 void FEM::writeFile(const std::filesystem::path& _path) const {
     std::filesystem::create_directories(_path);
 
@@ -228,5 +267,8 @@ void FEM::resize() {
     borders           .resize(_size.conds);                                     /// Выделение памяти для хранения краевых условий
     materials.material.resize(_size.areas);                                     /// Выделение памяти для хранения материалов
     materials.area    .resize(_size.elems);                                     /// Выделение памяти для хранения индекса материала определенной области
+
+    ig.resize(_size.nodes + 1);
+
 }
 #endif // _FEM_HPP_
