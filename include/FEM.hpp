@@ -72,18 +72,10 @@ private:
     std::vector<Union::Border>   borders;                                       /// Вектор краевых условий
 
 
+    std::vector<double> gg;
+    std::vector<double> di;
     std::vector<size_t> ig;
     std::vector<size_t> jg;
-
-    // std::vector<double> gg;
-    // std::vector<double> di;
-    // std::vector<double> f;
-    // std::vector<double> x;
-
-    // std::vector<double> r;
-    // std::vector<double> p;
-    // std::vector<double> z;
-    // std::vector<double> q;
 
 public:
     FEM(std::filesystem::path _path) {
@@ -106,26 +98,25 @@ private:
 };
 
 void FEM::portrait(const bool isWriteList) {
+    const size_t N { _size.nodes };
+    std::vector<std::set<size_t>> list(N);
 
-    /// Используем set для уникальных index конечных элементов
-    std::vector<std::set<size_t>> list(_size.nodes);
-
-    for (size_t el = 0; el < _size.elems; el++) {
-        for (size_t point = 0; point < 3; point++) {
-            for (size_t i = point + 1; i < 3; i++) {
-                size_t idx1 = { elems[el].nodeIdx[point] };
-                size_t idx2 = { elems[el].nodeIdx[  i  ] };
-                list[std::max(idx1, idx2)].insert(std::min(idx1, idx2));
-            }
+    for (size_t el = 0; el < _size.elems; el++)
+    for (size_t point = 0; point < 3; point++) {
+        for (size_t i = point + 1; i < 3; i++) {
+            size_t idx1 = { elems[el].nodeIdx[point] };
+            size_t idx2 = { elems[el].nodeIdx[  i  ] };
+            list[std::max(idx1, idx2)].insert(std::min(idx1, idx2));
         }
     }
 
-    ig[0] = ig[1] = 0;
     for (size_t i = 2; i < ig.size(); i++)
         ig[i] = ig[i - 1] + list[i - 1].size();
 
-    jg.resize(ig[_size.nodes]);                                                 /// Выделение памяти происходит здесь, т.к.
-    for (size_t index = 0, i = 1; i < list.size(); i++)                         /// размер jd равен последнему элементу ig
+    jg.resize(ig[N]);                                                           /// Выделение памяти происходит в данном методе, т.к. размер
+    gg.resize(ig[N]);                                                           /// векторов jd и gg равен последнему элементу вектора ig
+
+    for (size_t index = 0, i = 1; i < list.size(); i++)
     for (size_t value : list[i])
         jg[index++] = value;
 
@@ -252,7 +243,6 @@ bool FEM::readFile(const std::filesystem::path& path) {
 
 
 
-// ig.resize(_size_nodes + 1);
 // di.resize(_size_nodes);
 // x.resize(_size_nodes);
 
@@ -267,13 +257,11 @@ bool FEM::readFile(const std::filesystem::path& path) {
 //     fin >> ig[i];
 // fin.close();
 
-// jg.resize(ig.back());
 // gg.resize(ig.back());
 
 
 void FEM::writeFile(const std::filesystem::path& _path) const {
     std::filesystem::create_directories(_path);
-
 
 }
 
@@ -284,7 +272,7 @@ void FEM::resize() {
     materials.material.resize(_size.areas);                                     /// Выделение памяти для хранения материалов
     materials.area    .resize(_size.elems);                                     /// Выделение памяти для хранения индекса материала определенной области
 
-    ig.resize(_size.nodes + 1);
-
+    ig.resize(_size.nodes + 1); ig[0] = ig[1] = 0;
+    di.resize(_size.nodes    );
 }
 #endif // _FEM_HPP_

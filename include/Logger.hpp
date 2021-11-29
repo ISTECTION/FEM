@@ -35,31 +35,16 @@ bool checkFile (const std::ifstream &fin, const std::string &error) {
     }
 }
 
-// template <typename... Args>
-// std::string debug(std::tuple<Args...> args,
-//             const std::source_location& loc = source_location::current()) {
-
-
-//     std::ostringstream ostream;
-//     ostream << "file: " <<
-//         std::string(location.file_name()    ) << '(' <<
-//         std::to_string(location.line()      ) << ':' <<
-//         std::to_string(location.column()    ) << ')' << ' ' << '`' <<
-//         std::string(location.function_name()) << '`' << ':' << ' ' <<
-//         args                                  << '\n';
-//     return ostream.str();
-// }
-
-template <typename... Args>
-std::string getLog(const std::string &message, const source_location locality
-                                                   = source_location::current()) {
-    std::string line = "file: " +
-        std::string(locality.file_name()    ) + '(' +
-        std::to_string(locality.line()      ) + ':' +
-        std::to_string(locality.column()    ) + ')' + ' ' + '`' +
-        std::string(locality.function_name()) + '`' + ':' + ' ' +
-        message                               + '\n';
-    return line;
+std::string getLog(const std::string &message,
+                   const source_location& loc = source_location::current()) {
+    std::ostringstream ostream;
+    ostream << "file: "
+            << loc.file_name()     << '('
+            << loc.line()          << ':'
+            << loc.column()        << ')' << ' ' << '`'
+            << loc.function_name() << '`' << ':' << ' '
+            << message             << '\n';
+    return ostream.str();
 }
 
 bool Logger::append(const std::string &line) {
