@@ -8,7 +8,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #ifndef _FEM_HPP_
 #define _FEM_HPP_
-#include "utilites/Vector.hpp"
+#include "utils/Vector.hpp"
 #include "Logger.hpp"
 
 #include <filesystem>
@@ -82,7 +82,7 @@ public:
 
         assert(readFile(_path));                                                /// Читаем входные данные
         portrait(true);                                                         /// Создаём портрет
-        
+
 
 
         writeFile("output" / _path.filename());                                 /// Записываем результаты
