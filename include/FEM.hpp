@@ -82,6 +82,9 @@ public:
 
         assert(readFile(_path));                                                /// Читаем входные данные
         portrait(true);                                                         /// Создаём портрет
+        
+
+
         writeFile("output" / _path.filename());                                 /// Записываем результаты
 
     }

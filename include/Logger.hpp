@@ -36,7 +36,7 @@ bool checkFile (const std::ifstream &fin, const std::string &error) {
 }
 
 std::string getLog(const std::string &message,
-                   const source_location& loc = source_location::current()) {
+                   const source_location &loc = source_location::current()) {
     std::ostringstream ostream;
     ostream << "file: "
             << loc.file_name()     << '('
