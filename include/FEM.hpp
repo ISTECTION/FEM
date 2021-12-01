@@ -8,10 +8,11 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #ifndef _FEM_HPP_
 #define _FEM_HPP_
-#include "utils/Vector.hpp"
+#include "utils/lightweight.hpp"
 #include "Logger.hpp"
 
 #include <filesystem>
+#include <algorithm>
 #include <iostream>
 #include <cassert>
 #include <iomanip>
@@ -59,7 +60,6 @@ _UNION_END
 #undef _UNION_BEGIN
 #undef _UNION_END
 
-
 class FEM
 {
 private:
@@ -77,6 +77,15 @@ private:
     std::vector<size_t> ig;
     std::vector<size_t> jg;
 
+
+    std::vector<std::vector<double>> global_A;                                  /// Глобальаня матрица A
+    std::vector            <double>  global_b;                                  /// Глобальная матрица b
+
+    std::array<std::array<double, 3>, 3> local_A;                               /// Локальная матрица A
+    std::array           <double, 3>     local_b;                               /// Локальная матрица b
+    std::array<std::array<double, 3>, 3> G;
+    std::array<std::array<double, 3>, 3> M;
+
 public:
     FEM(std::filesystem::path _path) {
 
@@ -84,13 +93,13 @@ public:
         portrait(true);                                                         /// Создаём портрет
 
 
-
         writeFile("output" / _path.filename());                                 /// Записываем результаты
 
     }
     ~FEM() { }
 
-    void printAll() const;
+    void printAll()    const;
+    void printSparse() const;
 
 private:
     bool readFile(const std::filesystem::path& );
@@ -116,10 +125,10 @@ void FEM::portrait(const bool isWriteList) {
     for (size_t i = 2; i < ig.size(); i++)
         ig[i] = ig[i - 1] + list[i - 1].size();
 
-    jg.resize(ig[N]);                                                           /// Выделение памяти происходит в данном методе, т.к. размер
-    gg.resize(ig[N]);                                                           /// векторов jd и gg равен последнему элементу вектора ig
+    jg.resize(ig[N] - ig[0]);                                                           /// Выделение памяти происходит в данном методе, т.к. размер
+    gg.resize(ig[N] - ig[0]);                                                           /// векторов jd и gg равен последнему элементу вектора ig
 
-    for (size_t index = 0, i = 1; i < list.size(); i++)
+   for (size_t index = 0, i = 1; i < list.size(); i++)
     for (size_t value : list[i])
         jg[index++] = value;
 
@@ -149,11 +158,9 @@ void FEM::portrait(const bool isWriteList) {
 }
 
 void FEM::printAll() const {
-    const size_t LENGTH = 20;
-    const char symbol = '-';
-
-    #define PRINTLINE for (size_t i = 0; i < LENGTH; std::cout << symbol, i++);
-    #define ENDLINE   std::cout << '\n';
+    #define PRINTLINE \
+        for (size_t i = 0; i < 20; std::cout << '-', i++);
+    #define ENDLINE std::cout << '\n';
     system("chcp 65001");
     PRINTLINE ENDLINE
     std::cout << "PARAMS:         "                 << '\n';
@@ -190,6 +197,23 @@ void FEM::printAll() const {
                   << borders[i].cond       << ' '
                   << borders[i].type       << ' ' << '\n';
     PRINTLINE ENDLINE
+    #undef PRINTLINE
+    #undef ENDLINE
+}
+
+void FEM::printSparse() const {
+    #define PRINTLINE \
+        for (size_t i = 0; i < 20; std::cout << '-', i++); \
+        std::cout << '\n';
+
+    PRINTLINE
+    std::cout << "ig: "; print(ig);
+    std::cout << "jg: "; print(jg);
+    std::cout << "di: "; print(di);
+    std::cout << "gg: "; print(gg);
+    PRINTLINE
+
+    #undef PRINTLINE
 }
 
 bool FEM::readFile(const std::filesystem::path& path) {
@@ -204,8 +228,10 @@ bool FEM::readFile(const std::filesystem::path& path) {
         >> _size.conds
         >> _lambda;
     fin.close();
-    resize();                                                                   /// Выделение памяти под вектора
 
+    resize();                                                                   /// Выделение памяти под вектора
+    std::fill_n(ig.begin(), 2, 0);                                              /// Заполнение первых 2 ячеек веткора ig нулями
+                                                                                ///         (при желании можно поменять на единицы)
     fin.open(path / "nodes.txt");
     isError &= checkFile(fin, getLog("Error - nodes.txt"));
     for (size_t i = 0; i < _size.nodes; i++)
@@ -275,7 +301,8 @@ void FEM::resize() {
     materials.material.resize(_size.areas);                                     /// Выделение памяти для хранения материалов
     materials.area    .resize(_size.elems);                                     /// Выделение памяти для хранения индекса материала определенной области
 
-    ig.resize(_size.nodes + 1); ig[0] = ig[1] = 0;
-    di.resize(_size.nodes    );
+    ig                .resize(_size.nodes + 1);
+    di                .resize(  _size.nodes  );
+    global_b          .resize(  _size.nodes  );
 }
 #endif // _FEM_HPP_

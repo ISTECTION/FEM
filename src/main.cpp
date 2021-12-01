@@ -8,5 +8,7 @@ int main(int argc, char* argv[]) {
     FEM fem = FEM(argv[1]);
     fem.printAll();
 
+    fem.printSparse();
+
     return 0;
 }
