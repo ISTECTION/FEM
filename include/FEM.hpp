@@ -51,7 +51,6 @@ public:
 
 
         writeFile("output" / _path.filename());                                 /// Записываем результаты
-
     }
     ~FEM() { }
 
@@ -271,13 +270,13 @@ void FEM::writeFile(const std::filesystem::path& _path) const {
 }
 
 void FEM::resize() {
-    nodes     .resize(_size.nodes);                                             /// Выделение памяти для координат узлов
-    elems    .resize(_size.elems);                                              /// Выделение памяти для хранение количества елементов
-    borders  .resize(_size.conds);                                              /// Выделение памяти для хранения краевых условий
-    materials.resize(_size.areas);                                              /// Выделение памяти для хранения материалов                                /// Выделение памяти для хранения индекса материала определенной области
+    nodes.    resize(  _size.nodes  );                                              /// Выделение памяти для координат узлов
+    elems.    resize(  _size.elems  );                                              /// Выделение памяти для хранение количества елементов
+    borders.  resize(  _size.conds  );                                              /// Выделение памяти для хранения краевых условий
+    materials.resize(  _size.areas  );                                              /// Выделение памяти для хранения материалов                                /// Выделение памяти для хранения индекса материала определенной области
 
-    ig       .resize(_size.nodes + 1);
-    di       .resize(  _size.nodes  );
-    global_b .resize(  _size.nodes  );
+    global_b. resize(  _size.nodes  );
+    di.       resize(  _size.nodes  );
+    ig.       resize(_size.nodes + 1);
 }
 #endif // _FEM_HPP_
