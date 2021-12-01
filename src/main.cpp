@@ -9,6 +9,5 @@ int main(int argc, char* argv[]) {
     fem.printAll();
 
     fem.printSparse();
-
     return 0;
 }

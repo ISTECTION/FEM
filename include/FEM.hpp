@@ -9,88 +9,45 @@
 #ifndef _FEM_HPP_
 #define _FEM_HPP_
 #include "utils/lightweight.hpp"
+#include "utils/overload.hpp"
+#include "Function.hpp"
 #include "Logger.hpp"
+#include "Union.hpp"
 
 #include <filesystem>
 #include <algorithm>
 #include <iostream>
-#include <cassert>
 #include <iomanip>
 #include <fstream>
-#include <vector>
 #include <string>
-#include <array>
+#include <cmath>
 #include <set>
 
-#define _UNION_BEGIN namespace Union {
-#define _UNION_END                   }
-
-_UNION_BEGIN
-
-struct XY { double x, y; };
-
-struct Area {
-    struct Material { double betta, gamma; };
-
-    std::vector<Material> material;
-    std::vector<size_t>   area    ;
-};
-
-struct Element {
-    size_t area;
-    std::array<size_t, 3> nodeIdx;
-};
-
-struct Border {
-    size_t area;
-    size_t cond;
-    size_t type;
-    std::array<size_t, 2> bordIdx;
-};
-
-struct Param {
-    size_t nodes;                                                               /// Количество узлов
-    size_t elems;                                                               /// Количество елементов
-    size_t areas;                                                               /// Количество областей
-    size_t conds;                                                               /// Количество краевых условий
-};
-
-_UNION_END
-
-#undef _UNION_BEGIN
-#undef _UNION_END
 
 class FEM
 {
 private:
     Union::Param _size;
-    double       _lambda;
 
-    Union::Area materials;                                                      /// Структура материалов
     std::vector<Union::XY>       nodes;                                         /// Вектор узлов
     std::vector<Union::Element>  elems;                                         /// Вектор конечных элементов
     std::vector<Union::Border>   borders;                                       /// Вектор краевых условий
-
+    std::vector<Union::Material> materials;                                     /// Структура материалов
 
     std::vector<double> gg;
     std::vector<double> di;
     std::vector<size_t> ig;
     std::vector<size_t> jg;
 
-
     std::vector<std::vector<double>> global_A;                                  /// Глобальаня матрица A
     std::vector            <double>  global_b;                                  /// Глобальная матрица b
-
-    std::array<std::array<double, 3>, 3> local_A;                               /// Локальная матрица A
-    std::array           <double, 3>     local_b;                               /// Локальная матрица b
-    std::array<std::array<double, 3>, 3> G;
-    std::array<std::array<double, 3>, 3> M;
 
 public:
     FEM(std::filesystem::path _path) {
 
         assert(readFile(_path));                                                /// Читаем входные данные
         portrait(true);                                                         /// Создаём портрет
+        global_Matrix();
 
 
         writeFile("output" / _path.filename());                                 /// Записываем результаты
@@ -104,10 +61,47 @@ public:
 private:
     bool readFile(const std::filesystem::path& );
     void portrait(const bool isWriteList = false);
+    void global_Matrix();
+    void local(const std::array<Union::XY, 3>& xyElem, size_t area);
 
     void writeFile(const std::filesystem::path& ) const;
     void resize();
 };
+
+void FEM::global_Matrix() {
+
+    std::array<Union::XY, 3> coords;
+
+    for (size_t i = 0; i < _size.elems; i++) {
+        for (size_t j = 0; j < 3; j++) {
+            size_t point = elems[i].nodeIdx[j];
+            coords[j].x = nodes[point].x;
+            coords[j].y = nodes[point].y;
+        }
+        local(coords, elems[i].area);
+    }
+}
+
+void FEM::local(const std::array<Union::XY, 3>& xyElem, size_t area) {
+
+    std::array<double, 3> function {
+        Function::f(xyElem[0], area),
+        Function::f(xyElem[1], area),
+        Function::f(xyElem[2], area)
+    };
+
+    double det_D = abs(determinant(xyElem)) / 24;
+    std::array<double, 3> local_b {                                             /// Локальный вектор b
+        det_D * (2 * function[0] + function[1] + function[2]),
+        det_D * (2 * function[1] + function[0] + function[2]),
+        det_D * (2 * function[2] + function[0] + function[1]),
+    };
+
+    std::array<std::array<double, 3>, 3> G;
+    std::array<std::array<double, 3>, 3> M;
+    std::array<std::array<double, 3>, 3> local_A = G + M;                       /// Локальная матрица A
+}
+
 
 void FEM::portrait(const bool isWriteList) {
     const size_t N { _size.nodes };
@@ -118,15 +112,17 @@ void FEM::portrait(const bool isWriteList) {
         for (size_t i = point + 1; i < 3; i++) {
             size_t idx1 = { elems[el].nodeIdx[point] };
             size_t idx2 = { elems[el].nodeIdx[  i  ] };
-            list[std::max(idx1, idx2)].insert(std::min(idx1, idx2));
+            idx1 > idx2 ?
+                list[idx1].insert(idx2) :
+                list[idx2].insert(idx1) ;
         }
     }
 
     for (size_t i = 2; i < ig.size(); i++)
         ig[i] = ig[i - 1] + list[i - 1].size();
 
-    jg.resize(ig[N] - ig[0]);                                                           /// Выделение памяти происходит в данном методе, т.к. размер
-    gg.resize(ig[N] - ig[0]);                                                           /// векторов jd и gg равен последнему элементу вектора ig
+    jg.resize(ig[N] - ig[0]);                                                   /// Выделение памяти происходит в данном методе, т.к. размер
+    gg.resize(ig[N] - ig[0]);                                                   /// векторов jd и gg равен последнему элементу вектора ig
 
    for (size_t index = 0, i = 1; i < list.size(); i++)
     for (size_t value : list[i])
@@ -168,7 +164,6 @@ void FEM::printAll() const {
     std::cout << "Size element:   " << _size.elems  << '\n';
     std::cout << "Size areas:     " << _size.areas  << '\n';
     std::cout << "Size condition: " << _size.conds  << '\n';
-    std::cout << "\u03BB               " << _lambda << '\n';
     PRINTLINE ENDLINE
     std::cout << std::setw(4) << "X" << std::setw(4) << "Y" << '\n';
     for (size_t i = 0; i < _size.nodes; i++)
@@ -180,13 +175,14 @@ void FEM::printAll() const {
         std::cout << elems[i].nodeIdx[0] << ' '
                   << elems[i].nodeIdx[1] << ' '
                   << elems[i].nodeIdx[2] << " -> area "
-                  << materials.area[i]   << '\n';
+                  << elems[i].area       << '\n';
     PRINTLINE ENDLINE
     std::cout << "Areas: " << '\n';
     for (size_t i = 0; i < _size.areas; i++) {
-        std::cout << i << ' ' << '-' << ' '
-                  << materials.material[i].gamma << ' '
-                  << materials.material[i].betta << ' ' << '\n';
+        std::cout << "\u03BB = " << materials[i].lambda << ',' << ' '
+                  << "\u03B3 = " << materials[i].gamma  << ',' << ' '
+                  << "\u03B2 = " << materials[i].betta
+                  << " -> area " << i << '\n';
     }
     PRINTLINE ENDLINE
     std::cout << "Borders: " << '\n';
@@ -225,8 +221,7 @@ bool FEM::readFile(const std::filesystem::path& path) {
     fin >> _size.nodes
         >> _size.elems
         >> _size.areas
-        >> _size.conds
-        >> _lambda;
+        >> _size.conds;
     fin.close();
 
     resize();                                                                   /// Выделение памяти под вектора
@@ -241,7 +236,6 @@ bool FEM::readFile(const std::filesystem::path& path) {
     fin.open(path / "elems.txt");
     isError &= checkFile(fin, getLog("Error - elems.txt"));
 	for (size_t i = 0; i < _size.elems; i++) {
-        elems[i].area = { i + 1 };
 		fin >> elems[i].nodeIdx[0]
             >> elems[i].nodeIdx[1]
             >> elems[i].nodeIdx[2];
@@ -251,11 +245,12 @@ bool FEM::readFile(const std::filesystem::path& path) {
     fin.open(path / "areas.txt");
     isError &= checkFile(fin, getLog("Error - areas.txt"));
     for (size_t i = 0; i < _size.areas; i++)
-        fin >> materials.material[i].gamma
-            >> materials.material[i].betta;
+        fin >> materials[i].lambda
+            >> materials[i].gamma
+            >> materials[i].betta;
 
     for (size_t i = 0; i < _size.elems; i++)
-        fin >> materials.area[i];
+        fin >> elems[i].area;
     fin.close();
 
     fin.open(path / "borders.txt");
@@ -270,39 +265,19 @@ bool FEM::readFile(const std::filesystem::path& path) {
     return isError;
 }
 
-
-
-// di.resize(_size_nodes);
-// x.resize(_size_nodes);
-
-// r.resize(_size_nodes);
-// p.resize(_size_nodes);
-// z.resize(_size_nodes);
-// q.resize(_size_nodes);
-// f.resize(_size_nodes);
-
-// fin.open(path / "ig.txt");
-// for(size_t i = 0; i < ig.size(); i++)
-//     fin >> ig[i];
-// fin.close();
-
-// gg.resize(ig.back());
-
-
 void FEM::writeFile(const std::filesystem::path& _path) const {
     std::filesystem::create_directories(_path);
 
 }
 
 void FEM::resize() {
-    nodes             .resize(_size.nodes);                                     /// Выделение памяти для координат узлов
-    elems             .resize(_size.elems);                                     /// Выделение памяти для хранение количества елементов
-    borders           .resize(_size.conds);                                     /// Выделение памяти для хранения краевых условий
-    materials.material.resize(_size.areas);                                     /// Выделение памяти для хранения материалов
-    materials.area    .resize(_size.elems);                                     /// Выделение памяти для хранения индекса материала определенной области
+    nodes     .resize(_size.nodes);                                             /// Выделение памяти для координат узлов
+    elems    .resize(_size.elems);                                              /// Выделение памяти для хранение количества елементов
+    borders  .resize(_size.conds);                                              /// Выделение памяти для хранения краевых условий
+    materials.resize(_size.areas);                                              /// Выделение памяти для хранения материалов                                /// Выделение памяти для хранения индекса материала определенной области
 
-    ig                .resize(_size.nodes + 1);
-    di                .resize(  _size.nodes  );
-    global_b          .resize(  _size.nodes  );
+    ig       .resize(_size.nodes + 1);
+    di       .resize(  _size.nodes  );
+    global_b .resize(  _size.nodes  );
 }
 #endif // _FEM_HPP_
