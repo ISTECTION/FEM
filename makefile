@@ -12,13 +12,13 @@ debug: clean remove_log compile running
 release: clean remove_log compile_release running
 
 running:
-	$(OUTPUT)/main.exe file/nodes-6
+	$(OUTPUT)/FEM.exe --input file/nodes-6 --output output/nodes-6
 
 compile:
-	$(CXX) $(CXXFLAGS) $(SRC)/main.cpp -o $(OUTPUT)/main.exe -I$(INCLUDE)
+	$(CXX) $(CXXFLAGS) $(SRC)/main.cpp -o $(OUTPUT)/FEM.exe -I$(INCLUDE)
 
 compile_release:
-	$(CXX) $(CXXFLAGS) $(CXXFLAGS_RELEASE) $(SRC)/main.cpp -o $(OUTPUT)/main.exe -I$(INCLUDE)
+	$(CXX) $(CXXFLAGS) $(CXXFLAGS_RELEASE) $(SRC)/FEM.cpp -o $(OUTPUT)/main.exe -I$(INCLUDE)
 
 clean:
 	$(RM) $(OUTPUT)\*.exe

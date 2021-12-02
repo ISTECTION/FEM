@@ -23,7 +23,6 @@
 #include <cmath>
 #include <set>
 
-
 class FEM
 {
 private:
@@ -48,22 +47,25 @@ public:
         assert(readFile(_path));                                                /// Читаем входные данные
         portrait(true);                                                         /// Создаём портрет
         global_Matrix();
-
-
-        writeFile("output" / _path.filename());                                 /// Записываем результаты
     }
     ~FEM() { }
 
     void printAll()    const;
     void printSparse() const;
 
+    void writeFile(const std::filesystem::path& ) const;
+
 private:
-    bool readFile(const std::filesystem::path& );
-    void portrait(const bool isWriteList = false);
     void global_Matrix();
     void local(const std::array<Union::XY, 3>& xyElem, size_t area);
 
-    void writeFile(const std::filesystem::path& ) const;
+    array::xxx G(const std::array<Union::XY, 3>& xyElem, size_t area);          /// Построение матрицы жесткости
+    array::xxx M(const std::array<Union::XY, 3>& xyElem, size_t area);          /// Построение матрицы масс
+
+    bool readFile(const std::filesystem::path& );
+    void portrait(const bool isWriteList = false);
+
+
     void resize();
 };
 
@@ -96,14 +98,44 @@ void FEM::local(const std::array<Union::XY, 3>& xyElem, size_t area) {
         det_D * (2 * function[2] + function[0] + function[1]),
     };
 
-    std::array<std::array<double, 3>, 3> G;
-    std::array<std::array<double, 3>, 3> M;
+
+    std::array<std::array<double, 3>, 3> G = FEM::G(xyElem, area);
+    std::array<std::array<double, 3>, 3> M = FEM::M(xyElem, area);
     std::array<std::array<double, 3>, 3> local_A = G + M;                       /// Локальная матрица A
+
+}
+
+array::xxx FEM::G(const std::array<Union::XY, 3>& xyElem, size_t area) {
+    double det = abs(determinant(xyElem));
+
+
+}
+
+array::xxx FEM::M(const std::array<Union::XY, 3>& xyElem, size_t area) {
+    double det = abs(determinant(xyElem));
+    double gammaKoef = Function::gammaKoef(area) * det / 24;
+    std::array<std::array<double, 3>, 3> M;
+
+    for (size_t i = 0; i < 3; i++)
+    for (size_t j = 0; j < 3; j++) {
+        M[i][j] = {
+            i == j ? 2 * gammaKoef : gammaKoef
+        };
+    }
+
+    for(size_t i = 0; i < 3; i++) {
+        for(size_t j = 0; j < 3; j++)
+            std::cout << M[i][j] << " ";
+        std::cout << std::endl;
+    }
+
+    return  M;
 }
 
 
+
 void FEM::portrait(const bool isWriteList) {
-    const size_t N { _size.nodes };
+    const size_t N {    _size.nodes     };
     std::vector<std::set<size_t>> list(N);
 
     for (size_t el = 0; el < _size.elems; el++)
@@ -252,8 +284,8 @@ bool FEM::readFile(const std::filesystem::path& path) {
         fin >> elems[i].area;
     fin.close();
 
-    fin.open(path / "borders.txt");
-    isError &= checkFile(fin, getLog("Error - borders.txt"));
+    fin.open(path / "bords.txt");
+    isError &= checkFile(fin, getLog("Error - bords.txt"));
     for (size_t i = 0; i < _size.conds; i++)
         fin >> borders[i].area
             >> borders[i].bordIdx[0]
