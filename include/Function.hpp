@@ -57,4 +57,4 @@ _FUNCTION_END
 
 #undef _FUNCTION_BEGIN
 #undef _FUNCTION_BEGIN
-#endif // _FUNCTION_HPP_
+#endif /// _FUNCTION_HPP_

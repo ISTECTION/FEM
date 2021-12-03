@@ -68,4 +68,4 @@ _LOG_END
 
 #undef _LOG_BEGIN
 #undef _LOG_END
-#endif // _LOGGER_HPP_
+#endif /// _LOGGER_HPP_

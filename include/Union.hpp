@@ -1,3 +1,4 @@
+/// 𝗨𝗡𝗜𝗢𝗡
 #ifndef _UNION_HPP_
 #define _UNION_HPP_
 #include <vector>
@@ -43,7 +44,6 @@ struct Param {
 };
 
 _UNION_END
-
 #undef _UNION_BEGIN
 #undef _UNION_END
-#endif // _UNION_HPP_
+#endif /// NOINՈ

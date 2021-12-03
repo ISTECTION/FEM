@@ -366,4 +366,4 @@ void FEM::resize() {
     di.resize(  _size.nodes  );
     ig.resize(_size.nodes + 1);
 }
-#endif // _FEM_HPP_
+#endif /// _FEM_HPP_

@@ -127,4 +127,4 @@ void LOS<T>::hollesky(bool isLog) {
     } while (this->iter < this->param.max_iter
                 && Eps  > this->param.epsilon );
 }
-#endif // _LOS_HPP_
+#endif /// _LOS_HPP_

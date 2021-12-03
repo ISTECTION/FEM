@@ -223,4 +223,4 @@ _SYMMETRIC_END
 
 #undef _SYMMETRIC_DEGIN
 #undef _SYMMETRIC_END
-#endif // _DATA_HPP_
+#endif /// _DATA_HPP_
