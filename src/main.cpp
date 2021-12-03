@@ -22,6 +22,5 @@ int main(int argc, char* argv[]) {
         std::cerr << program;
         std::exit(1);
     }
-
     return 0;
 }

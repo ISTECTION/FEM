@@ -3,8 +3,10 @@
 #include "../Union.hpp"
 #include <windows.h>
 
+#include <filesystem>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <iomanip>
 #include <string>
 #include <vector>
@@ -20,16 +22,14 @@ determinant(const std::array<Union::XY, 3>& elem) {
 }
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~///
 
-template<typename T>
-void
+template<typename T> void
 print(const std::vector<T>& _vec) {
     for (size_t _pos = 0; _pos < _vec.size(); _pos++)
         std::cout << _vec[_pos] << ' ';
     std::cout << std::endl;
 }
 
-template<typename T>
-void
+template<typename T> void
 printGlobal(const std::vector<std::vector<T>>& _global) {
     #define ENDLINE std::cout << '\n';
     ENDLINE
@@ -41,8 +41,7 @@ printGlobal(const std::vector<std::vector<T>>& _global) {
     #undef ENDLINE
 }
 
-template<typename T>
-void
+template<typename T> void
 printXXX(const std::array<std::array<T, 3>, 3>& A) {
     #define ENDLINE std::cout << '\n'
     std::cout << std::endl;
@@ -54,8 +53,7 @@ printXXX(const std::array<std::array<T, 3>, 3>& A) {
 }
 
 
-template<typename _It>
-void
+template<typename _It> void
 pretty(_It _beg, _It _end, const size_t _n = 3)  {
 
     if (_beg == _end) { std::cout << "Empty" << '\n'; }
@@ -107,15 +105,34 @@ pretty(_It _beg, _It _end, const size_t _n = 3)  {
     }
 }
 
-template <typename T>
-void
+template <typename T> void
 pretty(const std::vector<std::vector<T>>& _vec) {
         pretty(_vec.begin(), _vec.end(), _vec.size());
 }
 
-template <typename T>
-void
+template <typename T> void
 pretty(const std::array<std::array<T, 3>, 3>& _arr) {
         pretty(_arr.begin(), _arr.end());
 }
+
+namespace Output {
+
+    struct Write {
+        char    separator;
+        uint8_t precision;
+    };
+
+    template<typename T>
+    void write(
+            const std::filesystem::path& _path,
+            const std::vector<T>& _vec,
+            const Write _option = { ' ', 8 }) {
+
+        std::ofstream fout(_path);
+        fout.precision(_option.precision);
+        for (size_t _pos = 0; _pos < _vec.size(); _pos++)
+            fout << _vec[_pos] << _option.separator;
+        fout.close();
+    }
+};
 #endif // _LIGHTWEIGHT_HPP_

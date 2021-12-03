@@ -14,12 +14,7 @@
 #include "Logger.hpp"
 #include "Union.hpp"
 
-#include <filesystem>
 #include <algorithm>
-#include <iostream>
-#include <iomanip>
-#include <fstream>
-#include <string>
 #include <cmath>
 #include <set>
 
@@ -33,13 +28,13 @@ private:
     std::vector<Union::Border>   borders;                                       /// Вектор краевых условий
     std::vector<Union::Material> materials;                                     /// Вектор материалов
 
+
+    std::vector<double> gb;                                                     /// Глобальная матрица b
     std::vector<double> gg;
     std::vector<double> di;
     std::vector<size_t> ig;
     std::vector<size_t> jg;
 
-    std::vector<std::vector<double>> global_A;                                  /// Глобальаня матрица A
-    std::vector            <double>  global_b;                                  /// Глобальная матрица b
 
 public:
     FEM(std::filesystem::path _path) {
@@ -87,7 +82,6 @@ void FEM::global_Matrix() {
         toGlobal(local_b, local_A, elems[i]);
     }
 
-    pretty(global_A);
 }
 
 void FEM::toGlobal(
@@ -99,8 +93,8 @@ void FEM::toGlobal(
     using iterator = ::std::vector<size_t>::iterator;
 
     for (size_t i = 0; i < 3; i++) {
-        di      [elem.nodeIdx[i]] += local_A[i][i];
-        global_b[elem.nodeIdx[i]] += local_b[i];
+        di[elem.nodeIdx[i]] += local_A[i][i];
+        gb[elem.nodeIdx[i]] += local_b[i];
 
         for (int j = 0; j < i; j++) {
             size_t a = elem.nodeIdx[i];
@@ -108,7 +102,6 @@ void FEM::toGlobal(
             if (a < b) std::swap(a, b);
 
             if (ig[a + 1] > ig[a]) {
-
                 iterator _beg = jg.begin() + ig[a];
                 iterator _end = jg.begin() + ig[a + 1] - ig[0];
 
@@ -339,8 +332,23 @@ bool FEM::readFile(const std::filesystem::path& path) {
 }
 
 void FEM::writeFile(const std::filesystem::path& _path) const {
-    std::filesystem::create_directories(_path);
 
+    std::filesystem::create_directories(_path);
+    bool is_dir = std::filesystem::is_directory(_path);
+
+    using namespace ::Log;
+    if (not is_dir) assert(
+        Logger::append(getLog("Error - create directory"))
+    );
+
+    std::ofstream fout(_path / "params.txt");
+    fout << _size.nodes;
+    fout.close();
+
+    Output::write(_path / "gg.txt", gg, { ' ', 14 });
+    Output::write(_path / "di.txt", di, { ' ', 14 });
+    Output::write(_path / "jg.txt", jg);
+    Output::write(_path / "ig.txt", ig);
 }
 
 void FEM::resize() {
@@ -349,10 +357,8 @@ void FEM::resize() {
     borders.  resize(  _size.conds  );                                          /// Выделение памяти для хранения краевых условий
     materials.resize(  _size.areas  );                                          /// Выделение памяти для хранения материалов
 
-    global_b. resize(  _size.nodes  );                                          /// Выделение памяти для глобального вектора
-    di.       resize(  _size.nodes  );
-    ig.       resize(_size.nodes + 1);
-
-    global_A. resize(_size.nodes, std::vector<double>(_size.nodes));            /// Выделение памяти для ГЛОБАЛЬНОЙ МАТРИЦЫ
+    gb.resize(  _size.nodes  );                                                 /// Выделение памяти для глобального вектора
+    di.resize(  _size.nodes  );
+    ig.resize(_size.nodes + 1);
 }
 #endif // _FEM_HPP_
