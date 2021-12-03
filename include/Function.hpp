@@ -41,25 +41,16 @@ double lambda(size_t area) {
 ///--------------------------------------------------------------------------///
 
 #ifdef TEST2
-double f(const Union::XY coord, const size_t area) {
-    using namespace ::Log;
 
-    const size_t NUMBER = 1;
 
-    switch (NUMBER)
-    {
-        case 1:
-        {
-            if      (area == 0) return 0;
-            else                return 0;
-            break;
-        }
-        default:
-            assert(Logger::append(getLog("The function does not exist")));
-    }
-}
 #endif
 
+///--------------------------------------------------------------------------///
+
+#ifdef TEST3
+
+
+#endif
 ///--------------------------------------------------------------------------///
 
 _FUNCTION_END

@@ -57,14 +57,16 @@ public:
 
 private:
     void global_Matrix();
-    void local(const std::array<Union::XY, 3>& xyElem, size_t area);
+    void toGlobal(const array::x&, const array::xxx&, const Union::Element);    /// Функция занесения локальной матрицы в глобальную
 
-    array::xxx G(const std::array<Union::XY, 3>& xyElem, size_t area);          /// Построение матрицы жесткости
-    array::xxx M(const std::array<Union::XY, 3>& xyElem, size_t area);          /// Построение матрицы масс
+    array::xxx localA(const std::array<Union::XY, 3>&, size_t) const;
+    array::x   buildF(const std::array<Union::XY, 3>&, size_t) const;
 
-    bool readFile(const std::filesystem::path& );
+    array::xxx G(const std::array<Union::XY, 3>&, size_t) const;                /// Построение матрицы жесткости
+    array::xxx M(const std::array<Union::XY, 3>&, size_t) const;                /// Построение матрицы масс
+
+    bool readFile(const std::filesystem::path&  );
     void portrait(const bool isWriteList = false);
-
 
     void resize();
 };
@@ -79,33 +81,67 @@ void FEM::global_Matrix() {
             coords[j].x = nodes[point].x;
             coords[j].y = nodes[point].y;
         }
-        local(coords, elems[i].area);
+        array::x   local_b = buildF(coords, elems[i].area);
+        array::xxx local_A = localA(coords, elems[i].area);
+        // pretty(local_A);
+        toGlobal(local_b, local_A, elems[i]);
+    }
+
+    pretty(global_A);
+}
+
+void FEM::toGlobal(
+        const array::x&   local_b,
+        const array::xxx& local_A,
+        const Union::Element elem) {
+
+    using            ::std::vector;
+    using iterator = ::std::vector<size_t>::iterator;
+
+    for (size_t i = 0; i < 3; i++) {
+        di      [elem.nodeIdx[i]] += local_A[i][i];
+        global_b[elem.nodeIdx[i]] += local_b[i];
+
+        for (int j = 0; j < i; j++) {
+            size_t a = elem.nodeIdx[i];
+            size_t b = elem.nodeIdx[j];
+            if (a < b) std::swap(a, b);
+
+            if (ig[a + 1] > ig[a]) {
+
+                iterator _beg = jg.begin() + ig[a];
+                iterator _end = jg.begin() + ig[a + 1] - ig[0];
+
+                auto _itr = std::lower_bound(_beg, _end, b);
+                auto _idx = _itr - jg.begin();
+                gg[_idx] += local_A[i][j];
+            }
+        }
     }
 }
 
-void FEM::local(const std::array<Union::XY, 3>& xyElem, size_t area) {
-
+array::x FEM::buildF(const std::array<Union::XY, 3>& elem, size_t area) const {
     std::array<double, 3> function {
-        Function::f(xyElem[0], area),
-        Function::f(xyElem[1], area),
-        Function::f(xyElem[2], area)
+        Function::f(elem[0], area),
+        Function::f(elem[1], area),
+        Function::f(elem[2], area)
     };
 
-    double det_D = abs(determinant(xyElem)) / 24;
-    std::array<double, 3> local_b {                                             /// Локальный вектор b
+    double det_D = abs(determinant(elem)) / 24;
+    return {                                                                    /// Локальный вектор b
         det_D * (2 * function[0] + function[1] + function[2]),
         det_D * (2 * function[1] + function[0] + function[2]),
         det_D * (2 * function[2] + function[0] + function[1]),
     };
-
-    std::array<std::array<double, 3>, 3> G = FEM::G(xyElem, area);
-    pretty(G);
-
-    std::array<std::array<double, 3>, 3> M = FEM::M(xyElem, area);
-    std::array<std::array<double, 3>, 3> local_A = G + M;                       /// Локальная матрица A
 }
 
-array::xxx FEM::G(const std::array<Union::XY, 3>& elem, size_t area) {
+array::xxx FEM::localA(const std::array<Union::XY, 3>& elem, size_t area) const {
+    std::array<std::array<double, 3>, 3> G = FEM::G(elem, area);
+    std::array<std::array<double, 3>, 3> M = FEM::M(elem, area);
+    std::array<std::array<double, 3>, 3> A = G + M;    return A;                /// Локальная матрица A
+}
+
+array::xxx FEM::G(const std::array<Union::XY, 3>& elem, size_t area) const {
     double det   = abs(determinant(elem));
     double _koef = Function::lambda(area) / (2 * det);
 
@@ -121,14 +157,15 @@ array::xxx FEM::G(const std::array<Union::XY, 3>& elem, size_t area) {
             elem[0].y - elem[1].y,
             elem[1].x - elem[0].x
     };
+
     for (int i = 0; i < 3; i++)
     for (int j = 0; j < 3; j++)
-        G[i][j] = _koef * ((a[i][0]) * (a[j][0]) + (a[i][1]) * (a[j][1]));
+        G[i][j] = _koef * (a[i][0] * a[j][0] + a[i][1] * a[j][1]);
 
     return G;
 }
 
-array::xxx FEM::M(const std::array<Union::XY, 3>& elem, size_t area) {
+array::xxx FEM::M(const std::array<Union::XY, 3>& elem, size_t area) const {
     double det = abs(determinant(elem));
     double gammaKoef = materials[area].gamma * det / 24;
     std::array<std::array<double, 3>, 3> M;
@@ -307,13 +344,15 @@ void FEM::writeFile(const std::filesystem::path& _path) const {
 }
 
 void FEM::resize() {
-    nodes.    resize(  _size.nodes  );                                              /// Выделение памяти для координат узлов
-    elems.    resize(  _size.elems  );                                              /// Выделение памяти для хранение количества елементов
-    borders.  resize(  _size.conds  );                                              /// Выделение памяти для хранения краевых условий
-    materials.resize(  _size.areas  );                                              /// Выделение памяти для хранения материалов                                /// Выделение памяти для хранения индекса материала определенной области
+    nodes.    resize(  _size.nodes  );                                          /// Выделение памяти для координат узлов
+    elems.    resize(  _size.elems  );                                          /// Выделение памяти для хранение количества елементов
+    borders.  resize(  _size.conds  );                                          /// Выделение памяти для хранения краевых условий
+    materials.resize(  _size.areas  );                                          /// Выделение памяти для хранения материалов
 
-    global_b. resize(  _size.nodes  );
+    global_b. resize(  _size.nodes  );                                          /// Выделение памяти для глобального вектора
     di.       resize(  _size.nodes  );
     ig.       resize(_size.nodes + 1);
+
+    global_A. resize(_size.nodes, std::vector<double>(_size.nodes));            /// Выделение памяти для ГЛОБАЛЬНОЙ МАТРИЦЫ
 }
 #endif // _FEM_HPP_
