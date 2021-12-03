@@ -19,33 +19,20 @@ double f(const Union::XY coord, const size_t area) {
     {
         case 0: return 2 * coord.x; break;
         case 1: return 0;           break;
-
         default:
             Logger::append(getLog("The function do not exist"));
             return 0;
     }
 }
 
-double diffusionKoef(size_t area) {
+double lambda(size_t area) {
 
     switch (area)
     {
         case 0: return 1; break;
-
+        case 1: return 0; break;
         default:
-            Logger::append(getLog("Diffusion this area do not exist"));
-            return 0;
-    }
-}
-
-double gammaKoef(size_t area) {
-
-    switch (area)
-    {
-        case 0: return 2; break;
-
-        default:
-            Logger::append(getLog("Gamma this area do not exist"));
+            Logger::append(getLog("Lambda this area do not exist"));
             return 0;
     }
 }

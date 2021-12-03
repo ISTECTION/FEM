@@ -11,7 +11,6 @@ _UNION_BEGIN
 struct XY { double x, y; };
 
 struct Material {
-    double lambda;
     double betta;
     double gamma;
 };
@@ -22,9 +21,17 @@ struct Element {
 };
 
 struct Border {
-    size_t area;
+
+    enum class Type {
+        UX  = 1 << 0,
+        UY  = 1 << 1,
+        UXY = UX | UY
+    };
+
     size_t cond;
     size_t type;
+
+    size_t area;
     std::array<size_t, 2> bordIdx;
 };
 

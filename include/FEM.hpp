@@ -31,7 +31,7 @@ private:
     std::vector<Union::XY>       nodes;                                         /// Вектор узлов
     std::vector<Union::Element>  elems;                                         /// Вектор конечных элементов
     std::vector<Union::Border>   borders;                                       /// Вектор краевых условий
-    std::vector<Union::Material> materials;                                     /// Структура материалов
+    std::vector<Union::Material> materials;                                     /// Вектор материалов
 
     std::vector<double> gg;
     std::vector<double> di;
@@ -98,41 +98,48 @@ void FEM::local(const std::array<Union::XY, 3>& xyElem, size_t area) {
         det_D * (2 * function[2] + function[0] + function[1]),
     };
 
-
     std::array<std::array<double, 3>, 3> G = FEM::G(xyElem, area);
+    pretty(G);
+
     std::array<std::array<double, 3>, 3> M = FEM::M(xyElem, area);
     std::array<std::array<double, 3>, 3> local_A = G + M;                       /// Локальная матрица A
-
 }
 
-array::xxx FEM::G(const std::array<Union::XY, 3>& xyElem, size_t area) {
-    double det = abs(determinant(xyElem));
+array::xxx FEM::G(const std::array<Union::XY, 3>& elem, size_t area) {
+    double det   = abs(determinant(elem));
+    double _koef = Function::lambda(area) / (2 * det);
 
+    std::array<std::array<double, 3>, 3> G;
+    std::array<std::array<double, 2>, 3> a {
 
+            elem[1].y - elem[2].y,
+            elem[2].x - elem[1].x,
+
+            elem[2].y - elem[0].y,
+            elem[0].x - elem[2].x,
+
+            elem[0].y - elem[1].y,
+            elem[1].x - elem[0].x
+    };
+    for (int i = 0; i < 3; i++)
+    for (int j = 0; j < 3; j++)
+        G[i][j] = _koef * ((a[i][0]) * (a[j][0]) + (a[i][1]) * (a[j][1]));
+
+    return G;
 }
 
-array::xxx FEM::M(const std::array<Union::XY, 3>& xyElem, size_t area) {
-    double det = abs(determinant(xyElem));
-    double gammaKoef = Function::gammaKoef(area) * det / 24;
+array::xxx FEM::M(const std::array<Union::XY, 3>& elem, size_t area) {
+    double det = abs(determinant(elem));
+    double gammaKoef = materials[area].gamma * det / 24;
     std::array<std::array<double, 3>, 3> M;
-
     for (size_t i = 0; i < 3; i++)
     for (size_t j = 0; j < 3; j++) {
-        M[i][j] = {
-            i == j ? 2 * gammaKoef : gammaKoef
-        };
+        M[i][j] =
+            (i == j) ? (2 * gammaKoef) :
+                       (    gammaKoef) ;
     }
-
-    for(size_t i = 0; i < 3; i++) {
-        for(size_t j = 0; j < 3; j++)
-            std::cout << M[i][j] << " ";
-        std::cout << std::endl;
-    }
-
     return  M;
 }
-
-
 
 void FEM::portrait(const bool isWriteList) {
     const size_t N {    _size.nodes     };
@@ -210,8 +217,7 @@ void FEM::printAll() const {
     PRINTLINE ENDLINE
     std::cout << "Areas: " << '\n';
     for (size_t i = 0; i < _size.areas; i++) {
-        std::cout << "\u03BB = " << materials[i].lambda << ',' << ' '
-                  << "\u03B3 = " << materials[i].gamma  << ',' << ' '
+        std::cout << "\u03B3 = " << materials[i].gamma  << ',' << ' '
                   << "\u03B2 = " << materials[i].betta
                   << " -> area " << i << '\n';
     }
@@ -276,8 +282,7 @@ bool FEM::readFile(const std::filesystem::path& path) {
     fin.open(path / "areas.txt");
     isError &= checkFile(fin, getLog("Error - areas.txt"));
     for (size_t i = 0; i < _size.areas; i++)
-        fin >> materials[i].lambda
-            >> materials[i].gamma
+        fin >> materials[i].gamma
             >> materials[i].betta;
 
     for (size_t i = 0; i < _size.elems; i++)

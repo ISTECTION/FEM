@@ -1,6 +1,5 @@
 #include "argparse/argparse.hpp"
 #include "FEM.hpp"
-#include <iostream>
 
 int main(int argc, char* argv[]) {
     using namespace ::Log;
