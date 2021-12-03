@@ -56,8 +56,8 @@ printXXX(const std::array<std::array<T, 3>, 3>& A) {
 
 template<typename _It>
 void
-pretty(_It _beg, _It _end, const size_t _N = 3)  {
-    
+pretty(_It _beg, _It _end, const size_t _n = 3)  {
+
     if (_beg == _end) { std::cout << "Empty" << '\n'; }
     else {
 
@@ -83,13 +83,13 @@ pretty(_It _beg, _It _end, const size_t _N = 3)  {
             }
         }
 
-        size_t midwidth = (mwidth * _N) + ((_N + 1) << 1);
+        size_t midwidth = (mwidth * _n) + ((_n + 1) << 1);
         main << "\u250c\u2500" << std::setw(midwidth - 2)
              << "" << "\u2500\u2510";
-        for (size_t i = 0; i < _N; i++) {
+        for (size_t i = 0; i < _n; i++) {
             main << std::endl;
             main << "\u2502";
-            for (size_t j = 0; j < _N; j++) {
+            for (size_t j = 0; j < _n; j++) {
                 std::string& str = strs[i + (j * 3)];
                 int wlen = (str.size() + mwidth + 1) >> 1;
                 main << "  ";
@@ -118,52 +118,4 @@ void
 pretty(const std::array<std::array<T, 3>, 3>& _arr) {
         pretty(_arr.begin(), _arr.end());
 }
-
-// template<typename T>
-// void
-// pretty(const std::array<std::array<T, 3>, 3>& A)  {
-//     if (A.empty()) std::cout << "Empty";
-
-//     #define EPSILON 0.0000000001
-//     #define EQUAL(a, b) (abs((a) - (b)) < EPSILON)
-//     SetConsoleOutputCP(65001);
-
-//     std::ostringstream osstr, main;
-//     std::vector<std::string> strs;
-//     size_t mwidth = 0;
-//     for (size_t j = 0; j < 3; ++j) {
-//         for (size_t i = 0; i < 3; ++i) {
-//             double term = A[i][j];
-//             if (EQUAL(term, 0))
-//                 term = 0;
-
-//             osstr << term;
-//             std::string str = osstr.str();
-//             osstr.str(std::string());
-//             strs.push_back(str);
-//             size_t nl = str.size();
-//             mwidth = nl > mwidth ? nl : mwidth;
-//         }
-//     }
-//     size_t midwidth = (mwidth * 3) + ((3 + 1) << 1);
-//     main << "\u250c\u2500" << std::setw(midwidth - 2) << "" << "\u2500\u2510";
-//     for (size_t i = 0; i < 3; i++) {
-//         main << std::endl;
-//         main << "\u2502";
-//         for (size_t j = 0; j < 3; j++) {
-//             std::string& str = strs[i + (j * 3)];
-//             int wlen = (str.size() + mwidth + 1) >> 1;
-//             main << "  ";
-//             main << std::setw(wlen);
-//             main << str;
-//             main << std::setw(mwidth - wlen) << "";
-//         }
-//         main << "  \u2502";
-//     }
-//     main << std::endl << "\u2514\u2500" << std::setw(midwidth - 2)
-//          << ""        << "\u2500\u2518" << std::endl;
-//     std::cout << main.str();
-//     #undef EPSILON
-//     #undef EQUAL
-// }
 #endif // _LIGHTWEIGHT_HPP_
