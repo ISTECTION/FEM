@@ -48,7 +48,7 @@ public:
     void printAll()    const;
     void printSparse() const;
 
-    void writeFile(const std::filesystem::path& ) const;
+    void writeFile(const std::filesystem::path&, const double, const size_t) const;
 
 private:
     void global_Matrix();
@@ -196,6 +196,7 @@ void FEM::portrait(const bool isWriteList) {
     for (size_t value : list[i])
         jg[index++] = value;
 
+/// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ///
     if (isWriteList) {
         std::cout << "list: " << '\n';
         for (size_t i = 0; i < list.size(); i++) {
@@ -205,7 +206,6 @@ void FEM::portrait(const bool isWriteList) {
             std::cout << std::endl;
         }
     }
-
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ///
     // std::cout << std::endl;
     // std::cout << "ig: " << '\n';
@@ -331,7 +331,10 @@ bool FEM::readFile(const std::filesystem::path& path) {
     return isError;
 }
 
-void FEM::writeFile(const std::filesystem::path& _path) const {
+void FEM::writeFile(
+        const std::filesystem::path& _path,
+        const double _eps,
+        const size_t _max_iter) const {
 
     std::filesystem::create_directories(_path);
     bool is_dir = std::filesystem::is_directory(_path);
@@ -342,7 +345,9 @@ void FEM::writeFile(const std::filesystem::path& _path) const {
     );
 
     std::ofstream fout(_path / "params.txt");
-    fout << _size.nodes;
+    fout << _size.nodes             << '\n';
+    fout << std::scientific << _eps << '\n';
+    fout << _max_iter;
     fout.close();
 
     Output::write(_path / "gg.txt", gg, { ' ', 14 });

@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
     try {
         program.parse_args(argc, argv);
         FEM fem      (program.get<std::string>("-i"));
-        fem.writeFile(program.get<std::string>("-o"));
+        fem.writeFile(program.get<std::string>("-o"), 1E-14, 10000);
 
         fem.printAll();
         fem.printSparse();
