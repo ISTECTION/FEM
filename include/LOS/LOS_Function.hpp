@@ -25,7 +25,6 @@ T norm (const std::vector<T>& _v) {
         [] (double _S, const double &_El) { return _S + _El * _El; }));
 }
 
-
 template <typename T>
 std::vector<T> operator* (std::vector<T> _v1, const std::vector<T>& _v2) {
     for (size_t i = 0; i < _v1.size(); i++)
@@ -53,5 +52,4 @@ std::vector<T> operator* (T _alpha, std::vector<T> _v1) {
         _v1[i] *= _alpha;
     return _v1;
 };
-
 #endif // _LOS_FUNCTION_HPP_

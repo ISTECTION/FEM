@@ -71,7 +71,7 @@ void Data<T>::convertToLU() {
             T sum = 0;
             int jk = ig[jg[j]];
             int ik = ig[i];
-            while ( (ik < j) && (jk < ig[jg[j] + 1]) )
+            while ((ik < j) && (jk < ig[jg[j] + 1]))
             {
                 int l = jg[jk] - jg[ik];
                 if (l == 0) {

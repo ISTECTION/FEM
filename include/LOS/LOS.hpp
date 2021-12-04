@@ -27,7 +27,9 @@ private:
 template <class T>
 void LOS<T>::solve(Cond _cond, bool isLog) {
     using namespace ::Log;
-
+    std::streamsize p = std::cout.precision();
+    std::cout.precision(2);                                                     /// Устанавливаем 2 знака после точки
+    std::cout.setf(std::ios::uppercase);                                        /// Вывод експоненциальной форму в формате (3.17E-01 вместо 3.17e-01)
     switch (_cond) {
         case Cond::NONE:     none(  isLog  ); break;
         case Cond::DIAGONAL: diagonal(isLog); break;
@@ -36,6 +38,9 @@ void LOS<T>::solve(Cond _cond, bool isLog) {
             Logger::append(getLog("this conditional non exist"));
             std::exit(1);
     }
+    std::cout.unsetf(std::ios::scientific);                                     /// Сброс флага вывода в експоненциальной форме
+    std::cout.unsetf(std::ios::uppercase);                                      /// Сброс флага заглавных букв при выводе
+    std::cout.precision(p);                                                     /// Возвращаем всё в исходное состояние
 }
 
 template <class T>

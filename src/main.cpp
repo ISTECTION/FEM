@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
         FEM fem      (program.get<std::string>("-i"));
         fem.writeFile(program.get<std::string>("-o"), 1E-14, 10000);
         LOS<double> l(program.get<std::string>("-o"));
-        l.solve(Cond::HOLLESKY, false);
+        l.solve(Cond::HOLLESKY, true);
         timer.stop();
 
         l.printX();

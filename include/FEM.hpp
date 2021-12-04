@@ -225,7 +225,7 @@ void FEM::printAll() const {
     #define PRINTLINE \
         for (size_t i = 0; i < 20; std::cout << '-', i++);
     #define ENDLINE std::cout << '\n';
-    system("chcp 65001");
+    SetConsoleOutputCP(65001);
     PRINTLINE ENDLINE
     std::cout << "PARAMS:         "                 << '\n';
     std::cout << "Size nodes:     " << _size.nodes  << '\n';
