@@ -1,5 +1,6 @@
 #include "argparse/argparse.hpp"
 #include "timer/cxxtimer.hpp"
+#include "LOS/LOS.hpp"
 #include "FEM.hpp"
 
 int main(int argc, char* argv[]) {
@@ -16,9 +17,9 @@ int main(int argc, char* argv[]) {
         cxxtimer::Timer timer(true);
         FEM fem      (program.get<std::string>("-i"));
         fem.writeFile(program.get<std::string>("-o"), 1E-14, 10000);
-
-        /// LOS
+        LOS<double> l(program.get<std::string>("-o"));
         timer.stop();
+
         std::cout << "Milliseconds: "
                   << timer.count<milliseconds>() << '\n';
 

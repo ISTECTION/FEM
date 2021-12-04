@@ -22,15 +22,15 @@ determinant(const std::array<Union::XY, 3>& elem) {
 }
 ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~///
 
-template<typename T> void
-print(const std::vector<T>& _vec) {
+template<typename T>
+void print(const std::vector<T>& _vec) {
     for (size_t _pos = 0; _pos < _vec.size(); _pos++)
         std::cout << _vec[_pos] << ' ';
     std::cout << std::endl;
 }
 
-template<typename T> void
-printGlobal(const std::vector<std::vector<T>>& _global) {
+template<typename T>
+void printGlobal(const std::vector<std::vector<T>>& _global) {
     #define ENDLINE std::cout << '\n';
     ENDLINE
     for (size_t i = 0; i < _global.size(); i++) {
@@ -41,8 +41,8 @@ printGlobal(const std::vector<std::vector<T>>& _global) {
     #undef ENDLINE
 }
 
-template<typename T> void
-printXXX(const std::array<std::array<T, 3>, 3>& A) {
+template<typename T>
+void printXXX(const std::array<std::array<T, 3>, 3>& A) {
     #define ENDLINE std::cout << '\n'
     std::cout << std::endl;
     for (size_t row = 0; row < 3; row++, ENDLINE)
@@ -52,9 +52,8 @@ printXXX(const std::array<std::array<T, 3>, 3>& A) {
     #undef ENDLINE
 }
 
-
-template<typename _It> void
-pretty(_It _beg, _It _end, const size_t _n = 3)  {
+template<typename _It>
+void pretty(_It _beg, _It _end, const size_t _n = 3)  {
 
     if (_beg == _end) { std::cout << "Empty" << '\n'; }
     else {
@@ -105,13 +104,13 @@ pretty(_It _beg, _It _end, const size_t _n = 3)  {
     }
 }
 
-template <typename T> void
-pretty(const std::vector<std::vector<T>>& _vec) {
+template <typename T>
+void pretty(const std::vector<std::vector<T>>& _vec) {
         pretty(_vec.begin(), _vec.end(), _vec.size());
 }
 
-template <typename T> void
-pretty(const std::array<std::array<T, 3>, 3>& _arr) {
+template <typename T>
+void pretty(const std::array<std::array<T, 3>, 3>& _arr) {
         pretty(_arr.begin(), _arr.end());
 }
 

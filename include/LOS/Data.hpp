@@ -22,16 +22,7 @@ struct Param {
     size_t max_iter;            /// max_iter - MAX количество итераций
 };
 
-template <class T>
-struct Sparse {
-    std::vector<T> di;          /// Диагональные элементы
-    std::vector<T> gg;          /// Внедиагональные элементы
-    std::vector<size_t> ig;     /// Указатели начала строк
-    std::vector<size_t> jg;     /// Номера столбцов
-};
-
-enum class Conditional
-{
+enum class Conditional{
     NONE,                       /// Без предобусловливания
     DIAGONAL,                   /// С диагональным предобусловливанием
     HOLLESKY                    /// С предобусловливанием Холесского
@@ -42,20 +33,21 @@ class Data
 {
 protected:
     Param param;
+
     std::vector<size_t> ig;     /// Указатели начала строк
     std::vector<size_t> jg;     /// Номера столбцов
     std::vector<T> di;          /// Диагональные элементы
     std::vector<T> gg;          /// Внедиагональные элементы
-    std::vector<T> pr;          /// Вектор правой части
+    std::vector<T> b;           /// Вектор правой части
     std::vector<T> x;           /// Вектор решения
 
-    std::vector<T> di_l;        /// Диагональные элементы LU-разложения
+    std::vector<T> di_l;        /// Диагональные    элементы LU-разложения
     std::vector<T> gg_l;        /// Внедиагональные элементы LU-разложения
 
     std::vector<T> y;           /// Вектор y - для прямого хода
-    size_t iter  = 0;           /// Количество итераций
+    size_t iter{ 0 };           /// Количество итераций
 public:
-    Data(path _path = "file/default") { assert(loadData(_path)); }
+    Data(path _path) { assert(loadData(_path)); }
     ~Data() { }
 
     void reset();
@@ -64,7 +56,7 @@ public:
     size_t getIteration() const { return iter; }
 
     std::vector<T> mult(std::vector<T> _V);
-    void printX(unsigned int count = 0) const;
+    void printX(std::streamsize count = 0) const;
 
     void convertToLU();                               /// LL^T-разложение
     std::vector<T> normal (std::vector<T> b);         /// Прямой ход
@@ -153,10 +145,13 @@ std::vector<T> Data<T>::mult(std::vector<T> _Vec) {
 }
 
 template <class T>
-void Data<T>::printX(unsigned int count) const {
+void Data<T>::printX(std::streamsize count) const {
     std::ostringstream ostream;
-    if (count)
+
+    if (count) {
+        ostream.setf(std::ios::fixed);
         ostream.precision(count);
+    }
 
     ostream << "[ ";
     for (size_t i = 0; i < x.size(); i++)
@@ -169,53 +164,52 @@ template <class T>
 bool Data<T>::loadData(path _Path) {
     bool isCor { true };
 
-    std::ifstream fin(_Path / "kuslau.txt");
+    std::ifstream fin(_Path / "params.txt");
     if(!fin) return false;
         fin >> param.n
-            >> param.max_iter
-            >> param.epsilon;
+            >> param.epsilon
+            >> param.max_iter;
     fin.close();
 
     ig.resize(param.n + 1);
     isCor &= read(_Path / "ig.txt", ig);
-
     resize(ig.back());
 
     isCor &= read(_Path / "gg.txt", gg);
-    isCor &= read(_Path / "jg.txt", jg);
     isCor &= read(_Path / "di.txt", di);
-    isCor &= read(_Path / "pr.txt", pr);
+    isCor &= read(_Path / "jg.txt", jg);
+    isCor &= read(_Path / "pr.txt", b );
 
     return isCor;
 }
 
 template <class T>
-bool Data<T>::read(path _Path, std::vector<T>& _Vec) {
-    std::ifstream fin(_Path);
+bool Data<T>::read(path _path, std::vector<T>& _vec) {
+    std::ifstream fin(_path);
     if(!fin) return false;
-    for (size_t i = 0; i < _Vec.size(); i++)
-            fin >> _Vec[i];
+    for (size_t i = 0; i < _vec.size(); i++)
+        fin >> _vec[i];
     fin.close();
     return true;
 }
 
 template <class T>
-bool Data<T>::read(path _Path, std::vector<size_t>& _Vec) {
-    std::ifstream fin(_Path);
+bool Data<T>::read(path _path, std::vector<size_t>& _vec) {
+    std::ifstream fin(_path);
     if(!fin) return false;
-    for (size_t i = 0; i < _Vec.size(); i++)
-            fin >> _Vec[i];
+    for (size_t i = 0; i < _vec.size(); i++)
+            fin >> _vec[i];
     fin.close();
     return true;
 }
 
 template <class T>
-void Data<T>::resize(size_t _Mem) {
-    gg.resize(_Mem);
-    jg.resize(_Mem);
+void Data<T>::resize(size_t _count) {
+    gg.resize(_count);
+    jg.resize(_count);
 
     di.resize(param.n);
-    pr.resize(param.n);
+    b.resize(param.n);
     x.resize (param.n);
 }
 

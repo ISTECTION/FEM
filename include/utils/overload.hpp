@@ -12,7 +12,6 @@ namespace array {
 
 array::xxx
 operator+ (const array::xxx& G, const array::xxx& M) {
-
     array::xxx _res;
     for (size_t i = 0; i < G.size(); i++)
     for (size_t j = 0; j < G.size(); j++)
