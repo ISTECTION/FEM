@@ -18,11 +18,13 @@ int main(int argc, char* argv[]) {
         FEM fem      (program.get<std::string>("-i"));
         fem.writeFile(program.get<std::string>("-o"), 1E-14, 10000);
         LOS<double> l(program.get<std::string>("-o"));
+        l.solve(Cond::HOLLESKY, false);
         timer.stop();
 
-        std::cout << "Milliseconds: "
-                  << timer.count<milliseconds>() << '\n';
+        l.printX();
 
+        std::cout << '\n' << "Milliseconds: "
+                  << timer.count<milliseconds>() << '\n';
         fem.printAll();
         fem.printSparse();
     }

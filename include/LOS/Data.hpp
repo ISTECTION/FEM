@@ -1,9 +1,6 @@
 #ifndef _DATA_HPP_
 #define _DATA_HPP_
-
-#define _SYMMETRIC_BEG namespace symmetric {
-#define _SYMMETRIC_END                     }
-
+#include "../Logger.hpp"
 #include <filesystem>
 #include <iostream>
 #include <cassert>
@@ -12,68 +9,56 @@
 #include <vector>
 #include <cmath>
 
-_SYMMETRIC_BEG                  /// Пространство имён симметричной матрицы
+#define _SYMMETRIC_BEG namespace Symmetric {
+#define _SYMMETRIC_END                     }
 
-using std::filesystem::path;    /// Тип path используется для хранения путей
+_SYMMETRIC_BEG                                                                  /// Пространство имён симметричной матрицы
 
 struct Param {
-    size_t n;                   /// n        - Размерность матрицы
-    double epsilon;             /// epsilon  - Точность решения СЛАУ
-    size_t max_iter;            /// max_iter - MAX количество итераций
+    size_t n;                                                                   /// n - Размерность матрицы
+    double epsilon;                                                             /// epsilon  - Точность решения СЛАУ
+    size_t max_iter;                                                            /// max_iter - MAX количество итераций
 };
 
-enum class Conditional{
-    NONE,                       /// Без предобусловливания
-    DIAGONAL,                   /// С диагональным предобусловливанием
-    HOLLESKY                    /// С предобусловливанием Холесского
+enum class Cond {
+    NONE,                                                                       /// Без предобусловливания
+    DIAGONAL,                                                                   /// С диагональным предобусловливанием
+    HOLLESKY                                                                    /// С предобусловливанием Холесского
 };
 
 template <class T>
 class Data
 {
 protected:
-    Param param;
+    Param param;                                                                /// Структура входных данных файла kuslau.txt
+    std::vector<size_t> ig;                                                     /// Указатели начала строк
+    std::vector<size_t> jg;                                                     /// Номера столбцов
+    std::vector<T> di;                                                          /// Диагональные элементы
+    std::vector<T> gg;                                                          /// Внедиагональные элементы
+    std::vector<T> b;                                                           /// Вектор правой части (Глобальный из МКЭ)
+    std::vector<T> x;                                                           /// Вектор решения
 
-    std::vector<size_t> ig;     /// Указатели начала строк
-    std::vector<size_t> jg;     /// Номера столбцов
-    std::vector<T> di;          /// Диагональные элементы
-    std::vector<T> gg;          /// Внедиагональные элементы
-    std::vector<T> b;           /// Вектор правой части
-    std::vector<T> x;           /// Вектор решения
+    std::vector<T> di_l;                                                        /// Диагональные    элементы LU-разложения
+    std::vector<T> gg_l;                                                        /// Внедиагональные элементы LU-разложения
+    std::vector<T> y;                                                           /// Вектор y - для прямого хода
+    size_t iter{ 0 };                                                           /// Количество итераций
 
-    std::vector<T> di_l;        /// Диагональные    элементы LU-разложения
-    std::vector<T> gg_l;        /// Внедиагональные элементы LU-разложения
-
-    std::vector<T> y;           /// Вектор y - для прямого хода
-    size_t iter{ 0 };           /// Количество итераций
 public:
-    Data(path _path) { assert(loadData(_path)); }
+    Data(std::filesystem::path _path) { assert(loadData(_path)); }
     ~Data() { }
 
-    void reset();
+    std::vector<T>& getX() const { return x;    }                               /// Получить вектор решений
+    size_t  getIteration() const { return iter; }                               /// Получить количество итераций
+    void printX(std::streamsize count = 0) const;                               /// Вывести вектор решений
 
-    std::vector<T>& getX() { return x; }
-    size_t getIteration() const { return iter; }
-
-    std::vector<T> mult(std::vector<T> _V);
-    void printX(std::streamsize count = 0) const;
-
-    void convertToLU();                               /// LL^T-разложение
-    std::vector<T> normal (std::vector<T> b);         /// Прямой ход
-    std::vector<T> reverse(std::vector<T> y);         /// Обратный ход
+    void convertToLU();                                                         /// LL^T-разложение
+    std::vector<T> normal (std::vector<T> b);                                   /// Прямой   ход
+    std::vector<T> reverse(std::vector<T> y);                                   /// Обратный ход
+    std::vector<T> mult(const std::vector<T>& _vec);                            /// Умножение на вектор
 
 private:
-    bool loadData(path _Path);
-    void resize(size_t _Mem);
-    bool read(path _Path, std::vector<T>& _Vec);
-    bool read(path _Path, std::vector<size_t>& _Vec);
+    bool loadData(std::filesystem::path _path);                                 /// Функция считывания входных файлов
 };
-
-template <class T>
-void Data<T>::reset() {
-    std::fill(x.begin(), x.end(), 0);
-    iter = 0;
-}
 
 template <class T>
 void Data<T>::convertToLU() {
@@ -82,7 +67,6 @@ void Data<T>::convertToLU() {
 
     for (size_t i = 0; i < param.n; i++) {
         T sum_diag = 0;
-
         for (size_t j = ig[i]; j < ig[i + 1] ; j++) {
             T sum = 0;
             int jk = ig[jg[j]];
@@ -129,16 +113,16 @@ std::vector<T> Data<T>::reverse(std::vector<T> x) {
 }
 
 template <class T>
-std::vector<T> Data<T>::mult(std::vector<T> _Vec) {
-    std::vector<T> pr(_Vec.size());
+std::vector<T> Data<T>::mult(const std::vector<T>& _vec) {
+    std::vector<T> pr(_vec.size());
 
     int jj = 0;
-    for (size_t i = 0; i < _Vec.size(); i++) {
-        pr[i] = di[i] * _Vec[i];
+    for (size_t i = 0; i < _vec.size(); i++) {
+        pr[i] = di[i] * _vec[i];
 
         for (size_t j = ig[i]; j < ig[i + 1]; j++, jj++) {
-            pr[i] += gg[jj] * _Vec[jg[jj]];
-            pr[jg[jj]] += gg[jj] * _Vec[i];
+            pr[i] += gg[jj] * _vec[jg[jj]];
+            pr[jg[jj]] += gg[jj] * _vec[i];
         }
     }
     return pr;
@@ -147,12 +131,10 @@ std::vector<T> Data<T>::mult(std::vector<T> _Vec) {
 template <class T>
 void Data<T>::printX(std::streamsize count) const {
     std::ostringstream ostream;
-
     if (count) {
         ostream.setf(std::ios::fixed);
         ostream.precision(count);
     }
-
     ostream << "[ ";
     for (size_t i = 0; i < x.size(); i++)
         ostream << x[i] << " ";
@@ -160,61 +142,48 @@ void Data<T>::printX(std::streamsize count) const {
     std::cout << ostream.str();
 }
 
-template <class T>
-bool Data<T>::loadData(path _Path) {
-    bool isCor { true };
-
-    std::ifstream fin(_Path / "params.txt");
-    if(!fin) return false;
-        fin >> param.n
-            >> param.epsilon
-            >> param.max_iter;
-    fin.close();
-
-    ig.resize(param.n + 1);
-    isCor &= read(_Path / "ig.txt", ig);
-    resize(ig.back());
-
-    isCor &= read(_Path / "gg.txt", gg);
-    isCor &= read(_Path / "di.txt", di);
-    isCor &= read(_Path / "jg.txt", jg);
-    isCor &= read(_Path / "pr.txt", b );
-
-    return isCor;
-}
-
-template <class T>
-bool Data<T>::read(path _path, std::vector<T>& _vec) {
+template <typename T>
+bool read(std::filesystem::path _path, std::vector<T>& _vec) {
+    using namespace ::Log;
     std::ifstream fin(_path);
-    if(!fin) return false;
-    for (size_t i = 0; i < _vec.size(); i++)
-        fin >> _vec[i];
-    fin.close();
-    return true;
-}
-
-template <class T>
-bool Data<T>::read(path _path, std::vector<size_t>& _vec) {
-    std::ifstream fin(_path);
-    if(!fin) return false;
+    if (not
+        is_open(fin, "Error - " + _path.filename().string()))
+        return false;
     for (size_t i = 0; i < _vec.size(); i++)
             fin >> _vec[i];
-    fin.close();
-    return true;
+    fin.close(); return true;
 }
 
 template <class T>
-void Data<T>::resize(size_t _count) {
-    gg.resize(_count);
-    jg.resize(_count);
+bool Data<T>::loadData(std::filesystem::path _path) {
+    using namespace ::Log;
+    std::ifstream fin(_path / "kuslau.txt");
+    if (not is_open(fin, "Error - kuslau.txt"))
+        return false;
+    fin >> param.n
+        >> param.epsilon
+        >> param.max_iter;
+    fin.close();
 
-    di.resize(param.n);
-    b.resize(param.n);
-    x.resize (param.n);
+    bool is_cor {  true  };
+    ig.resize(param.n + 1);                                                     /// Выделение памяти для вектора хранящий указатели начала строк
+
+    is_cor &= read(_path / "ig.txt", ig);
+
+    gg.resize(ig.back());                                                       /// Выделение памяти под вектор хранящий нижний треугольник матрицы
+    jg.resize(ig.back());                                                       /// Выделение памяти под вектор хранящий индексы столбцов
+    di.resize( param.n );                                                         /// Выделение памяти под вектор хранящий диагональные элементы
+
+    b.resize (param.n);                                                         /// Выделение памяти для элементов правой части
+    x.resize (param.n);                                                         /// Выделение памяти для вектора решений СЛАУ
+
+    is_cor &= read(_path / "gg.txt", gg);
+    is_cor &= read(_path / "di.txt", di);
+    is_cor &= read(_path / "jg.txt", jg);
+    is_cor &= read(_path / "gb.txt", b);                                         /// Глобальная матрица b
+    return is_cor;
 }
-
 _SYMMETRIC_END
-
 #undef _SYMMETRIC_DEGIN
 #undef _SYMMETRIC_END
 #endif /// _DATA_HPP_

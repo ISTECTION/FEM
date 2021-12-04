@@ -26,8 +26,7 @@ public:
 
 std::string Logger::fileName = Logger::getNameLog();
 
-bool checkFile (const std::ifstream &fin, const std::string &error) {
-
+bool is_open(const std::ifstream &fin, const std::string &error) {
     if (fin.is_open()) return true;
     else {
         Logger::append(error);

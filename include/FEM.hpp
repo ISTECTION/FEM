@@ -284,7 +284,7 @@ bool FEM::readFile(const std::filesystem::path& path) {
     bool isError { true };
 
     std::ifstream fin(path / "params.txt");
-    isError &= checkFile(fin, getLog("Error - params.txt"));
+    isError &= is_open(fin, getLog("Error - params.txt"));
     fin >> _size.nodes
         >> _size.elems
         >> _size.areas
@@ -295,13 +295,13 @@ bool FEM::readFile(const std::filesystem::path& path) {
     std::fill_n(ig.begin(), 2, 0);                                              /// Заполнение первых 2 ячеек веткора ig нулями
                                                                                 ///         (при желании можно поменять на единицы)
     fin.open(path / "nodes.txt");
-    isError &= checkFile(fin, getLog("Error - nodes.txt"));
+    isError &= is_open(fin, getLog("Error - nodes.txt"));
     for (size_t i = 0; i < _size.nodes; i++)
 		fin >> nodes[i].x >> nodes[i].y;
     fin.close();
 
     fin.open(path / "elems.txt");
-    isError &= checkFile(fin, getLog("Error - elems.txt"));
+    isError &= is_open(fin, getLog("Error - elems.txt"));
 	for (size_t i = 0; i < _size.elems; i++) {
 		fin >> elems[i].nodeIdx[0]
             >> elems[i].nodeIdx[1]
@@ -310,7 +310,7 @@ bool FEM::readFile(const std::filesystem::path& path) {
     fin.close();
 
     fin.open(path / "areas.txt");
-    isError &= checkFile(fin, getLog("Error - areas.txt"));
+    isError &= is_open(fin, getLog("Error - areas.txt"));
     for (size_t i = 0; i < _size.areas; i++)
         fin >> materials[i].gamma
             >> materials[i].betta;
@@ -320,7 +320,7 @@ bool FEM::readFile(const std::filesystem::path& path) {
     fin.close();
 
     fin.open(path / "bords.txt");
-    isError &= checkFile(fin, getLog("Error - bords.txt"));
+    isError &= is_open(fin, getLog("Error - bords.txt"));
     for (size_t i = 0; i < _size.conds; i++)
         fin >> borders[i].area
             >> borders[i].bordIdx[0]
@@ -344,7 +344,7 @@ void FEM::writeFile(
         Logger::append(getLog("Error - create directory"))
     );
 
-    std::ofstream fout(_path / "params.txt");
+    std::ofstream fout(_path / "kuslau.txt");
     fout << _size.nodes             << '\n';
     fout << std::scientific << _eps << '\n';
     fout << _max_iter;
@@ -354,6 +354,7 @@ void FEM::writeFile(
     Output::write(_path / "di.txt", di, { ' ', 14 });
     Output::write(_path / "jg.txt", jg);
     Output::write(_path / "ig.txt", ig);
+    Output::write(_path / "gb.txt", gb);
 }
 
 void FEM::resize() {
