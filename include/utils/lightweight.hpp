@@ -12,37 +12,18 @@
 #include <vector>
 #include <array>
 
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~///
-double
+/// ~~~~~~~~~~~~~~~~~~ Linear algebra ~~~~~~~~~~~~~~~~~~ ///
+double                                                                          /// Функция вычисляющая детерминант
 determinant(const std::array<Union::XY, 3>& elem) {
     return (
         (elem[1].x - elem[0].x) * (elem[2].y - elem[0].y) -
         (elem[1].y - elem[0].y) * (elem[2].x - elem[0].x)
     );
 }
-///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~///
+/// ~~~~~~~~~~~~~~~~~~ Linear algebra ~~~~~~~~~~~~~~~~~~ ///
 
-template<typename T>
-void print(const std::vector<T>& _vec) {
-    for (size_t _pos = 0; _pos < _vec.size(); _pos++)
-        std::cout << _vec[_pos] << ' ';
-    std::cout << std::endl;
-}
-
-template<typename T>
-void printGlobal(const std::vector<std::vector<T>>& _global) {
-    #define ENDLINE std::cout << '\n';
-    ENDLINE
-    for (size_t i = 0; i < _global.size(); i++) {
-        for (size_t j = 0; j < _global.size(); j++)
-            std::cout << _global[i][j] << '\n';
-        ENDLINE
-    }
-    #undef ENDLINE
-}
-
-template<typename T>
-void printXXX(const std::array<std::array<T, 3>, 3>& A) {
+template<typename T>                                                            /// Вывод array<3, 3> для матриц M, G
+void printXXX(const std::array<std::array<T, 3>, 3>& A) {                       /// и локальной матрицы A
     #define ENDLINE std::cout << '\n'
     std::cout << std::endl;
     for (size_t row = 0; row < 3; row++, ENDLINE)
@@ -52,9 +33,16 @@ void printXXX(const std::array<std::array<T, 3>, 3>& A) {
     #undef ENDLINE
 }
 
-template<typename _It>
-void pretty(_It _beg, _It _end, const size_t _n = 3)  {
+template<typename T>                                                            /// Примитивный вывод вектора
+void print(const std::vector<T>& _vec) {
+    for (size_t _pos = 0; _pos < _vec.size(); _pos++)
+        std::cout << _vec[_pos] << ' ';
+    std::cout << std::endl;
+}
 
+template<typename _It>                                                          /// Красивый вывод, для двумерных - vector, array -
+void pretty(_It _beg, _It _end, const size_t _n = 3)  {                         /// с указанием итератора начала и конца, и размера
+                                                                                /// строки если он отличен от 3-ёх
     if (_beg == _end) { std::cout << "Empty" << '\n'; }
     else {
 
@@ -104,28 +92,28 @@ void pretty(_It _beg, _It _end, const size_t _n = 3)  {
     }
 }
 
-template <typename T>
-void pretty(const std::vector<std::vector<T>>& _vec) {
-        pretty(_vec.begin(), _vec.end(), _vec.size());
+template <typename T>                                                           /// Шаблон функции для вывода красивой матрицы
+void pretty(const std::vector<std::vector<T>>& _vec) {                          /// которая автоматически передаёт параметры
+        pretty(_vec.begin(), _vec.end(), _vec.size());                          /// двумерного вектора методу написаному выше
 }
 
-template <typename T>
-void pretty(const std::array<std::array<T, 3>, 3>& _arr) {
-        pretty(_arr.begin(), _arr.end());
+template <typename T>                                                           /// Шаблон функции для вывода красивой матрицы
+void pretty(const std::array<std::array<T, 3>, 3>& _arr) {                      /// которая автоматически передаёт параметры
+        pretty(_arr.begin(), _arr.end());                                       /// двумерного массива методу написаному выше
 }
 
 namespace Output {
 
-    struct Write {
-        char    separator;
-        uint8_t precision;
+    struct Write {                                                              /// Структура параметров для записи в файл
+        char    separator;                                                      /// Разделитель
+        uint8_t precision;                                                      /// Количество знаков после запятой
     };
 
     template<typename T>
-    void write(
-            const std::filesystem::path& _path,
-            const std::vector<T>& _vec,
-            const Write _option = { ' ', 8 }) {
+    void write(                                                                 /// Функция записи вектора в файл, которая получает:
+            const std::filesystem::path& _path,                                 /// Путь
+            const std::vector<T>& _vec,                                         /// Вектор
+            const Write _option = { ' ', 8 }) {                                 /// Стуркутру параметров
 
         std::ofstream fout(_path);
         fout.precision(_option.precision);

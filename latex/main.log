@@ -1,12 +1,11 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  2 DEC 2021 03:31
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  6 DEC 2021 01:55
 entering extended mode
- restricted \write18 enabled.
+ \write18 enabled.
  %&-line parsing enabled.
-**main.tex titlepage/title.tex
+**main.tex
 (./main.tex
 LaTeX2e <2020-10-01> patch level 4
-L3 programming layer <2021-02-18>
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/base/article.cls
+L3 programming layer <2021-02-18> (d:/Programs/texlive/2021/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2020/04/10 v1.4m Standard LaTeX document class
 (d:/Programs/texlive/2021/texmf-dist/tex/latex/base/size12.clo
 File: size12.clo 2020/04/10 v1.4m Standard LaTeX file (size option)
@@ -22,18 +21,14 @@ File: size12.clo 2020/04/10 v1.4m Standard LaTeX file (size option)
 \abovecaptionskip=\skip47
 \belowcaptionskip=\skip48
 \bibindent=\dimen138
-)
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/geometry/geometry.sty
+) (d:/Programs/texlive/2021/texmf-dist/tex/latex/geometry/geometry.sty
 Package: geometry 2020/01/02 v5.9 Page Geometry
-
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/graphics/keyval.sty
+ (d:/Programs/texlive/2021/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks15
-)
-(d:/Programs/texlive/2021/texmf-dist/tex/generic/iftex/ifvtex.sty
+) (d:/Programs/texlive/2021/texmf-dist/tex/generic/iftex/ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
-
-(d:/Programs/texlive/2021/texmf-dist/tex/generic/iftex/iftex.sty
+ (d:/Programs/texlive/2021/texmf-dist/tex/generic/iftex/iftex.sty
 Package: iftex 2020/03/06 v1.0d TeX engine tests
 ))
 \Gm@cnth=\count183
@@ -48,24 +43,18 @@ Package: iftex 2020/03/06 v1.0d TeX engine tests
 \Gm@layouthoffset=\dimen145
 \Gm@layoutvoffset=\dimen146
 \Gm@dimlist=\toks16
-)
-(./styles/preamble.sty
-(d:/Programs/texlive/2021/texmf-dist/tex/generic/babel/babel.sty
+) (./styles/preamble.sty (d:/Programs/texlive/2021/texmf-dist/tex/generic/babel/babel.sty
 Package: babel 2021/03/24 3.56 The Babel package
-
-(d:/Programs/texlive/2021/texmf-dist/tex/generic/babel/babel.def
+ (d:/Programs/texlive/2021/texmf-dist/tex/generic/babel/babel.def
 File: babel.def 2021/03/24 3.56 Babel common definitions
 \babel@savecnt=\count186
 \U@D=\dimen147
 \l@babelnohyphens=\language87
-
-(d:/Programs/texlive/2021/texmf-dist/tex/generic/babel/xebabel.def
-(d:/Programs/texlive/2021/texmf-dist/tex/generic/babel/txtbabel.def))
+ (d:/Programs/texlive/2021/texmf-dist/tex/generic/babel/xebabel.def (d:/Programs/texlive/2021/texmf-dist/tex/generic/babel/txtbabel.def))
 \bbl@readstream=\read2
 )
 \bbl@dirlevel=\count187
-
-(d:/Programs/texlive/2021/texmf-dist/tex/generic/babel-english/english.ldf
+ (d:/Programs/texlive/2021/texmf-dist/tex/generic/babel-english/english.ldf
 Language: english 2017/06/06 v3.3r English support from the babel system
 Package babel Info: \l@canadian = using hyphenrules for english
 (babel)             (\language0) on input line 102.
@@ -73,22 +62,16 @@ Package babel Info: \l@australian = using hyphenrules for ukenglish
 (babel)             (\language21) on input line 105.
 Package babel Info: \l@newzealand = using hyphenrules for ukenglish
 (babel)             (\language21) on input line 108.
-)
-(d:/Programs/texlive/2021/texmf-dist/tex/generic/babel-russian/russianb.ldf
+) (d:/Programs/texlive/2021/texmf-dist/tex/generic/babel-russian/russianb.ldf
 File: russianb.ldf 2021/01/10 1.3m Russian support for the Babel system
 Language: russian 2020/09/09 1.3k Russian support for the Babel system
 Package babel Info: Making " an active character on input line 124.
 Package babel Info: Default for \cyrdash is provided on input line 163.
-))
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/fontspec/fontspec.sty
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/l3kernel/expl3.sty
+)) (d:/Programs/texlive/2021/texmf-dist/tex/latex/fontspec/fontspec.sty (d:/Programs/texlive/2021/texmf-dist/tex/latex/l3packages/xparse/xparse.sty (d:/Programs/texlive/2021/texmf-dist/tex/latex/l3kernel/expl3.sty
 Package: expl3 2021-02-18 L3 programming layer (loader) 
-
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/l3backend/l3backend-xetex.def
+ (d:/Programs/texlive/2021/texmf-dist/tex/latex/l3backend/l3backend-xetex.def
 File: l3backend-xetex.def 2021-03-18 L3 backend support: XeTeX
-
-(|extractbb --version)
+ (|extractbb --version)
 \c__kernel_sys_dvipdfmx_version_int=\count188
 \l__color_backend_stack_int=\count189
 \g__color_backend_stack_int=\count190
@@ -97,16 +80,10 @@ File: l3backend-xetex.def 2021-03-18 L3 backend support: XeTeX
 \g__pdf_backend_object_int=\count192
 \g__pdf_backend_annotation_int=\count193
 \g__pdf_backend_link_int=\count194
-))
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/l3packages/xparse/xparse-2020-10
--01.sty
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/l3packages/xparse/xparse-generic
-.tex)))
+)) (d:/Programs/texlive/2021/texmf-dist/tex/latex/l3packages/xparse/xparse-2020-10-01.sty (d:/Programs/texlive/2021/texmf-dist/tex/latex/l3packages/xparse/xparse-generic.tex)))
 Package: fontspec 2020/02/21 v2.7i Font selection for XeLaTeX and LuaLaTeX
-
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/fontspec/fontspec-xetex.sty
-Package: fontspec-xetex 2020/02/21 v2.7i Font selection for XeLaTeX and LuaLaTe
-X
+ (d:/Programs/texlive/2021/texmf-dist/tex/latex/fontspec/fontspec-xetex.sty
+Package: fontspec-xetex 2020/02/21 v2.7i Font selection for XeLaTeX and LuaLaTeX
 \l__fontspec_script_int=\count195
 \l__fontspec_language_int=\count196
 \l__fontspec_strnum_int=\count197
@@ -121,34 +98,25 @@ X
 \l__fontspec_tmpa_dim=\dimen148
 \l__fontspec_tmpb_dim=\dimen149
 \l__fontspec_tmpc_dim=\dimen150
-
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/base/fontenc.sty
+ (d:/Programs/texlive/2021/texmf-dist/tex/latex/base/fontenc.sty
 Package: fontenc 2020/08/10 v2.0s Standard LaTeX package
-)
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/fontspec/fontspec.cfg)))
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/graphics/graphicx.sty
+) (d:/Programs/texlive/2021/texmf-dist/tex/latex/fontspec/fontspec.cfg))) (d:/Programs/texlive/2021/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 2020/09/09 v1.2b Enhanced LaTeX Graphics (DPC,SPQR)
-
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/graphics/graphics.sty
+ (d:/Programs/texlive/2021/texmf-dist/tex/latex/graphics/graphics.sty
 Package: graphics 2020/08/30 v1.4c Standard LaTeX Graphics (DPC,SPQR)
-
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/graphics/trig.sty
+ (d:/Programs/texlive/2021/texmf-dist/tex/latex/graphics/trig.sty
 Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
-)
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+) (d:/Programs/texlive/2021/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: xetex.def on input line 105.
-
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/graphics-def/xetex.def
+ (d:/Programs/texlive/2021/texmf-dist/tex/latex/graphics-def/xetex.def
 File: xetex.def 2021/03/18 v5.0k Graphics/color driver for xetex
 ))
 \Gin@req@height=\dimen151
 \Gin@req@width=\dimen152
-)
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
-Package: fancyhdr 2021/01/28 v4.0.1 Extensive control of page headers and foote
-rs
+) (d:/Programs/texlive/2021/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
+Package: fancyhdr 2021/01/28 v4.0.1 Extensive control of page headers and footers
 \f@nch@headwidth=\skip49
 \f@nch@O@elh=\skip50
 \f@nch@O@erh=\skip51
@@ -158,67 +126,46 @@ rs
 \f@nch@O@erf=\skip55
 \f@nch@O@olf=\skip56
 \f@nch@O@orf=\skip57
-)
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/standalone/standalone.sty
-Package: standalone 2018/03/26 v1.3a Package to include TeX sub-files with prea
-mbles
-
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/tools/shellesc.sty
+) (d:/Programs/texlive/2021/texmf-dist/tex/latex/standalone/standalone.sty
+Package: standalone 2018/03/26 v1.3a Package to include TeX sub-files with preambles
+ (d:/Programs/texlive/2021/texmf-dist/tex/latex/tools/shellesc.sty
 Package: shellesc 2019/11/08 v1.0c unified shell escape interface for LaTeX
-Package shellesc Info: Restricted shell escape enabled on input line 77.
-)
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+Package shellesc Info: Unrestricted shell escape enabled on input line 75.
+) (d:/Programs/texlive/2021/texmf-dist/tex/latex/xkeyval/xkeyval.sty
 Package: xkeyval 2020/11/20 v2.8 package option processing (HA)
-
-(d:/Programs/texlive/2021/texmf-dist/tex/generic/xkeyval/xkeyval.tex
-(d:/Programs/texlive/2021/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+ (d:/Programs/texlive/2021/texmf-dist/tex/generic/xkeyval/xkeyval.tex (d:/Programs/texlive/2021/texmf-dist/tex/generic/xkeyval/xkvutils.tex
 \XKV@toks=\toks17
 \XKV@tempa@toks=\toks18
 )
 \XKV@depth=\count272
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
-))
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/currfile/currfile.sty
-Package: currfile 2020/09/29 v0.7d Provides the file path elements of the curre
-nt input file
-
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+)) (d:/Programs/texlive/2021/texmf-dist/tex/latex/currfile/currfile.sty
+Package: currfile 2020/09/29 v0.7d Provides the file path elements of the current input file
+ (d:/Programs/texlive/2021/texmf-dist/tex/latex/kvoptions/kvoptions.sty
 Package: kvoptions 2020-10-07 v3.14 Key value format for package options (HO)
-
-(d:/Programs/texlive/2021/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+ (d:/Programs/texlive/2021/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
 Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
-)
-(d:/Programs/texlive/2021/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty
+) (d:/Programs/texlive/2021/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty
 Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
-))
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/filehook/filehook.sty
+)) (d:/Programs/texlive/2021/texmf-dist/tex/latex/filehook/filehook.sty
 Package: filehook 2020/09/29 v0.8a Hooks for input files
-
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/filehook/filehook-2020.sty
+ (d:/Programs/texlive/2021/texmf-dist/tex/latex/filehook/filehook-2020.sty
 Package: filehook-2020 2020/09/29 v0.8a Hooks for input files
 ))
 \c@currfiledepth=\count273
 )
 \sa@out=\write3
-
-(./main.sta)
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/gincltex/gincltex.sty
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/svn-prov/svn-prov.sty
+ (./main.sta) (d:/Programs/texlive/2021/texmf-dist/tex/latex/gincltex/gincltex.sty (d:/Programs/texlive/2021/texmf-dist/tex/latex/svn-prov/svn-prov.sty
 Package: svn-prov 2010/04/24 v3.1862 Package Date/Version from SVN Keywords
 )
 Package: gincltex 2011/09/04 v0.3 Include external LaTeX files like graphics
-
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/adjustbox/adjustbox.sty
+ (d:/Programs/texlive/2021/texmf-dist/tex/latex/adjustbox/adjustbox.sty
 Package: adjustbox 2020/08/19 v1.3 Adjusting TeX boxes (trim, clip, ...)
-
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/adjustbox/adjcalc.sty
-Package: adjcalc 2012/05/16 v1.1 Provides advanced setlength with multiple back
--ends (calc, etex, pgfmath)
-)
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/adjustbox/trimclip.sty
+ (d:/Programs/texlive/2021/texmf-dist/tex/latex/adjustbox/adjcalc.sty
+Package: adjcalc 2012/05/16 v1.1 Provides advanced setlength with multiple back-ends (calc, etex, pgfmath)
+) (d:/Programs/texlive/2021/texmf-dist/tex/latex/adjustbox/trimclip.sty
 Package: trimclip 2020/08/19 v1.2 Trim and clip general TeX material
-
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/collectbox/collectbox.sty
+ (d:/Programs/texlive/2021/texmf-dist/tex/latex/collectbox/collectbox.sty
 Package: collectbox 2012/05/17 v0.4b Collect macro arguments as boxes
 \collectedbox=\box48
 )
@@ -227,8 +174,7 @@ Package: collectbox 2012/05/17 v0.4b Collect macro arguments as boxes
 \tc@urx=\dimen155
 \tc@ury=\dimen156
 Package trimclip Info: Using driver 'tc-xetex.def'.
-
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/adjustbox/tc-xetex.def
+ (d:/Programs/texlive/2021/texmf-dist/tex/latex/adjustbox/tc-xetex.def
 File: tc-xetex.def 2019/01/04 v2.2 Clipping driver for xetex
 ))
 \adjbox@Width=\dimen157
@@ -239,12 +185,10 @@ File: tc-xetex.def 2019/01/04 v2.2 Clipping driver for xetex
 \adjbox@pheight=\dimen162
 \adjbox@pdepth=\dimen163
 \adjbox@ptotalheight=\dimen164
-
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty
+ (d:/Programs/texlive/2021/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty
 Package: ifoddpage 2016/04/23 v1.1 Conditionals for odd/even page detection
 \c@checkoddpage=\count274
-)
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/varwidth/varwidth.sty
+) (d:/Programs/texlive/2021/texmf-dist/tex/latex/varwidth/varwidth.sty
 Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
 \@vwid@box=\box49
 \sift@deathcycles=\count275
@@ -252,9 +196,352 @@ Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
 \@vwid@roff=\dimen166
 ))
 \gincltex@box=\box50
-)))
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/import/import.sty
+))) (d:/Programs/texlive/2021/texmf-dist/tex/latex/import/import.sty
 Package: import 2020/04/01  v 6.2
+) (d:/Programs/texlive/2021/texmf-dist/tex/latex/minted/minted.sty
+Package: minted 2017/07/19 v2.5 Yet another Pygments shim for LaTeX
+ (d:/Programs/texlive/2021/texmf-dist/tex/latex/fvextra/fvextra.sty
+Package: fvextra 2019/02/04 v1.4 fvextra - extensions and patches for fancyvrb
+ (d:/Programs/texlive/2021/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+) (d:/Programs/texlive/2021/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count276
+) (d:/Programs/texlive/2021/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
+Package: fancyvrb 2021/01/20 v3.7 verbatim text (tvz,hv)
+\FV@CodeLineNo=\count277
+\FV@InFile=\read3
+\FV@TabBox=\box51
+\c@FancyVerbLine=\count278
+\FV@StepNumber=\count279
+\FV@OutFile=\write4
+) (d:/Programs/texlive/2021/texmf-dist/tex/latex/upquote/upquote.sty
+Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verbatim
+ (d:/Programs/texlive/2021/texmf-dist/tex/latex/base/textcomp.sty
+Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
+)) (d:/Programs/texlive/2021/texmf-dist/tex/latex/lineno/lineno.sty
+Package: lineno 2005/11/02 line numbers on paragraphs v4.41
+Invalid UTF-8 byte or sequence at line 296 replaced by U+FFFD.
+\linenopenalty=\count280
+\output=\toks19
+\linenoprevgraf=\count281
+\linenumbersep=\dimen167
+\linenumberwidth=\dimen168
+\c@linenumber=\count282
+\c@pagewiselinenumber=\count283
+\c@LN@truepage=\count284
+\c@internallinenumber=\count285
+\c@internallinenumbers=\count286
+\quotelinenumbersep=\dimen169
+\bframerule=\dimen170
+\bframesep=\dimen171
+\bframebox=\box52
+LaTeX Info: Redefining \\ on input line 3056.
+)
+\c@FV@TrueTabGroupLevel=\count287
+\c@FV@TrueTabCounter=\count288
+\FV@TabBox@Group=\box53
+\FV@TmpLength=\skip58
+\c@FV@HighlightLinesStart=\count289
+\c@FV@HighlightLinesStop=\count290
+\FV@LoopCount=\count291
+\FV@NCharsBox=\box54
+\FV@BreakIndent=\dimen172
+\FV@BreakIndentNChars=\count292
+\FV@BreakSymbolSepLeft=\dimen173
+\FV@BreakSymbolSepLeftNChars=\count293
+\FV@BreakSymbolSepRight=\dimen174
+\FV@BreakSymbolSepRightNChars=\count294
+\FV@BreakSymbolIndentLeft=\dimen175
+\FV@BreakSymbolIndentLeftNChars=\count295
+\FV@BreakSymbolIndentRight=\dimen176
+\FV@BreakSymbolIndentRightNChars=\count296
+\c@FancyVerbLineBreakLast=\count297
+\FV@LineBox=\box55
+\FV@LineIndentBox=\box56
+\FV@LineWidth=\dimen177
+) (d:/Programs/texlive/2021/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count298
+\calc@Bcount=\count299
+\calc@Adimen=\dimen178
+\calc@Bdimen=\dimen179
+\calc@Askip=\skip59
+\calc@Bskip=\skip60
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count300
+\calc@Cskip=\skip61
+) (d:/Programs/texlive/2021/texmf-dist/tex/latex/ifplatform/ifplatform.sty
+Package: ifplatform 2017/10/13 v0.4a Testing for the operating system
+ (d:/Programs/texlive/2021/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO)
+ (d:/Programs/texlive/2021/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode not found.
+) (d:/Programs/texlive/2021/texmf-dist/tex/generic/catchfile/catchfile.sty
+Package: catchfile 2019/12/09 v1.8 Catch the contents of a file (HO)
+ (d:/Programs/texlive/2021/texmf-dist/tex/generic/etexcmds/etexcmds.sty
+Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
+)) (d:/Programs/texlive/2021/texmf-dist/tex/generic/iftex/ifluatex.sty
+Package: ifluatex 2019/10/25 v1.5 ifluatex legacy package. Use iftex instead.
+)) (d:/Programs/texlive/2021/texmf-dist/tex/generic/xstring/xstring.sty (d:/Programs/texlive/2021/texmf-dist/tex/generic/xstring/xstring.tex
+\integerpart=\count301
+Invalid UTF-8 byte or sequence at line 35 replaced by U+FFFD.
+\decimalpart=\count302
+Invalid UTF-8 byte or sequence at line 79 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 79 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 83 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 86 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 102 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 114 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 120 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 125 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 147 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 147 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 147 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 182 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 182 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 182 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 183 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 184 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 185 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 185 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 185 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 189 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 189 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 190 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 190 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 193 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 208 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 208 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 208 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 208 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 208 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 208 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 221 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 221 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 241 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 241 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 241 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 241 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 266 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 284 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 295 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 300 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 300 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 301 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 301 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 301 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 302 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 303 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 332 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 332 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 332 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 332 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 333 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 334 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 334 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 334 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 406 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 406 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 409 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 410 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 428 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 434 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 457 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 457 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 464 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 464 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 466 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 466 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 541 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 541 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 541 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 586 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 586 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 588 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 588 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 595 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 597 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 599 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 602 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 605 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 605 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 610 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 615 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 632 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 632 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 633 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 635 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 637 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 647 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 653 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 678 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 700 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 705 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 715 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 715 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 715 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 719 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 732 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 732 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 741 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 741 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 742 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 742 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 762 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 773 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 773 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 774 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 774 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 774 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 797 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 797 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 810 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 824 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 824 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 831 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 838 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 838 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 846 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 846 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 861 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 862 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 864 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 864 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 908 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 909 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 909 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 934 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 934 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 936 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 936 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 940 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 940 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 962 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 962 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 964 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 965 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 1006 replaced by U+FFFD.
+)
+Package: xstring 2019/02/06 v1.83 String manipulations (CT)
+) (d:/Programs/texlive/2021/texmf-dist/tex/latex/framed/framed.sty
+Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
+\OuterFrameSep=\skip62
+\fb@frw=\dimen180
+\fb@frh=\dimen181
+\FrameRule=\dimen182
+\FrameSep=\dimen183
+) (d:/Programs/texlive/2021/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count303
+\float@exts=\toks20
+\float@box=\box57
+\@float@everytoks=\toks21
+\@floatcapt=\box58
+)
+\minted@appexistsfile=\read4
+\minted@bgbox=\box59
+\minted@code=\write5
+\c@minted@FancyVerbLineTemp=\count304
+\c@minted@pygmentizecounter=\count305
+\@float@every@listing=\toks22
+\c@listing=\count306
+)
+runsystem(if not exist _minted-main mkdir _minted-main)...executed.
+
+ (d:/Programs/texlive/2021/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2016/05/11 v2.12 LaTeX color extensions (UK)
+ (d:/Programs/texlive/2021/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: xetex.def on input line 225.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1348.
+Package xcolor Info: Model `RGB' extended on input line 1364.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1366.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1367.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1368.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1370.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1371.
+) (d:/Programs/texlive/2021/texmf-dist/tex/latex/mathtools/mathtools.sty
+Package: mathtools 2021/03/18 v1.25 mathematical typesetting tools
+ (d:/Programs/texlive/2021/texmf-dist/tex/latex/mathtools/mhsetup.sty
+Package: mhsetup 2021/03/18 v1.4 programming setup (MH)
+) (d:/Programs/texlive/2021/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2020/09/23 v2.17i AMS math features
+\@mathmargin=\skip63
+
+For additional information on amsmath, use the `?' option.
+(d:/Programs/texlive/2021/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01 AMS text
+ (d:/Programs/texlive/2021/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks23
+\ex@=\dimen184
+)) (d:/Programs/texlive/2021/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen185
+) (d:/Programs/texlive/2021/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2016/03/08 v2.02 operator names
+)
+\inf@bad=\count307
+LaTeX Info: Redefining \frac on input line 234.
+\uproot@=\count308
+\leftroot@=\count309
+LaTeX Info: Redefining \overline on input line 399.
+\classnum@=\count310
+\DOTSCASE@=\count311
+LaTeX Info: Redefining \ldots on input line 496.
+LaTeX Info: Redefining \dots on input line 499.
+LaTeX Info: Redefining \cdots on input line 620.
+\Mathstrutbox@=\box60
+\strutbox@=\box61
+\big@size=\dimen186
+LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
+\macc@depth=\count312
+\c@MaxMatrixCols=\count313
+\dotsspace@=\muskip16
+\c@parentequation=\count314
+\dspbrk@lvl=\count315
+\tag@help=\toks24
+\row@=\count316
+\column@=\count317
+\maxfields@=\count318
+\andhelp@=\toks25
+\eqnshift@=\dimen187
+\alignsep@=\dimen188
+\tagshift@=\dimen189
+\tagwidth@=\dimen190
+\totwidth@=\dimen191
+\lineht@=\dimen192
+\@envbody=\toks26
+\multlinegap=\skip64
+\multlinetaggap=\skip65
+\mathdisplay@stack=\toks27
+LaTeX Info: Redefining \[ on input line 2923.
+LaTeX Info: Redefining \] on input line 2924.
+)
+LaTeX Info: Thecontrolsequence`\('isalreadyrobust on input line 130.
+LaTeX Info: Thecontrolsequence`\)'isalreadyrobust on input line 130.
+LaTeX Info: Thecontrolsequence`\['isalreadyrobust on input line 130.
+LaTeX Info: Thecontrolsequence`\]'isalreadyrobust on input line 130.
+\g_MT_multlinerow_int=\count319
+\l_MT_multwidth_dim=\dimen193
+\origjot=\skip66
+\l_MT_shortvdotswithinadjustabove_dim=\dimen194
+\l_MT_shortvdotswithinadjustbelow_dim=\dimen195
+\l_MT_above_intertext_sep=\dimen196
+\l_MT_below_intertext_sep=\dimen197
+\l_MT_above_shortintertext_sep=\dimen198
+\l_MT_below_shortintertext_sep=\dimen199
+\xmathstrut@box=\box62
+\xmathstrut@dim=\dimen256
 )
 
 Package fontspec Info: Font family 'NotoSans(0)' created for font 'Noto Sans'
@@ -266,54 +553,52 @@ Package fontspec Info: Font family 'NotoSans(0)' created for font 'Noto Sans'
 (fontspec)             - 'normal' (m/n) with NFSS spec.: <->s*[1.0]"Noto
 (fontspec)             Sans/OT:script=latn;language=dflt;mapping=tex-text;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: <->s*[1.0]"Noto
-(fontspec)             Sans/OT:script=latn;language=dflt;+smcp;mapping=tex-text
-;"
+(fontspec)             Sans/OT:script=latn;language=dflt;+smcp;mapping=tex-text;"
 (fontspec)             - 'bold' (b/n) with NFSS spec.: <->s*[1.0]"Noto
 (fontspec)             Sans/B/OT:script=latn;language=dflt;mapping=tex-text;"
 (fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.:
 (fontspec)             <->s*[1.0]"Noto
-(fontspec)             Sans/B/OT:script=latn;language=dflt;+smcp;mapping=tex-te
-xt;"
+(fontspec)             Sans/B/OT:script=latn;language=dflt;+smcp;mapping=tex-text;"
 (fontspec)             - 'italic' (m/it) with NFSS spec.: <->s*[1.0]"Noto
 (fontspec)             Sans/I/OT:script=latn;language=dflt;mapping=tex-text;"
 (fontspec)             - 'italic small caps'  (m/scit) with NFSS spec.:
 (fontspec)             <->s*[1.0]"Noto
-(fontspec)             Sans/I/OT:script=latn;language=dflt;+smcp;mapping=tex-te
-xt;"
+(fontspec)             Sans/I/OT:script=latn;language=dflt;+smcp;mapping=tex-text;"
 (fontspec)             - 'bold italic' (b/it) with NFSS spec.: <->s*[1.0]"Noto
 (fontspec)             Sans/BI/OT:script=latn;language=dflt;mapping=tex-text;"
 (fontspec)             - 'bold italic small caps'  (b/scit) with NFSS spec.:
 (fontspec)             <->s*[1.0]"Noto
-(fontspec)             Sans/BI/OT:script=latn;language=dflt;+smcp;mapping=tex-t
-ext;"
+(fontspec)             Sans/BI/OT:script=latn;language=dflt;+smcp;mapping=tex-text;"
 
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/n' will be
 (Font)              scaled to size 12.0pt on input line 10.
+runsystem(for ^%i in (pygmentize.exe pygmentize.bat pygmentize.cmd) do set > main.aex <nul: /p x=^%~$PATH:i>> main.aex)...executed.
+
+runsystem(del main.aex)...executed.
+
  (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 15.
-LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 1
-5.
-
-(d:/Programs/texlive/2021/texmf-dist/tex/latex/base/ts1cmr.fd
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 17.
+LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 17.
+ (d:/Programs/texlive/2021/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -349,15 +634,14 @@ LaTeX Font Info:    ... okay on input line 15.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Info: Redefining \th on input line 15.
+LaTeX Info: Redefining \th on input line 17.
 (./main.sta)
 \openout3 = `main.sta'.
 
  (./titlepage/title.tex
 File: titlepage//images/coat_of_arms_Novosibirsk.png Graphic file (type bmp)
 <titlepage//images/coat_of_arms_Novosibirsk.png>
-File: titlepage//images/minestry_of_science_with_title.jpg Graphic file (type b
-mp)
+File: titlepage//images/minestry_of_science_with_title.jpg Graphic file (type bmp)
 <titlepage//images/minestry_of_science_with_title.jpg>
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/n' will be
 (Font)              scaled to size 14.4pt on input line 22.
@@ -365,29 +649,33 @@ File: titlepage//images/nstu_emblem_with_title.png Graphic file (type bmp)
 <titlepage//images/nstu_emblem_with_title.png>
 File: titlepage//images/fami_emblem.png Graphic file (type bmp)
 <titlepage//images/fami_emblem.png>
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 63.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 63.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 63.
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/n' will be
 (Font)              scaled to size 17.28pt on input line 80.
  [1
 
 ])
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/b/n' will be
-(Font)              scaled to size 17.28pt on input line 19.
+(Font)              scaled to size 17.28pt on input line 20.
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/b/n' will be
-(Font)              scaled to size 14.4pt on input line 22.
- [2] (./main.aux) ) 
-Here is how much of TeX's memory you used:
- 6774 strings out of 476919
- 157499 string characters out of 5821391
- 520914 words of memory out of 5000000
- 26634 multiletter control sequences out of 15000+600000
- 406302 words of font info for 53 fonts, out of 8000000 for 9000
- 1348 hyphenation exceptions out of 8191
- 113i,8n,116p,286b,310s stack positions out of 5000i,500n,10000p,200000b,80000s
+(Font)              scaled to size 14.4pt on input line 21.
+LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/it' will be
+(Font)              scaled to size 12.0pt on input line 31.
+\openout4 = `main.pyg'.
 
-Output written on main.pdf (2 pages).
+ (./_minted-main/default-pyg-prefix.pygstyle) (./_minted-main/vs.pygstyle) (./_minted-main/C12535427651A35307C0DAFA24617EE702018AB381AD265562A95348870C690B.pygtex
+LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/n' will be
+(Font)              scaled to size 6.0pt on input line 2.
+ [2]) [3] (./main.aux)
+runsystem(del main.pyg)...executed.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 11632 strings out of 476919
+ 245292 string characters out of 5821391
+ 671504 words of memory out of 5000000
+ 31369 multiletter control sequences out of 15000+600000
+ 407000 words of font info for 59 fonts, out of 8000000 for 9000
+ 1348 hyphenation exceptions out of 8191
+ 113i,8n,116p,387b,438s stack positions out of 5000i,500n,10000p,200000b,80000s
+
+Output written on main.pdf (3 pages).

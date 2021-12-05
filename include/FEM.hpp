@@ -18,6 +18,10 @@
 #include <cmath>
 #include <set>
 
+#define FIRST_BOUNDARY_COND  1
+#define SECOND_BOUNDARY_COND 2
+#define THIRD_BOUNDARY_COND  3
+
 class FEM
 {
 private:
@@ -25,9 +29,8 @@ private:
 
     std::vector<Union::XY>       nodes;                                         /// Вектор узлов
     std::vector<Union::Element>  elems;                                         /// Вектор конечных элементов
-    std::vector<Union::Border>   borders;                                       /// Вектор краевых условий
+    std::vector<Union::Boundary> boundarys;                                       /// Вектор краевых условий
     std::vector<Union::Material> materials;                                     /// Вектор материалов
-
 
     std::vector<double> gb;                                                     /// Глобальная матрица b
     std::vector<double> gg;
@@ -35,20 +38,25 @@ private:
     std::vector<size_t> ig;
     std::vector<size_t> jg;
 
-
 public:
     FEM(std::filesystem::path _path) {
 
         assert(readFile(_path));                                                /// Читаем входные данные
         portrait(true);                                                         /// Создаём портрет
-        global_Matrix();
+        global_Matrix();                                                        /// Создание глобальной матрицы
+        boundaryСondition();                                                    /// Учёт краевых условий
+
     }
     ~FEM() { }
 
     void printAll()    const;
     void printSparse() const;
 
-    void writeFile(const std::filesystem::path&, const double, const size_t) const;
+    void writeFile(
+        const std::filesystem::path&,
+        const double,
+        const size_t
+    ) const;
 
 private:
     void global_Matrix();
@@ -62,6 +70,11 @@ private:
 
     bool readFile(const std::filesystem::path&  );
     void portrait(const bool isWriteList = false);
+
+    void boundaryСondition();
+    void first (const Union::Boundary& bound);                                  /// Первое краевое условие
+    void second(const Union::Boundary& bound);                                  /// Второе краевое условие
+    void third (const Union::Boundary& bound);                                  /// Третье краевое условие
 
     void resize();
 };
@@ -78,10 +91,66 @@ void FEM::global_Matrix() {
         }
         array::x   local_b = buildF(coords, elems[i].area);
         array::xxx local_A = localA(coords, elems[i].area);
-        // pretty(local_A);
+        pretty(local_A);
+        std::cout << '\n';
+        for(size_t i = 0; i < 3; i++)
+            std::cout << local_b[i] << ' ';
+        std::cout << '\n';
+
+
         toGlobal(local_b, local_A, elems[i]);
     }
+}
 
+void FEM::boundaryСondition() {
+    using namespace ::Log;
+
+    for (size_t _count = 0; _count < _size.conds; _count++) {
+
+        switch (boundarys[_count].cond)
+        {
+            case FIRST_BOUNDARY_COND:
+                first(boundarys[_count]);
+                break;
+            case SECOND_BOUNDARY_COND:
+                second(boundarys[_count]);
+                break;
+            case THIRD_BOUNDARY_COND:
+                third(boundarys[_count]);
+                break;
+            default:
+                Logger::append(getLog("There is no such condition"));
+        }
+    }
+}
+
+void FEM::first(const Union::Boundary& bound) {
+    di[bound.bordIdx[0]] = { 1 };                                               /// Ставим всесто диагональных
+    di[bound.bordIdx[1]] = { 1 };                                               /// элементов единицу
+
+    gb[bound.bordIdx[0]] =                                                      /// В вектор правой части
+        Function::firstBound(                                                   /// записываем значение
+            {                                                                   /// краевого условия
+                nodes[bound.bordIdx[0]].x,
+                nodes[bound.bordIdx[0]].y
+            },
+            bound.type
+    );
+
+    gb[bound.bordIdx[0]] =
+        Function::firstBound(
+            {
+                nodes[bound.bordIdx[1]].x,
+                nodes[bound.bordIdx[1]].y
+            },
+            bound.type
+    );
+}
+
+void FEM::second(const Union::Boundary& bound) {
+}
+
+void FEM::third(const Union::Boundary& bound) {
 }
 
 void FEM::toGlobal(
@@ -131,7 +200,9 @@ array::x FEM::buildF(const std::array<Union::XY, 3>& elem, size_t area) const {
 array::xxx FEM::localA(const std::array<Union::XY, 3>& elem, size_t area) const {
     std::array<std::array<double, 3>, 3> G = FEM::G(elem, area);
     std::array<std::array<double, 3>, 3> M = FEM::M(elem, area);
-    std::array<std::array<double, 3>, 3> A = G + M;    return A;                /// Локальная матрица A
+    std::array<std::array<double, 3>, 3> A = G + M;                             /// Локальная матрица A
+    return A;
+
 }
 
 array::xxx FEM::G(const std::array<Union::XY, 3>& elem, size_t area) const {
@@ -172,6 +243,7 @@ array::xxx FEM::M(const std::array<Union::XY, 3>& elem, size_t area) const {
 }
 
 void FEM::portrait(const bool isWriteList) {
+    
     const size_t N {    _size.nodes     };
     std::vector<std::set<size_t>> list(N);
 
@@ -196,8 +268,7 @@ void FEM::portrait(const bool isWriteList) {
     for (size_t value : list[i])
         jg[index++] = value;
 
-/// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ///
-    if (isWriteList) {
+    if (isWriteList) {                                                          /// Вывод списка связности если isWriteList = true
         std::cout << "list: " << '\n';
         for (size_t i = 0; i < list.size(); i++) {
             std::cout << i << ':' << ' ';
@@ -206,19 +277,6 @@ void FEM::portrait(const bool isWriteList) {
             std::cout << std::endl;
         }
     }
-/// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ///
-    // std::cout << std::endl;
-    // std::cout << "ig: " << '\n';
-    // for (size_t i = 0; i < ig.size(); i++)
-    //     std::cout << ig[i] << ' ';
-    // std::cout << std::endl;
-/// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ///
-    // std::cout << std::endl;
-    // std::cout << "jg: " << '\n';
-    // for (size_t i = 0; i < jg.size(); i++)
-    //     std::cout << jg[i] << ' ';
-    // std::cout << std::endl;
-/// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ///
 }
 
 void FEM::printAll() const {
@@ -254,11 +312,11 @@ void FEM::printAll() const {
     PRINTLINE ENDLINE
     std::cout << "Borders: " << '\n';
     for (size_t i = 0; i < _size.conds; i++)
-        std::cout << borders[i].area       << ' '
-                  << borders[i].bordIdx[0] << ' '
-                  << borders[i].bordIdx[1] << ' '
-                  << borders[i].cond       << ' '
-                  << borders[i].type       << ' ' << '\n';
+        std::cout << boundarys[i].area       << ' '
+                  << boundarys[i].bordIdx[0] << ' '
+                  << boundarys[i].bordIdx[1] << ' '
+                  << boundarys[i].cond       << ' '
+                  << boundarys[i].type       << ' ' << '\n';
     PRINTLINE ENDLINE
     #undef PRINTLINE
     #undef ENDLINE
@@ -322,11 +380,11 @@ bool FEM::readFile(const std::filesystem::path& path) {
     fin.open(path / "bords.txt");
     isError &= is_open(fin, getLog("Error - bords.txt"));
     for (size_t i = 0; i < _size.conds; i++)
-        fin >> borders[i].area
-            >> borders[i].bordIdx[0]
-            >> borders[i].bordIdx[1]
-            >> borders[i].cond
-            >> borders[i].type;
+        fin >> boundarys[i].area
+            >> boundarys[i].bordIdx[0]
+            >> boundarys[i].bordIdx[1]
+            >> boundarys[i].cond
+            >> boundarys[i].type;
     fin.close();
     return isError;
 }
@@ -360,11 +418,15 @@ void FEM::writeFile(
 void FEM::resize() {
     nodes.    resize(  _size.nodes  );                                          /// Выделение памяти для координат узлов
     elems.    resize(  _size.elems  );                                          /// Выделение памяти для хранение количества елементов
-    borders.  resize(  _size.conds  );                                          /// Выделение памяти для хранения краевых условий
+    boundarys.resize(  _size.conds  );                                          /// Выделение памяти для хранения краевых условий
     materials.resize(  _size.areas  );                                          /// Выделение памяти для хранения материалов
 
     gb.resize(  _size.nodes  );                                                 /// Выделение памяти для глобального вектора
     di.resize(  _size.nodes  );
     ig.resize(_size.nodes + 1);
 }
+
+#undef FIRST_BOUNDARY_COND
+#undef SECOND_BOUNDARY_COND
+#undef THIRD_BOUNDARY_COND
 #endif /// _FEM_HPP_

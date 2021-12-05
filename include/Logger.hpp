@@ -24,11 +24,11 @@ public:
     static bool append (const std::string &line);
 };
 
-std::string Logger::fileName = Logger::getNameLog();
+std::string Logger::fileName = Logger::getNameLog();                            /// Название файла для записи конфликтов и ошибок
 
-bool is_open(const std::ifstream &fin, const std::string &error) {
-    if (fin.is_open()) return true;
-    else {
+bool is_open(const std::ifstream &fin, const std::string &error) {              /// Проверка на открытие файла
+    if (fin.is_open()) return true;                                             /// Если файл не был открыт, то
+    else {                                                                      /// происходит запись ошибки
         Logger::append(error);
         return false;
     }
@@ -57,7 +57,7 @@ std::string Logger::getNameLog() {
     std::time_t t = std::time(0);
     auto time     = std::make_unique<std::tm*>(std::localtime(&t));
 
-    std::string nameLog = "time-"                    +
+    std::string nameLog = "time-" +
                     std::to_string((*time)->tm_hour) + '`' +
                     std::to_string((*time)->tm_min)  + '`' +
                     std::to_string((*time)->tm_sec)  + ".log";

@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
         fem.printSparse();
     }
     catch(const std::runtime_error& err) {
-        Logger::append(getLog("argc != 3"));
+        Logger::append(getLog("argc != 3 (FEM -i input -o output)"));
         std::cerr << err.what();
         std::cerr << program;
         std::exit(1);

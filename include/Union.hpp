@@ -21,7 +21,7 @@ struct Element {
     std::array<size_t, 3> nodeIdx;
 };
 
-struct Border {
+struct Boundary {
 
     enum class Type {
         UX  = 1 << 0,

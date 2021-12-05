@@ -9,9 +9,9 @@
 _FUNCTION_BEGIN
 using namespace ::Log;
 
-#define TEST1
-///--------------------------------------------------------------------------///
+#define STUDY_TEST1                                                                   /// Выбор теста
 
+/// ~~~~~~~~~~~~~ Тест №1 ~~~~~~~~~~~~~ ///
 #ifdef TEST1
 double f(const Union::XY coord, const size_t area) {
 
@@ -36,22 +36,68 @@ double lambda(size_t area) {
             return 0;
     }
 }
+
+double firstBound(const Union::XY coord, const size_t type) {
+
+    switch (type)
+    {
+        case 0: return coord.x; break;
+        default:
+            Logger::append(getLog("The first boundary do not exist"));
+            return 0;
+    }
+}
+
 #endif
 
-///--------------------------------------------------------------------------///
-
+/// ~~~~~~~~~~~~~ Тест №2 ~~~~~~~~~~~~~ ///
 #ifdef TEST2
-
-
 #endif
 
-///--------------------------------------------------------------------------///
 
+/// ~~~~~~~~~~~~~ Тест №2 ~~~~~~~~~~~~~ ///
 #ifdef TEST3
-
-
 #endif
-///--------------------------------------------------------------------------///
+
+
+#ifdef STUDY_TEST1
+
+double f(const Union::XY coord, const size_t area) {
+
+    switch (area)
+    {
+        case 0: return -20; break;
+        case 1: return  0;  break;
+        default:
+            Logger::append(getLog("The function do not exist"));
+            return 0;
+    }
+}
+
+double lambda(size_t area) {
+
+    switch (area)
+    {
+        case 0: return 10; break;
+        case 1: return 1;  break;
+        default:
+            Logger::append(getLog("Lambda this area do not exist"));
+            return 0;
+    }
+}
+
+double firstBound(const Union::XY coord, const size_t type) {
+
+    switch (type)
+    {
+        case 0: return coord.y * coord.y; break;
+        default:
+            Logger::append(getLog("The first boundary do not exist"));
+            return 0;
+    }
+}
+#endif
+
 
 _FUNCTION_END
 
