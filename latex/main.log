@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  6 DEC 2021 21:49
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  7 DEC 2021 03:05
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -660,23 +660,23 @@ LaTeX Font Info:    Font shape `TU/NotoSans(0)/b/n' will be
 (Font)              scaled to size 14.4pt on input line 23.
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/it' will be
 (Font)              scaled to size 12.0pt on input line 33.
- [2]
+ [2] [3]
 \openout4 = `main.pyg'.
 
  (./_minted-main/default-pyg-prefix.pygstyle) (./_minted-main/vs.pygstyle) (./_minted-main/E5379F7ED4BC7F8A231898DE45D606A3F9AC196C28A9F4BB1F291626A999995B.pygtex
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/n' will be
 (Font)              scaled to size 6.0pt on input line 2.
- [3]) [4] (./main.aux)
+ [4]) [5] (./main.aux)
 runsystem(del main.pyg)...executed.
 
  ) 
 Here is how much of TeX's memory you used:
  11634 strings out of 476919
  245347 string characters out of 5821391
- 676504 words of memory out of 5000000
+ 679504 words of memory out of 5000000
  31371 multiletter control sequences out of 15000+600000
  407000 words of font info for 59 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 113i,8n,116p,387b,464s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 113i,10n,116p,387b,462s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on main.pdf (4 pages).
+Output written on main.pdf (5 pages).
