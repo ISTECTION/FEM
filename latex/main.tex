@@ -5,52 +5,170 @@
 \usepackage{minted}                 % Для вставок с кодом
 \usepackage{xcolor}
 \usepackage{mathtools}              % Для математических формул
+\usepackage{amsmath}
 
 \setmainfont[Scale=1.0]{Noto Sans}
-\definecolor{LightGray}{gray}{0.9}
-\usemintedstyle{vs}
+\definecolor{LightGray}{gray}{0.9}  % Не используется
+\usemintedstyle{vs}                 % Стиль кода пакета minted
+
 
 % =================================================
 % НАЧАЛО ДОКУМЕНТА
 % =================================================
 
 \begin{document}
-    \import{titlepage/}{title}
+\import{titlepage/}{title}
 
-    \section{Условие задачи}                % Условие задачи
-    \subsection*{Формулировка задачи}       % Формулировка задачи
+\section{Условие задачи}                % Условие задачи
+\subsection*{Формулировка задачи}       % Формулировка задачи
 
-    МКЭ для двумерной краевой задачи для эллиптического уравнения в декартовой
-    системе координат. Базисные функции линейные на треугольниках. Краевые условия
-    всех ти-пов. Коэффициент   разложить по линейным базисным функциям.
-    Матрицу СЛАУ генери-ровать в разреженном строчном формате. Для решения
-    СЛАУ использовать МСГ или ЛОС с неполной факторизацией.
+МКЭ для двумерной краевой задачи для эллиптического уравнения в декартовой
+системе координат. Базисные функции линейные на треугольниках. Краевые условия
+всех ти-пов. Коэффициент   разложить по линейным базисным функциям.
+Матрицу СЛАУ генери-ровать в разреженном строчном формате. Для решения
+СЛАУ использовать МСГ или ЛОС с неполной факторизацией.
 
-    \subsection*{Постановка задачи}
+\subsection*{Постановка задачи}
 
-    Эллиптическая краевая задача для функции \textit{u} определяется дифференциальным
-    уравнением
+Эллиптическая краевая задача для функции \textit{u} определяется дифференциальным
+уравнением
 
-    \[ -div( \lambda grad u) + \gamma u = f \]
+\[ -div( \lambda grad u) + \gamma u = f \]
 
-    \noindent заданным в некоторой области $\Omega$ с границей
-    $S=S_1 \cup S_2 \cup S_3$ и краевыми условиями
+\noindent заданным в некоторой области $\Omega$ с границей
+$S=S_1 \cup S_2 \cup S_3$ и краевыми условиями:
 
-    \section{Текст программы}
+\[ u \vert_{S_1} = u_g \]
+\[ \lambda \frac{\partial u}{\partial n} \bigg\vert_{S_2} = \theta \]
+\[ \lambda \frac{\partial u}{\partial n} \bigg\vert_{S_3}
+    + \beta(u \vert_{S_3} - u_{\beta}) = 0 \]
 
-    \section{Тестирование}
+\noindent В декартовой системе координат {x,y} это уравнение может быть записано
+в виде
 
-    \section{Выводы}
+\[ -\frac{\partial}{\partial x}
+    \left( \lambda \frac{\partial u}{\partial x} \right)
+    -\frac{\partial}{\partial y}
+    \left( \lambda \frac{\partial u}{\partial y} \right)
+    + \gamma u = f \]
+
+\subsection*{Конечноэлементная дискретизация}
+
+Так как для решения задачи используются линейные базисные
+функции, то на каждом конечном элементе $\Omega_k$ -
+треугольнике эти функции будут совпадать с функциями
+$L_1(x,y), L_2(x,y), L_3(x,y)$, такими, что $L_1(x,y)$
+равна единице в вершине $(x_1,y_1)$ и нулю во всех остальных
+вершинах, $L_2(x,y)$ равна единице в вершине $(x_2,y_2)$
+и нулю во всех остальных вершинах, $L_3(x,y)$ равна единице
+в вершине $(x_3,y_3)$ и нулю во всех остальных вершинах.
+Любая линейная на $\Omega_k$ функция представима в виде
+линейной комбинации этих базисных линейных функций,
+коэффициентами будут значения функции в каждой из вершин
+треугольника $\Omega_k$. Таким образом, на каждом конечном
+элементе нам понадобятся три узла – вершины треугольника.
+
+\[ \psi_1 = L_1(x,y) \]
+\[ \psi_2 = L_2(x,y) \]
+\[ \psi_3 = L_3(x,y) \]
+\newpage
+
+\noindent Учитывая построение \textit{L-функций},
+получаем следующие соотношения:
+
+\begin{equation*}
+    \begin{cases}
+        L_1 + L_2 + L_3 = 1          \\
+        L_1x_1 + L_2x_2 + L_3x_3 = x \\
+        L_1y_1 + L_2y_2 + L_3y_3 = y
+    \end{cases}
+\end{equation*}
+
+\noindent Т.e. имеем систему:
+\begin{equation*}
+    \begin{pmatrix}
+        1   & 1   & 1   \\
+        x_1 & x_2 & x_3 \\
+        y_1 & y_2 & y_3
+    \end{pmatrix}
+    \cdot
+    \begin{pmatrix}
+        L_1 \\
+        L_2 \\
+        L_3
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        1 \\
+        x \\
+        y
+    \end{pmatrix}
+\end{equation*}
+
+
+\noindent Отсюда находим коэффициенты
+линейных функций $L_1(x,y), L_2(x,y), L_3(x,y)$
+\[ L_i = a_0^i + a_1^ix + a_2^iy, i = \overline{1,3} \]
+
+\begin{equation*}
+    \begin{pmatrix}
+        \alpha_0^1 & \alpha_1^1 & \alpha_2^1 \\
+        \alpha_0^2 & \alpha_1^2 & \alpha_2^2 \\
+        \alpha_0^3 & \alpha_1^3 & \alpha_2^3
+    \end{pmatrix}
+    =
+    D^{-1}
+    =
+    {\begin{pmatrix}
+        1   & 1   & 1   \\
+        x_1 & x_2 & x_3 \\
+        y_1 & y_2 & y_3
+    \end{pmatrix}}^{-1}
+\end{equation*}
 
 
 
 
 
 
-\begin{minted}[linenos]{c++}
-#include "argparse/argparse.hpp"
-#include "timer/cxxtimer.hpp"
-#include "LOS/LOS.hpp"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Текст программы}
+
+\section{Тестирование}
+
+\section{Выводы}
+
+
+\begin{minted}[linenos,mathescape=true,baselinestretch=1.0]{c++}
+#include "argparse/argparse.hpp"        /// $\frac{a+b}{2}$
+#include "timer/cxxtimer.hpp"           /// $\frac{a+b}{2}$
+#include "LOS/LOS.hpp"                  /// $\frac{a+b}{2}$
 #include "FEM.hpp"
 
 int main(int argc, char* argv[]) {
@@ -87,5 +205,4 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 \end{minted}
-
 \end{document}
