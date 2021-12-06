@@ -91,13 +91,6 @@ void FEM::global_Matrix() {
         }
         array::x   local_b = buildF(coords, elems[i].area);
         array::xxx local_A = localA(coords, elems[i].area);
-        pretty(local_A);
-        std::cout << '\n';
-        for(size_t i = 0; i < 3; i++)
-            std::cout << local_b[i] << ' ';
-        std::cout << '\n';
-
-
         toGlobal(local_b, local_A, elems[i]);
     }
 }
@@ -128,22 +121,30 @@ void FEM::first(const Union::Boundary& bound) {
     di[bound.bordIdx[0]] = { 1 };                                               /// Ставим всесто диагональных
     di[bound.bordIdx[1]] = { 1 };                                               /// элементов единицу
 
-    gb[bound.bordIdx[0]] =                                                      /// В вектор правой части
-        Function::firstBound(                                                   /// записываем значение
-            {                                                                   /// краевого условия
-                nodes[bound.bordIdx[0]].x,
-                nodes[bound.bordIdx[0]].y
-            },
-            bound.type
+    gb[bound.bordIdx[0]] = Function::firstBound({                               /// В вектор правой части
+            nodes[bound.bordIdx[0]].x,                                          /// записываем значение
+            nodes[bound.bordIdx[0]].y                                           /// краевого условия
+        },
+        bound.type
     );
 
-    gb[bound.bordIdx[0]] =
-        Function::firstBound(
-            {
-                nodes[bound.bordIdx[1]].x,
-                nodes[bound.bordIdx[1]].y
-            },
-            bound.type
+    gb[bound.bordIdx[0]] = Function::firstBound({
+            nodes[bound.bordIdx[1]].x,
+            nodes[bound.bordIdx[1]].y
+        },
+        bound.type
+    );
+
+    std::for_each(                                                              /// Зануление в строке все стоящие
+        gg.begin() + ig[bound.bordIdx[0]],                                      /// элементы кроме диагонального
+        gg.begin() + ig[bound.bordIdx[0] + 1],
+        [](double& _el) { _el = 0; }
+    );
+
+    std::for_each(
+        gg.begin() + ig[bound.bordIdx[1]],                                      /// Зануление в строке все стоящие
+        gg.begin() + ig[bound.bordIdx[1] + 1],                                  /// элементы кроме диагонального
+        [](double& _el) { _el = 0; }
     );
 }
 
@@ -199,6 +200,7 @@ array::x FEM::buildF(const std::array<Union::XY, 3>& elem, size_t area) const {
 
 array::xxx FEM::localA(const std::array<Union::XY, 3>& elem, size_t area) const {
     std::array<std::array<double, 3>, 3> G = FEM::G(elem, area);
+    pretty(G);
     std::array<std::array<double, 3>, 3> M = FEM::M(elem, area);
     std::array<std::array<double, 3>, 3> A = G + M;                             /// Локальная матрица A
     return A;
@@ -243,7 +245,7 @@ array::xxx FEM::M(const std::array<Union::XY, 3>& elem, size_t area) const {
 }
 
 void FEM::portrait(const bool isWriteList) {
-    
+
     const size_t N {    _size.nodes     };
     std::vector<std::set<size_t>> list(N);
 

@@ -9,6 +9,7 @@
 _FUNCTION_BEGIN
 using namespace ::Log;
 
+
 #define STUDY_TEST1                                                                   /// Выбор теста
 
 /// ~~~~~~~~~~~~~ Тест №1 ~~~~~~~~~~~~~ ///
