@@ -115,15 +115,15 @@ void pretty(const std::array<std::array<T, _Size>, _Size>& _arr) {              
 
 namespace Output {
     struct Write {                                                              /// Структура параметров для записи файлов:
-        char    separator;                                                      /// Разделитель
-        uint8_t precision;                                                      /// Количество знаков после запятой
+        std::streamsize precision;                                              /// Количество знаков после запятой
+        char            separator;                                              /// Разделитель
     };
 
     template<typename T>
     void write(                                                                 /// Функция записи вектора в файл, которая получает:
             const std::filesystem::path& _path,                                 /// Путь
             const std::vector<T>& _vec,                                         /// Вектор
-            const Write _option = { ' ', 8 }) {                                 /// Структуру параметров
+            const Write _option = { 8, ' ' }) {                                 /// Структуру параметров
 
         std::ofstream fout(_path);
         fout.precision(_option.precision);

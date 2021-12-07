@@ -69,8 +69,9 @@ void LOS<T>::none(bool isLog) {
         this->iter++;
         LOGGER
 
-    } while (this->iter < this->param.max_iter
-                 && eps > this->param.epsilon );
+    } while(
+        this->iter < this->param.max_iter
+            && eps > this->param.epsilon);
 }
 
 template <class T>
@@ -94,16 +95,18 @@ void LOS<T>::diagonal(bool isLog) {
         alpha   = scalar(p, r) / betta;
         this->x = this->x + alpha * z;
         r       = r - alpha * p;
-        betta   = scalar(p, L * this->mult(L * r)) / betta;
+        Ar      = L * this->mult(L * r);
+        betta   = scalar(p, Ar) / betta;
         z       = L * r - betta * z;
-        p       = L * this->mult(L * r) - betta * p;
+        p       = Ar - betta * p;
         eps     = scalar(r, r);
 
         this->iter++;
         LOGGER
 
-    } while (this->iter < this->param.max_iter
-                 && eps > this->param.epsilon );
+    } while(
+        this->iter < this->param.max_iter
+            && eps > this->param.epsilon);
 }
 
 template <class T>
@@ -136,7 +139,7 @@ void LOS<T>::hollesky(bool isLog) {
     }
     while(
         this->iter < this->param.max_iter
-            && eps > this->param.epsilon );
+            && eps > this->param.epsilon);
 }
 #undef LOGGER
 #endif /// _LOS_HPP_

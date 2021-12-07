@@ -20,15 +20,16 @@ int main(int argc, char* argv[]) {
         program.parse_args(argc, argv);
 
         cxxtimer::Timer timer(true);
-        FEM fem      (program.get<std::string>("-i"));
-        fem.writeFile(program.get<std::string>("-o"), 1E-14, 10000);
-        LOS<double> l(program.get<std::string>("-o"));
-        l.solve(Cond::HOLLESKY, true);
+        FEM fem        (program.get<std::string>("-i"));
+        fem.writeFile  (program.get<std::string>("-o"), 1E-14, 10000);
+        LOS<double> los(program.get<std::string>("-o"));
+        los.solve(Cond::HOLLESKY, true);
         timer.stop();
-        l.printX();
 
-        std::cout << '\n' << "Milliseconds: "
-                  << timer.count<milliseconds>() << '\n';
+        std::cout << "Milliseconds: "
+                  << timer.count<milliseconds>();
+
+        los.printX();
         fem.printAll();
         fem.printSparse();
     }

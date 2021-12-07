@@ -485,8 +485,8 @@ void FEM::writeFile(
     fout << _max_iter;
     fout.close();
 
-    Output::write(_path / "gg.txt", gg, { ' ', 14 });
-    Output::write(_path / "di.txt", di, { ' ', 14 });
+    Output::write(_path / "gg.txt", gg, { 14, ' ' });
+    Output::write(_path / "di.txt", di, { 14, ' ' });
     Output::write(_path / "jg.txt", jg);
     Output::write(_path / "ig.txt", ig);
     Output::write(_path / "gb.txt", gb);

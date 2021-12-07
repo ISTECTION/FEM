@@ -7,7 +7,7 @@
 #define _FUNCTION_END                      }
 
 _FUNCTION_BEGIN
-#define STUDY_TEST1
+#define TEST1
 using namespace ::Log;
 
 
@@ -18,7 +18,6 @@ double f(const Union::XY coord, const size_t area) {
     switch (area)
     {
         case 0: return 2 * coord.x; break;
-        case 1: return 0;           break;
         default:
             Logger::append(getLog("The function do not exist"));
             return 0;
@@ -30,7 +29,6 @@ double lambda(size_t area) {
     switch (area)
     {
         case 0: return 1; break;
-        case 1: return 0; break;
         default:
             Logger::append(getLog("Lambda this area do not exist"));
             return 0;
@@ -48,6 +46,28 @@ double firstBound(const Union::XY coord, const size_t type) {
     }
 }
 
+double secondBound(const Union::XY coord, const size_t type) {
+
+    switch (type)
+    {
+        case 0: return  1; break;
+        case 1: return -1; break;
+        default:
+            Logger::append(getLog("The second boundary do not exist"));
+            return 0;
+    }
+}
+
+double thirdBound(const Union::XY coord, const size_t type) {
+
+    switch (type)
+    {
+        case 0: return coord.x; break;
+        default:
+            Logger::append(getLog("The third boundary do not exist"));
+            return 0;
+    }
+}
 #endif
 
 /// ~~~~~~~~~~~~~ Тест №2 ~~~~~~~~~~~~~ ///

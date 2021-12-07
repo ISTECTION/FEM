@@ -131,6 +131,7 @@ std::vector<T> Data<T>::mult(const std::vector<T>& _vec) {
 template <class T>
 void Data<T>::printX(std::streamsize count) const {
     std::ostringstream ostream;
+    ostream << '\n';
     if (count) {
         ostream.setf(std::ios::fixed);
         ostream.precision(count);
@@ -138,7 +139,7 @@ void Data<T>::printX(std::streamsize count) const {
     ostream << "[ ";
     for (size_t i = 0; i < x.size(); i++)
         ostream << x[i] << " ";
-    ostream << "]";
+    ostream << "]\n";
     std::cout << ostream.str();
 }
 
@@ -172,7 +173,7 @@ bool Data<T>::loadData(std::filesystem::path _path) {
 
     gg.resize(ig.back());                                                       /// Выделение памяти под вектор хранящий нижний треугольник матрицы
     jg.resize(ig.back());                                                       /// Выделение памяти под вектор хранящий индексы столбцов
-    di.resize( param.n );                                                         /// Выделение памяти под вектор хранящий диагональные элементы
+    di.resize( param.n );                                                       /// Выделение памяти под вектор хранящий диагональные элементы
 
     b.resize (param.n);                                                         /// Выделение памяти для элементов правой части
     x.resize (param.n);                                                         /// Выделение памяти для вектора решений СЛАУ
