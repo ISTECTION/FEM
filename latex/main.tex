@@ -1,17 +1,40 @@
 \documentclass[12pt,a4paper]{article}
 \usepackage[left=20mm,top=20mm,total={170mm,257mm}]{geometry}
 
+%  - documentation minted -
+% https://tools.ietf.org/doc/texlive-doc/latex/minted/minted.pdf
+
+
 \usepackage{styles/preamble}
 \usepackage{minted}                 % Для вставок с кодом
 \usepackage{mathtools}              % Для математических формул
 \usepackage{amsmath}
 
 \usepackage[dvipsnames]{xcolor}
+\setmainfont[Scale=1.0]{Noto Sans}  % Connect font
 
-\setmainfont[Scale=1.0]{Noto Sans}
-\usemintedstyle{xcode}                 % Стиль кода пакета minted
+\usemintedstyle{xcode}                                  % Стиль кода пакета minted
+\definecolor{mintedbackground}{rgb}{0.98,0.98,0.98}     % Color minted background
 
-
+% Property for C++ code
+\newmintedfile[cppcode]{cpp}{
+    bgcolor=mintedbackground,   % Background
+    fontfamily=tt,              % Font
+    linenos=true,               % Numbering
+    numberblanklines=true,      %
+    numbersep=3pt,              % Separator number
+    gobble=0,                   % Сожрать первые символы каждой строки
+    frame=leftline,             % Left line
+    framerule=0.2pt,            % Ширина линии
+    framesep=5pt,               % Отступ от разделителя
+    funcnamehighlighting=true,  %
+    tabsize=4,                  % Количество пробелов табуляции
+    mathescape=true,            % Включение математических формул
+    showspaces=false,           % Показывать пробелы
+    showtabs=false,             % Показывать табуляции
+    baselinestretch=1.2,        % Расстояние между строчками
+    breaklines                  %
+}
 
 % =================================================
 % НАЧАЛО ДОКУМЕНТА
@@ -278,22 +301,33 @@ $$
 
 
 
+% \begin{lstlisting}[label=some-code,caption=main.cpp]
+% \end{lstlisting}
+
 
 \section{Текст программы}
+\cppcode{../src/main.cpp}
+
+
 
 \section{Тестирование}
-
 \section{Выводы}
 
-\inputminted[
-    baselinestretch=1.0,
-    mathescape=true,
-    breaklines,
-    linenos
-]{cpp}{../src/main.cpp}
 
 
 
+
+
+
+% Добавления кода в одну строку
+% \inputminted[
+% baselinestretch=1.0,
+% mathescape=true,
+% breaklines,
+% linenos
+% ]{cpp}{../src/main.cpp}
+
+% Примитивное добавление кода
 % \begin{minted}[linenos,mathescape=true,baselinestretch=1.0]{c++}
 % #include "argparse/argparse.hpp"
 % #include "timer/cxxtimer.hpp"
@@ -334,7 +368,4 @@ $$
 %     return 0;
 % }
 % \end{minted}
-
-
-
 \end{document}

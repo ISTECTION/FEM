@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  7 DEC 2021 19:33
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  7 DEC 2021 21:26
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -573,7 +573,7 @@ Package fontspec Info: Font family 'NotoSans(0)' created for font 'Noto Sans'
 (fontspec)             Sans/BI/OT:script=latn;language=dflt;+smcp;mapping=tex-text;"
 
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/n' will be
-(Font)              scaled to size 12.0pt on input line 12.
+(Font)              scaled to size 12.0pt on input line 15.
 runsystem(for ^%i in (pygmentize.exe pygmentize.bat pygmentize.cmd) do set > main.aex <nul: /p x=^%~$PATH:i>> main.aex)...executed.
 
 runsystem(del main.aex)...executed.
@@ -581,26 +581,26 @@ runsystem(del main.aex)...executed.
  (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 20.
-LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 20.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 43.
+LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 43.
  (d:/Programs/texlive/2021/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -636,7 +636,7 @@ LaTeX Font Info:    ... okay on input line 20.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Info: Redefining \th on input line 20.
+LaTeX Info: Redefining \th on input line 43.
 (./main.sta)
 \openout3 = `main.sta'.
 
@@ -657,22 +657,22 @@ LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/n' will be
 
 ])
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/b/n' will be
-(Font)              scaled to size 17.28pt on input line 23.
+(Font)              scaled to size 17.28pt on input line 46.
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/b/n' will be
-(Font)              scaled to size 14.4pt on input line 24.
+(Font)              scaled to size 14.4pt on input line 47.
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/it' will be
-(Font)              scaled to size 12.0pt on input line 34.
- [2] [3] (./_minted-main/default-pyg-prefix.pygstyle) (./_minted-main/xcode.pygstyle) (./_minted-main/8C3A7B2753A3A0968FD2549C86BA376D746082791864398D3452D8B98E45976C.pygtex
+(Font)              scaled to size 12.0pt on input line 57.
+ [2] [3] (./_minted-main/default-pyg-prefix.pygstyle) (./_minted-main/xcode.pygstyle) [4] (./_minted-main/82371035E276007C88AF8EFBD18EDE6404726604FB183BEBBFBF7F90B1016412.pygtex
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/n' will be
 (Font)              scaled to size 6.0pt on input line 2.
- [4] [5]) [6] (./main.aux) ) 
+) [5] [6] (./main.aux) ) 
 Here is how much of TeX's memory you used:
- 11723 strings out of 476919
- 247045 string characters out of 5821391
- 685145 words of memory out of 5000000
- 31457 multiletter control sequences out of 15000+600000
+ 11739 strings out of 476919
+ 247395 string characters out of 5821391
+ 685755 words of memory out of 5000000
+ 31473 multiletter control sequences out of 15000+600000
  407000 words of font info for 59 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 113i,10n,116p,392b,480s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 113i,10n,116p,394b,581s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 Output written on main.pdf (6 pages).
