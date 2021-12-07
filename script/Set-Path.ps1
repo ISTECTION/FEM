@@ -1,8 +1,8 @@
 $env:path  = "C:\Windows\System32"
-$env:path += ";C:\ProgramData\chocolatey\bin"                                       # make  4.3.0
-$env:path += ";D:\Program Files\GCC\11.2.0\mingw32\bin"                             # GCC   11.2.0
-$env:path += ";D:\Program Files\Git\cmd"                                            # GIT   2.32.0.windows.2
-$env:path += ";D:\Programs\texlive\2021\bin\win32"                                  # XeTeX TeX Live 2021/W32TeX
-$env:path += ";C:\Users\Владислав\AppData\Local\Programs\Python\Python310\Scripts\"  # pip3
-$env:path += ";C:\Users\Владислав\AppData\Local\Programs\Python\Python310\"          # python 3.10
-$env:path += ";C:\Users\Владислав\AppData\Local\Programs\Python\Python310\Lib\site-packages\pygments"
+$env:path += ";C:\ProgramData\chocolatey\bin"                                                                           # make  4.3.0
+$env:path += ";D:\Program Files\GCC\11.2.0\mingw32\bin"                                                                 # GCC   11.2.0
+$env:path += ";D:\Program Files\Git\cmd"                                                                                # GIT   2.32.0.windows.2
+$env:path += ";D:\Programs\texlive\2021\bin\win32"                                                                      # XeTeX TeX Live 2021/W32TeX
+$env:path += ";C:\Users\Владислав\AppData\Local\Programs\Python\Python310\Scripts\"                                     # pip3
+$env:path += ";C:\Users\Владислав\AppData\Local\Programs\Python\Python310\"                                             # python 3.10
+$env:path += ";C:\Users\Владислав\AppData\Local\Programs\Python\Python310\Lib\site-packages\pygments"                   # pygmentize

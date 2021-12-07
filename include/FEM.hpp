@@ -29,7 +29,7 @@ private:
 
     std::vector<Union::XY>       nodes;                                         /// Вектор узлов
     std::vector<Union::Element>  elems;                                         /// Вектор конечных элементов
-    std::vector<Union::Boundary> boundarys;                                       /// Вектор краевых условий
+    std::vector<Union::Boundary> boundarys;                                     /// Вектор краевых условий
     std::vector<Union::Material> materials;                                     /// Вектор материалов
 
     std::vector<double> gb;                                                     /// Глобальная матрица b
@@ -59,14 +59,14 @@ public:
 private:
     void global();                                                              /// Функция построения глобальной матрицы и вектора
 
-    template<std::size_t N, typename _Struct>                               /// Функция занесения локальной матрицы в глобальную
-    void loc_A_to_global(
+    template<size_t N, typename _Struct>                                   /// Шаблон занесения локальной
+    void loc_A_to_global(                                                       /// матрицы в глобальную
         const std::array<std::array<double, N>, N>&,
         const _Struct&
     );
 
-    template<std::size_t N, typename _Struct>                                                 /// Функция занемения локлаьного вектора в глобыльный
-    void loc_b_to_global(const std::array<double, N>&, const _Struct& );
+    template<size_t N, typename _Struct>                                   /// Шаблон занемения локального
+    void loc_b_to_global(const std::array<double, N>&, const _Struct& );        /// вектора в глобыльный
 
     array::xxx localA(const std::array<Union::XY, 3>&, size_t) const;
     array::x   buildF(const std::array<Union::XY, 3>&, size_t) const;
@@ -97,6 +97,9 @@ void FEM::global() {
         }
         array::x   local_b = buildF(coords, elems[i].area);
         array::xxx local_A = localA(coords, elems[i].area);
+
+        pretty(local_A);
+
         loc_A_to_global<3>(local_A, elems[i]);
         loc_b_to_global<3>(local_b, elems[i]);
     }
@@ -121,12 +124,6 @@ void FEM::boundaryСondition() {
             default:
                 Logger::append(getLog("There is no such condition"));
         }
-
-
-        std::cout << boundarys[_count].cond << " ";
-        std::cout << "global b ";
-        print(gb);
-        std::cout << std::endl;
     }
 }
 
@@ -169,8 +166,7 @@ void FEM::second(const Union::Boundary& bound) {
             nodes[bound.nodeIdx[1]]
         };
 
-    double _koef = edgeLength(coord_borders) / 6;                               /// Длина границы
-
+    double _koef = edgeLength(coord_borders) / 6;                               /// Коэффициент для корректирующего вектора
 
     std::array<double, 2> corr_b;                                               /// Корректирующий вектор
     for (size_t i = 0; i < 2; i++)
@@ -225,7 +221,7 @@ void FEM::third(const Union::Boundary& bound) {
     loc_b_to_global<2>(corr_b, bound);
     loc_A_to_global<2>(corr_a, bound);
 }
-template<std::size_t N, typename _Struct>
+template<size_t N, typename _Struct>
 void FEM::loc_A_to_global(
         const std::array<std::array<double, N>, N>& locA,
         const _Struct& elem) {
@@ -253,7 +249,7 @@ void FEM::loc_A_to_global(
     }
 }
 
-template<std::size_t N, typename _Struct>
+template<size_t N, typename _Struct>
 void FEM::loc_b_to_global(
         const std::array<double, N>& loc_b,
         const _Struct& elem) {
@@ -280,7 +276,6 @@ array::x FEM::buildF(const std::array<Union::XY, 3>& elem, size_t area) const {
 
 array::xxx FEM::localA(const std::array<Union::XY, 3>& elem, size_t area) const {
     std::array<std::array<double, 3>, 3> G = FEM::G(elem, area);
-    pretty(G);
     std::array<std::array<double, 3>, 3> M = FEM::M(elem, area);
     std::array<std::array<double, 3>, 3> A = G + M;                             /// Локальная матрица A
     return A;

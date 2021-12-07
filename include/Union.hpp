@@ -1,4 +1,3 @@
-/// 𝗨𝗡𝗜𝗢𝗡
 #ifndef _UNION_HPP_
 #define _UNION_HPP_
 #include <vector>
@@ -9,31 +8,26 @@
 
 _UNION_BEGIN
 
-struct XY { double x, y; };
+struct XY {
+    double x;                                                                   /// Координаты узла по X
+    double y;                                                                   /// Координаты узла по Y
+};
 
 struct Material {
-    double betta;
-    double gamma;
+    double betta;                                                               /// Коэффициент betta
+    double gamma;                                                               /// Коэффициент gamma
 };
 
 struct Element {
-    size_t area;
-    std::array<size_t, 3> nodeIdx;
+    size_t area;                                                                /// Область конечного элемента
+    std::array<size_t, 3> nodeIdx;                                              /// Узлы конечного элемента
 };
 
 struct Boundary {
-
-    enum class Type {
-        UX  = 1 << 0,
-        UY  = 1 << 1,
-        UXY = UX | UY
-    };
-
-    size_t cond;
-    size_t type;
-
-    size_t area;
-    std::array<size_t, 2> nodeIdx;
+    size_t cond;                                                                /// Краевое условие
+    size_t type;                                                                /// Тип краевого условия
+    size_t area;                                                                /// Область границы
+    std::array<size_t, 2> nodeIdx;                                              /// Узлы границы
 };
 
 struct Param {
@@ -46,4 +40,4 @@ struct Param {
 _UNION_END
 #undef _UNION_BEGIN
 #undef _UNION_END
-#endif /// NOINՈ
+#endif /// _UNION_HPP_

@@ -22,8 +22,8 @@ determinant(const std::array<Union::XY, 3>& elem) {
     );
 }
 
-double                                                                          /// Функция вычисляющая детерминант
-edgeLength(const std::array<Union::XY, 2>& elem) {
+double                                                                          /// Функция вычисляет расстояние
+edgeLength(const std::array<Union::XY, 2>& elem) {                              /// между 2-я координатами
     return (
         sqrt(
             pow(elem[1].x - elem[0].x ,2) +
@@ -33,12 +33,12 @@ edgeLength(const std::array<Union::XY, 2>& elem) {
 }
 /// ~~~~~~~~~~~~~~~~~~ Linear algebra ~~~~~~~~~~~~~~~~~~ ///
 
-template<typename T>                                                            /// Вывод array<3, 3> для матриц M, G
-void printXXX(const std::array<std::array<T, 3>, 3>& A) {                       /// и локальной матрицы A
+template<size_t _Size, typename T>                                              /// Вывод array<_Size, _Size> для матриц M, G
+void printXXX(const std::array<std::array<T, _Size>, _Size>& A) {               /// и локальной матрицы A
     #define ENDLINE std::cout << '\n'
     std::cout << std::endl;
-    for (size_t row = 0; row < 3; row++, ENDLINE)
-    for (size_t column = 0; column < 3; column++)
+    for (size_t row = 0; row < _Size; row++, ENDLINE)
+    for (size_t column = 0; column < _Size; column++)
         std::cout << A[row][column] << ' ';
     std::cout << std::endl;
     #undef ENDLINE
@@ -108,14 +108,13 @@ void pretty(const std::vector<std::vector<T>>& _vec) {                          
         pretty(_vec.begin(), _vec.end(), _vec.size());                          /// двумерного вектора методу написаному выше
 }
 
-template <typename T>                                                           /// Шаблон функции для вывода красивой матрицы
-void pretty(const std::array<std::array<T, 3>, 3>& _arr) {                      /// которая автоматически передаёт параметры
-        pretty(_arr.begin(), _arr.end());                                       /// двумерного массива методу написаному выше
+template <size_t _Size, typename T>                                             /// Шаблон функции для вывода красивой матрицы
+void pretty(const std::array<std::array<T, _Size>, _Size>& _arr) {              /// которая автоматически передаёт параметры
+        pretty(_arr.begin(), _arr.end(), _Size);                                /// двумерного массива методу написаному выше
 }
 
 namespace Output {
-
-    struct Write {                                                              /// Структура параметров для записи в файл
+    struct Write {                                                              /// Структура параметров для записи файлов:
         char    separator;                                                      /// Разделитель
         uint8_t precision;                                                      /// Количество знаков после запятой
     };
@@ -124,7 +123,7 @@ namespace Output {
     void write(                                                                 /// Функция записи вектора в файл, которая получает:
             const std::filesystem::path& _path,                                 /// Путь
             const std::vector<T>& _vec,                                         /// Вектор
-            const Write _option = { ' ', 8 }) {                                 /// Стуркутру параметров
+            const Write _option = { ' ', 8 }) {                                 /// Структуру параметров
 
         std::ofstream fout(_path);
         fout.precision(_option.precision);
