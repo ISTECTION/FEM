@@ -7,7 +7,7 @@ int main(int argc, char* argv[]) {
     using namespace ::Log;
     using ::std::chrono::milliseconds;
 
-    argparse::ArgumentParser program("FEM", "1.0.0");       /// $\frac{a+b}{2}$
+    argparse::ArgumentParser program("FEM", "1.0.0");
     program.add_argument("-i", "--input")
         .help("path to input files" )
         .required();
@@ -23,9 +23,9 @@ int main(int argc, char* argv[]) {
         FEM fem      (program.get<std::string>("-i"));
         fem.writeFile(program.get<std::string>("-o"), 1E-14, 10000);
         LOS<double> l(program.get<std::string>("-o"));
-        // l.solve(Cond::HOLLESKY, true);
+        l.solve(Cond::HOLLESKY, true);
         timer.stop();
-        // l.printX();
+        l.printX();
 
         std::cout << '\n' << "Milliseconds: "
                   << timer.count<milliseconds>() << '\n';

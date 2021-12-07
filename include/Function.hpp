@@ -7,10 +7,9 @@
 #define _FUNCTION_END                      }
 
 _FUNCTION_BEGIN
+#define STUDY_TEST1
 using namespace ::Log;
 
-
-#define STUDY_TEST1                                                                   /// Выбор теста
 
 /// ~~~~~~~~~~~~~ Тест №1 ~~~~~~~~~~~~~ ///
 #ifdef TEST1
@@ -56,11 +55,15 @@ double firstBound(const Union::XY coord, const size_t type) {
 #endif
 
 
-/// ~~~~~~~~~~~~~ Тест №2 ~~~~~~~~~~~~~ ///
+/// ~~~~~~~~~~~~~ Тест №3 ~~~~~~~~~~~~~ ///
 #ifdef TEST3
 #endif
 
 
+
+
+
+/// ~~~~~~~~~~~ Study test ~~~~~~~~~~~ ///
 #ifdef STUDY_TEST1
 
 double f(const Union::XY coord, const size_t area) {
@@ -97,8 +100,30 @@ double firstBound(const Union::XY coord, const size_t type) {
             return 0;
     }
 }
-#endif
 
+double secondBound(const Union::XY coord, const size_t type) {
+
+    switch (type)
+    {
+        case 0: return 20; break;
+        case 1: return 0;  break;
+        default:
+            Logger::append(getLog("The second boundary do not exist"));
+            return 0;
+    }
+}
+
+double thirdBound(const Union::XY coord, const size_t type) {
+
+    switch (type)
+    {
+        case 0: return 20 * coord.y - 27; break;
+        default:
+            Logger::append(getLog("The third boundary do not exist"));
+            return 0;
+    }
+}
+#endif
 
 _FUNCTION_END
 

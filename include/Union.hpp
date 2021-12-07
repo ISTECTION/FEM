@@ -33,7 +33,7 @@ struct Boundary {
     size_t type;
 
     size_t area;
-    std::array<size_t, 2> bordIdx;
+    std::array<size_t, 2> nodeIdx;
 };
 
 struct Param {

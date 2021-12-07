@@ -40,12 +40,10 @@ private:
 
 public:
     FEM(std::filesystem::path _path) {
-
         assert(readFile(_path));                                                /// Читаем входные данные
         portrait(true);                                                         /// Создаём портрет
-        global_Matrix();                                                        /// Создание глобальной матрицы
+        global();                                                               /// Создание глобальной матрицы
         boundaryСondition();                                                    /// Учёт краевых условий
-
     }
     ~FEM() { }
 
@@ -59,8 +57,16 @@ public:
     ) const;
 
 private:
-    void global_Matrix();
-    void toGlobal(const array::x&, const array::xxx&, const Union::Element);    /// Функция занесения локальной матрицы в глобальную
+    void global();                                                              /// Функция построения глобальной матрицы и вектора
+
+    template<std::size_t N, typename _Struct>                               /// Функция занесения локальной матрицы в глобальную
+    void loc_A_to_global(
+        const std::array<std::array<double, N>, N>&,
+        const _Struct&
+    );
+
+    template<std::size_t N, typename _Struct>                                                 /// Функция занемения локлаьного вектора в глобыльный
+    void loc_b_to_global(const std::array<double, N>&, const _Struct& );
 
     array::xxx localA(const std::array<Union::XY, 3>&, size_t) const;
     array::x   buildF(const std::array<Union::XY, 3>&, size_t) const;
@@ -79,7 +85,7 @@ private:
     void resize();
 };
 
-void FEM::global_Matrix() {
+void FEM::global() {
 
     std::array<Union::XY, 3> coords;
 
@@ -91,7 +97,8 @@ void FEM::global_Matrix() {
         }
         array::x   local_b = buildF(coords, elems[i].area);
         array::xxx local_A = localA(coords, elems[i].area);
-        toGlobal(local_b, local_A, elems[i]);
+        loc_A_to_global<3>(local_A, elems[i]);
+        loc_b_to_global<3>(local_b, elems[i]);
     }
 }
 
@@ -114,57 +121,120 @@ void FEM::boundaryСondition() {
             default:
                 Logger::append(getLog("There is no such condition"));
         }
+
+
+        std::cout << boundarys[_count].cond << " ";
+        std::cout << "global b ";
+        print(gb);
+        std::cout << std::endl;
     }
 }
 
 void FEM::first(const Union::Boundary& bound) {
-    di[bound.bordIdx[0]] = { 1 };                                               /// Ставим всесто диагональных
-    di[bound.bordIdx[1]] = { 1 };                                               /// элементов единицу
+    di[bound.nodeIdx[0]] = { 1 };                                               /// Ставим всесто диагональных
+    di[bound.nodeIdx[1]] = { 1 };                                               /// элементов единицу
 
-    gb[bound.bordIdx[0]] = Function::firstBound({                               /// В вектор правой части
-            nodes[bound.bordIdx[0]].x,                                          /// записываем значение
-            nodes[bound.bordIdx[0]].y                                           /// краевого условия
-        },
-        bound.type
-    );
+    for (size_t i = 0; i < 2; i++)                                              /// В вектор правой части записываем
+        gb[bound.nodeIdx[i]] =                                                  /// значение краевого условия
+            Function::firstBound({
+                nodes[bound.nodeIdx[i]].x,
+                nodes[bound.nodeIdx[i]].y
+            }, bound.type);
 
-    gb[bound.bordIdx[0]] = Function::firstBound({
-            nodes[bound.bordIdx[1]].x,
-            nodes[bound.bordIdx[1]].y
-        },
-        bound.type
-    );
+    for (size_t k = 0; k < 2; k++) {                                            /// Зануляем в строке все стоящие элементы
+        size_t node = bound.nodeIdx[k];                                         /// кроме диагонального и делаем симметричной
+        for (size_t i = ig[node]; i < ig[node + 1]; i++) {
+            gb[jg[i]] -= gg[i] * gb[node];                                      /// Отнимаем от правой части зануляемый элемент
+            gg[i] = 0;                                                          /// Зануление в нижнем треугольнике
+        }
 
-    std::for_each(                                                              /// Зануление в строке все стоящие
-        gg.begin() + ig[bound.bordIdx[0]],                                      /// элементы кроме диагонального
-        gg.begin() + ig[bound.bordIdx[0] + 1],
-        [](double& _el) { _el = 0; }
-    );
-
-    std::for_each(
-        gg.begin() + ig[bound.bordIdx[1]],                                      /// Зануление в строке все стоящие
-        gg.begin() + ig[bound.bordIdx[1] + 1],                                  /// элементы кроме диагонального
-        [](double& _el) { _el = 0; }
-    );
+        for(size_t i = node + 1; i < _size.nodes; i++) {                        /// Зануление в верхнем треугольнике
+            size_t lbeg = ig[i];
+            size_t lend = ig[i + 1];
+            for(int p = lbeg; p < lend; p++) {
+                if(jg[p] == node) {
+                    gb[i] -= gg[p] * gb[node];
+                    gg[p] = 0;
+                }
+            }
+        }
+    }
 }
 
 void FEM::second(const Union::Boundary& bound) {
+
+    std::array<Union::XY, 2>
+        coord_borders = {
+            nodes[bound.nodeIdx[0]],
+            nodes[bound.nodeIdx[1]]
+        };
+
+    double _koef = edgeLength(coord_borders) / 6;                               /// Длина границы
+
+
+    std::array<double, 2> corr_b;                                               /// Корректирующий вектор
+    for (size_t i = 0; i < 2; i++)
+        corr_b[i] = _koef * (
+            2 * Function::secondBound({
+                    nodes[bound.nodeIdx[i]].x,
+                    nodes[bound.nodeIdx[i]].y
+                }, bound.type) +
+                Function::secondBound({
+                    nodes[bound.nodeIdx[1 - i]].x,
+                    nodes[bound.nodeIdx[1 - i]].y
+                }, bound.type)
+            );
+
+    loc_b_to_global<2>(corr_b, bound);
 }
 
 void FEM::third(const Union::Boundary& bound) {
-}
 
-void FEM::toGlobal(
-        const array::x&   local_b,
-        const array::xxx& local_A,
-        const Union::Element elem) {
+    std::array<Union::XY, 2> coord_borders = {
+        nodes[bound.nodeIdx[0]],
+        nodes[bound.nodeIdx[1]]
+    };
+
+    double _koef =
+        materials[bound.area].betta *
+        edgeLength(coord_borders) / 6;
+
+
+    std::array<std::array<double, 2>, 2> corr_a;
+
+    std::array<double, 2> corr_b;                                               /// Корректирующий вектор
+    for (size_t i = 0; i < 2; i++) {
+
+        corr_b[i] = _koef * (
+            2 * Function::thirdBound({
+                    nodes[bound.nodeIdx[i]].x,
+                    nodes[bound.nodeIdx[i]].y
+                }, bound.type) +
+                Function::thirdBound({
+                    nodes[bound.nodeIdx[1 - i]].x,
+                    nodes[bound.nodeIdx[1 - i]].y
+                }, bound.type)
+            );
+
+        for (size_t j = 0; j < 2; j++) {
+            corr_a[i][j] =
+                (i == j) ? (2 * _koef) :
+                           (    _koef) ;
+        }
+    }
+    loc_b_to_global<2>(corr_b, bound);
+    loc_A_to_global<2>(corr_a, bound);
+}
+template<std::size_t N, typename _Struct>
+void FEM::loc_A_to_global(
+        const std::array<std::array<double, N>, N>& locA,
+        const _Struct& elem) {
 
     using            ::std::vector;
     using iterator = ::std::vector<size_t>::iterator;
 
-    for (size_t i = 0; i < 3; i++) {
-        di[elem.nodeIdx[i]] += local_A[i][i];
-        gb[elem.nodeIdx[i]] += local_b[i];
+    for (size_t i = 0; i < N; i++) {
+        di[elem.nodeIdx[i]] += locA[i][i];
 
         for (int j = 0; j < i; j++) {
             size_t a = elem.nodeIdx[i];
@@ -177,10 +247,20 @@ void FEM::toGlobal(
 
                 auto _itr = std::lower_bound(_beg, _end, b);
                 auto _idx = _itr - jg.begin();
-                gg[_idx] += local_A[i][j];
+                gg[_idx] += locA[i][j];
             }
         }
     }
+}
+
+template<std::size_t N, typename _Struct>
+void FEM::loc_b_to_global(
+        const std::array<double, N>& loc_b,
+        const _Struct& elem) {
+
+    for (size_t i = 0; i < N; i++)
+        gb[elem.nodeIdx[i]]
+            += loc_b[i];
 }
 
 array::x FEM::buildF(const std::array<Union::XY, 3>& elem, size_t area) const {
@@ -315,8 +395,8 @@ void FEM::printAll() const {
     std::cout << "Borders: " << '\n';
     for (size_t i = 0; i < _size.conds; i++)
         std::cout << boundarys[i].area       << ' '
-                  << boundarys[i].bordIdx[0] << ' '
-                  << boundarys[i].bordIdx[1] << ' '
+                  << boundarys[i].nodeIdx[0] << ' '
+                  << boundarys[i].nodeIdx[1] << ' '
                   << boundarys[i].cond       << ' '
                   << boundarys[i].type       << ' ' << '\n';
     PRINTLINE ENDLINE
@@ -383,8 +463,8 @@ bool FEM::readFile(const std::filesystem::path& path) {
     isError &= is_open(fin, getLog("Error - bords.txt"));
     for (size_t i = 0; i < _size.conds; i++)
         fin >> boundarys[i].area
-            >> boundarys[i].bordIdx[0]
-            >> boundarys[i].bordIdx[1]
+            >> boundarys[i].nodeIdx[0]
+            >> boundarys[i].nodeIdx[1]
             >> boundarys[i].cond
             >> boundarys[i].type;
     fin.close();

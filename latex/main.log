@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  7 DEC 2021 21:26
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  7 DEC 2021 21:44
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -669,7 +669,7 @@ LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/n' will be
 Here is how much of TeX's memory you used:
  11739 strings out of 476919
  247395 string characters out of 5821391
- 685755 words of memory out of 5000000
+ 685591 words of memory out of 5000000
  31473 multiletter control sequences out of 15000+600000
  407000 words of font info for 59 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191

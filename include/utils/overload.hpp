@@ -5,7 +5,7 @@
 #include <array>
 
 namespace array {
-    using x   =            std::array<double, 3>    ;
+    using x   = std::array<double, 3>;
     using xxx = std::array<std::array<double, 3>, 3>;
 }
 
