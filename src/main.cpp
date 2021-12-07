@@ -8,8 +8,13 @@ int main(int argc, char* argv[]) {
     using ::std::chrono::milliseconds;
 
     argparse::ArgumentParser program("FEM", "1.0.0");
-    program.add_argument("-i", "--input" ).required().help("path to input files" );
-    program.add_argument("-o", "--output").required().help("path to output files");
+    program.add_argument("-i", "--input")
+        .help("path to input files" )
+        .required();
+
+    program.add_argument("-o", "--output")
+        .help("path to output files")
+        .required();
 
     try {
         program.parse_args(argc, argv);
@@ -20,7 +25,6 @@ int main(int argc, char* argv[]) {
         LOS<double> l(program.get<std::string>("-o"));
         l.solve(Cond::HOLLESKY, true);
         timer.stop();
-
         l.printX();
 
         std::cout << '\n' << "Milliseconds: "

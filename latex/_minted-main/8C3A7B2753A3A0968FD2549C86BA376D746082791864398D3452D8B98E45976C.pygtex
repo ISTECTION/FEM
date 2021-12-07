@@ -1,7 +1,7 @@
 \begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
-\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZdq{}argparse/argparse.hpp\PYGZdq{}}\PYG{c+c1}{        /// $\frac{a+b}{2}$}
-\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZdq{}timer/cxxtimer.hpp\PYGZdq{}}\PYG{c+c1}{           /// $\frac{a+b}{2}$}
-\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZdq{}LOS/LOS.hpp\PYGZdq{}}\PYG{c+c1}{                  /// $\frac{a+b}{2}$}
+\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZdq{}argparse/argparse.hpp\PYGZdq{}}
+\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZdq{}timer/cxxtimer.hpp\PYGZdq{}}
+\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZdq{}LOS/LOS.hpp\PYGZdq{}}
 \PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZdq{}FEM.hpp\PYGZdq{}}
 
 \PYG{k+kt}{int}\PYG{+w}{ }\PYG{n+nf}{main}\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{argc}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{char}\PYG{o}{*}\PYG{+w}{ }\PYG{n}{argv}\PYG{p}{[])}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
@@ -9,8 +9,13 @@
 \PYG{+w}{    }\PYG{k}{using}\PYG{+w}{ }\PYG{o}{::}\PYG{n}{std}\PYG{o}{::}\PYG{n}{chrono}\PYG{o}{::}\PYG{n}{milliseconds}\PYG{p}{;}
 
 \PYG{+w}{    }\PYG{n}{argparse}\PYG{o}{::}\PYG{n}{ArgumentParser}\PYG{+w}{ }\PYG{n+nf}{program}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}FEM\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}1.0.0\PYGZdq{}}\PYG{p}{);}
-\PYG{+w}{    }\PYG{n}{program}\PYG{p}{.}\PYG{n}{add\PYGZus{}argument}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZhy{}i\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}\PYGZhy{}\PYGZhy{}input\PYGZdq{}}\PYG{+w}{ }\PYG{p}{).}\PYG{n}{required}\PYG{p}{().}\PYG{n}{help}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}path to input files\PYGZdq{}}\PYG{+w}{ }\PYG{p}{);}
-\PYG{+w}{    }\PYG{n}{program}\PYG{p}{.}\PYG{n}{add\PYGZus{}argument}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZhy{}o\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}\PYGZhy{}\PYGZhy{}output\PYGZdq{}}\PYG{p}{).}\PYG{n}{required}\PYG{p}{().}\PYG{n}{help}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}path to output files\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{    }\PYG{n}{program}\PYG{p}{.}\PYG{n}{add\PYGZus{}argument}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZhy{}i\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}\PYGZhy{}\PYGZhy{}input\PYGZdq{}}\PYG{p}{)}
+\PYG{+w}{        }\PYG{p}{.}\PYG{n}{help}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}path to input files\PYGZdq{}}\PYG{+w}{ }\PYG{p}{)}
+\PYG{+w}{        }\PYG{p}{.}\PYG{n}{required}\PYG{p}{();}
+
+\PYG{+w}{    }\PYG{n}{program}\PYG{p}{.}\PYG{n}{add\PYGZus{}argument}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZhy{}o\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}\PYGZhy{}\PYGZhy{}output\PYGZdq{}}\PYG{p}{)}
+\PYG{+w}{        }\PYG{p}{.}\PYG{n}{help}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}path to output files\PYGZdq{}}\PYG{p}{)}
+\PYG{+w}{        }\PYG{p}{.}\PYG{n}{required}\PYG{p}{();}
 
 \PYG{+w}{    }\PYG{k}{try}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
 \PYG{+w}{        }\PYG{n}{program}\PYG{p}{.}\PYG{n}{parse\PYGZus{}args}\PYG{p}{(}\PYG{n}{argc}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{argv}\PYG{p}{);}
@@ -25,7 +30,7 @@
 \PYG{+w}{        }\PYG{n}{l}\PYG{p}{.}\PYG{n}{printX}\PYG{p}{();}
 
 \PYG{+w}{        }\PYG{n}{std}\PYG{o}{::}\PYG{n}{cout}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}\PYGZbs{}n\PYGZsq{}}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Milliseconds: \PYGZdq{}}
-\PYG{+w}{                }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{n}{timer}\PYG{p}{.}\PYG{n}{count}\PYG{o}{\PYGZlt{}}\PYG{n}{milliseconds}\PYG{o}{\PYGZgt{}}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}\PYGZbs{}n\PYGZsq{}}\PYG{p}{;}
+\PYG{+w}{                  }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{n}{timer}\PYG{p}{.}\PYG{n}{count}\PYG{o}{\PYGZlt{}}\PYG{n}{milliseconds}\PYG{o}{\PYGZgt{}}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}\PYGZbs{}n\PYGZsq{}}\PYG{p}{;}
 \PYG{+w}{        }\PYG{n}{fem}\PYG{p}{.}\PYG{n}{printAll}\PYG{p}{();}
 \PYG{+w}{        }\PYG{n}{fem}\PYG{p}{.}\PYG{n}{printSparse}\PYG{p}{();}
 \PYG{+w}{    }\PYG{p}{\PYGZcb{}}

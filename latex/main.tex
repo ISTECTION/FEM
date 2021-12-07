@@ -3,13 +3,14 @@
 
 \usepackage{styles/preamble}
 \usepackage{minted}                 % Для вставок с кодом
-\usepackage{xcolor}
 \usepackage{mathtools}              % Для математических формул
 \usepackage{amsmath}
 
+\usepackage[dvipsnames]{xcolor}
+
 \setmainfont[Scale=1.0]{Noto Sans}
-\definecolor{LightGray}{gray}{0.9}  % Не используется
-\usemintedstyle{vs}                 % Стиль кода пакета minted
+\usemintedstyle{xcode}                 % Стиль кода пакета minted
+
 
 
 % =================================================
@@ -284,44 +285,56 @@ $$
 
 \section{Выводы}
 
-\begin{minted}[linenos,mathescape=true,baselinestretch=1.0]{c++}
-#include "argparse/argparse.hpp"        /// $\frac{a+b}{2}$
-#include "timer/cxxtimer.hpp"           /// $\frac{a+b}{2}$
-#include "LOS/LOS.hpp"                  /// $\frac{a+b}{2}$
-#include "FEM.hpp"
+\inputminted[
+    baselinestretch=1.0,
+    mathescape=true,
+    breaklines,
+    linenos
+]{cpp}{../src/main.cpp}
 
-int main(int argc, char* argv[]) {
-    using namespace ::Log;
-    using ::std::chrono::milliseconds;
 
-    argparse::ArgumentParser program("FEM", "1.0.0");
-    program.add_argument("-i", "--input" ).required().help("path to input files" );
-    program.add_argument("-o", "--output").required().help("path to output files");
 
-    try {
-        program.parse_args(argc, argv);
+% \begin{minted}[linenos,mathescape=true,baselinestretch=1.0]{c++}
+% #include "argparse/argparse.hpp"
+% #include "timer/cxxtimer.hpp"
+% #include "LOS/LOS.hpp"
+% #include "FEM.hpp"
 
-        cxxtimer::Timer timer(true);
-        FEM fem      (program.get<std::string>("-i"));
-        fem.writeFile(program.get<std::string>("-o"), 1E-14, 10000);
-        LOS<double> l(program.get<std::string>("-o"));
-        l.solve(Cond::HOLLESKY, true);
-        timer.stop();
+% int main(int argc, char* argv[]) {
+%     using namespace ::Log;
+%     using ::std::chrono::milliseconds;
 
-        l.printX();
+%     argparse::ArgumentParser program("FEM", "1.0.0");
+%     program.add_argument("-i", "--input" ).required().help("path to input files" );
+%     program.add_argument("-o", "--output").required().help("path to output files");
 
-        std::cout << '\n' << "Milliseconds: "
-                << timer.count<milliseconds>() << '\n';
-        fem.printAll();
-        fem.printSparse();
-    }
-    catch(const std::runtime_error& err) {
-        Logger::append(getLog("argc != 3 (FEM -i input -o output)"));
-        std::cerr << err.what();
-        std::cerr << program;
-        std::exit(1);
-    }
-    return 0;
-}
-\end{minted}
+%     try {
+%         program.parse_args(argc, argv);
+
+%         cxxtimer::Timer timer(true);
+%         FEM fem      (program.get<std::string>("-i"));
+%         fem.writeFile(program.get<std::string>("-o"), 1E-14, 10000);
+%         LOS<double> l(program.get<std::string>("-o"));
+%         l.solve(Cond::HOLLESKY, true);
+%         timer.stop();
+
+%         l.printX();
+
+%         std::cout << '\n' << "Milliseconds: "
+%                 << timer.count<milliseconds>() << '\n';
+%         fem.printAll();
+%         fem.printSparse();
+%     }
+%     catch(const std::runtime_error& err) {
+%         Logger::append(getLog("argc != 3 (FEM -i input -o output)"));
+%         std::cerr << err.what();
+%         std::cerr << program;
+%         std::exit(1);
+%     }
+%     return 0;
+% }
+% \end{minted}
+
+
+
 \end{document}
