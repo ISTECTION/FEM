@@ -43,7 +43,7 @@ public:
         assert(readFile(_path));                                                /// Читаем входные данные
         portrait(true);                                                         /// Создаём портрет
         global();                                                               /// Создание глобальной матрицы
-        // boundaryCondition();                                                    /// Учёт краевых условий
+        boundaryCondition();                                                    /// Учёт краевых условий
     }
     ~FEM() { }
 
@@ -464,6 +464,15 @@ bool FEM::readFile(const std::filesystem::path& path) {
             >> boundarys[i].cond
             >> boundarys[i].type;
     fin.close();
+
+    std::sort(                                                                  /// Сортировка по роду краевого условия
+        boundarys.begin(),                                                      /// Первое краевое условие,
+        boundarys.end(),                                                        /// должно быть последним
+        [](Union::Boundary& _left, Union::Boundary& _right){
+            return _left.cond > _right.cond;
+        }
+    );
+
     return isError;
 }
 

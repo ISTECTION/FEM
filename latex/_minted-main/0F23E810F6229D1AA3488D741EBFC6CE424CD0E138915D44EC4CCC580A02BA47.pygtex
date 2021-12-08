@@ -1,4 +1,4 @@
-\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\begin{Verbatim}[commandchars=\\\{\}]
 \PYG{c+cp}{\PYGZsh{}ifndef \PYGZus{}FEM\PYGZus{}HPP\PYGZus{}}
 \PYG{c+cp}{\PYGZsh{}define \PYGZus{}FEM\PYGZus{}HPP\PYGZus{}}
 \PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZdq{}utils/lightweight.hpp\PYGZdq{}}

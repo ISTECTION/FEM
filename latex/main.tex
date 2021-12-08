@@ -53,8 +53,10 @@
 % =================================================
 % НАЧАЛО ДОКУМЕНТА
 % =================================================
+
 \begin{document}
 \import{titlepage/}{title}
+
 
 \section{Условие задачи}                % Условие задачи
 \subsection*{Формулировка задачи}       % Формулировка задачи
@@ -344,8 +346,8 @@ $$
 определённым на этом ребре:
 $$ u_{\beta} = u_{\beta 1} \phi_1 + u_{\beta 2} \phi_2 $$
 
-\noindent где $\phi_i, \hspace{5pt} i=\overline{0,1}$
 
+\noindent где $\phi_i, \hspace{5pt} i=\overline{0,1}$
 - локально занумерованные линейные базисные функции,
 которые имеют также свои глобальные номера во всей
 расчетной области, а $u_{\beta i}$ - значение функции
@@ -463,7 +465,7 @@ $$
     framesep=5pt,
     funcnamehighlighting=true
     tabsize=4,
-    mathescape=true,
+    mathescape=false,
     showspaces=false,
     showtabs=false,
     baselinestretch=1.1,
@@ -973,15 +975,10 @@ void FEM::resize() {
 \end{minted}
 
 
-
-
-
-
 \section{Тестирование}
 \section{Выводы}
 
 \end{document}
-
 
 
 

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  8 DEC 2021 19:07
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  8 DEC 2021 20:51
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -868,26 +868,26 @@ runsystem(del main.aex)...executed.
  (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 56.
-LaTeX Font Info:    ... okay on input line 56.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 56.
-LaTeX Font Info:    ... okay on input line 56.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 56.
-LaTeX Font Info:    ... okay on input line 56.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 56.
-LaTeX Font Info:    ... okay on input line 56.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 56.
-LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 56.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 57.
+LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 57.
  (d:/Programs/texlive/2021/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 56.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 56.
-LaTeX Font Info:    ... okay on input line 56.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 56.
-LaTeX Font Info:    ... okay on input line 56.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 56.
-LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -923,7 +923,7 @@ LaTeX Font Info:    ... okay on input line 56.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Info: Redefining \th on input line 56.
+LaTeX Info: Redefining \th on input line 57.
 (./main.sta)
 \openout3 = `main.sta'.
 
@@ -945,44 +945,46 @@ LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/n' will be
 
 ])
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/b/n' will be
-(Font)              scaled to size 17.28pt on input line 59.
+(Font)              scaled to size 17.28pt on input line 61.
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/b/n' will be
-(Font)              scaled to size 14.4pt on input line 60.
+(Font)              scaled to size 14.4pt on input line 62.
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/it' will be
-(Font)              scaled to size 12.0pt on input line 73.
+(Font)              scaled to size 12.0pt on input line 75.
  [2] [3] [4]
 Missing character: There is no г ("433) in font cmmi12!
 
-Underfull \hbox (badness 10000) in paragraph at lines 349--353
+Underfull \hbox (badness 10000) in paragraph at lines 350--355
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 364--368
+Underfull \hbox (badness 10000) in paragraph at lines 366--370
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 369--373
+Underfull \hbox (badness 10000) in paragraph at lines 371--375
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 374--376
+Underfull \hbox (badness 10000) in paragraph at lines 376--378
 
  []
 
 Missing character: There is no Г ("413) in font cmmi8!
 [5]
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/b/n' will be
-(Font)              scaled to size 12.0pt on input line 443.
+(Font)              scaled to size 12.0pt on input line 445.
  (./_minted-main/default-pyg-prefix.pygstyle) (./_minted-main/xcode.pygstyle) (./_minted-main/6A7A510135B29BC7B6115E46CE5A536504726604FB183BEBBFBF7F90B1016412.pygtex
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/n' will be
 (Font)              scaled to size 6.0pt on input line 2.
 ) [6]
 \openout4 = `main.pyg'.
 
- (./_minted-main/0F23E810F6229D1AA3488D741EBFC6CEF8117E1F892DC05F6E957E58F760A12B.pygtex
+runsystem(pygmentize -l c++ -f latex -P commandprefix=PYG -F tokenmerge -F gobble:n=0 -P funcnamehighlighting=True -P mathescape=False -o _minted-main/0F23E810F6229D1AA3488D741EBFC6CE424CD0E138915D44EC4CCC580A02BA47.pygtex main.pyg)...executed.
+
+ (./_minted-main/0F23E810F6229D1AA3488D741EBFC6CE424CD0E138915D44EC4CCC580A02BA47.pygtex
 Missing character: There is no С (U+0421) in font [lmmono12-regular]:!
 Missing character: There is no С (U+0421) in font [lmmono12-regular]:!
 Missing character: There is no С (U+0421) in font [lmmono12-regular]:!
@@ -990,100 +992,103 @@ Missing character: There is no С (U+0421) in font [lmmono12-regular]:!
 Missing character: There is no С (U+0421) in font [lmmono12-regular]:!
 Missing character: There is no С (U+0421) in font [lmmono12-regular]:!
 )
-Overfull \vbox (4.7077pt too high) detected at line 973
+Overfull \vbox (4.7077pt too high) detected at line 975
  []
 
 [7]
-Underfull \vbox (badness 10000) detected at line 973
+Underfull \vbox (badness 10000) detected at line 975
  []
 
 
-Underfull \vbox (badness 10000) detected at line 973
+Underfull \vbox (badness 10000) detected at line 975
  []
 
 [8]
-Underfull \vbox (badness 10000) detected at line 973
+Underfull \vbox (badness 10000) detected at line 975
  []
 
 
-Underfull \vbox (badness 10000) detected at line 973
+Underfull \vbox (badness 10000) detected at line 975
  []
 
 [9]
-Underfull \vbox (badness 10000) detected at line 973
+Underfull \vbox (badness 10000) detected at line 975
  []
 
 
-Underfull \vbox (badness 10000) detected at line 973
+Underfull \vbox (badness 10000) detected at line 975
  []
 
 [10]
-Underfull \vbox (badness 10000) detected at line 973
+Underfull \vbox (badness 10000) detected at line 975
  []
 
 
-Underfull \vbox (badness 10000) detected at line 973
+Underfull \vbox (badness 10000) detected at line 975
  []
 
 [11]
-Underfull \vbox (badness 10000) detected at line 973
+Underfull \vbox (badness 10000) detected at line 975
  []
 
 
-Underfull \vbox (badness 10000) detected at line 973
+Underfull \vbox (badness 10000) detected at line 975
  []
 
 [12]
-Underfull \vbox (badness 10000) detected at line 973
+Underfull \vbox (badness 10000) detected at line 975
  []
 
 
-Underfull \vbox (badness 10000) detected at line 973
+Underfull \vbox (badness 10000) detected at line 975
  []
 
 [13]
-Underfull \vbox (badness 10000) detected at line 973
+Underfull \vbox (badness 10000) detected at line 975
  []
 
 
-Underfull \vbox (badness 10000) detected at line 973
+Underfull \vbox (badness 10000) detected at line 975
  []
 
 [14]
-Underfull \vbox (badness 10000) detected at line 973
+Underfull \vbox (badness 10000) detected at line 975
  []
 
 
-Underfull \vbox (badness 10000) detected at line 973
+Underfull \vbox (badness 10000) detected at line 975
  []
 
 [15]
-Underfull \vbox (badness 10000) detected at line 973
+Underfull \vbox (badness 10000) detected at line 975
  []
 
 
-Underfull \vbox (badness 10000) detected at line 973
+Underfull \vbox (badness 10000) detected at line 975
  []
 
 [16]
-Underfull \vbox (badness 10000) detected at line 973
+Underfull \vbox (badness 10000) detected at line 975
  []
 
 
-Underfull \vbox (badness 10000) detected at line 973
+Underfull \vbox (badness 10000) detected at line 975
  []
 
-[17] [18] (./main.aux)
+[17]
+runsystem(del _minted-main\0F23E810F6229D1AA3488D741EBFC6CEF8117E1F892DC05F6E957E58F760A12B.pygtex)...executed.
+
+ [18] (./main.aux)
 runsystem(del main.pyg)...executed.
 
  ) 
 Here is how much of TeX's memory you used:
- 27385 strings out of 476919
- 612274 string characters out of 5821391
- 1249633 words of memory out of 5000000
- 46818 multiletter control sequences out of 15000+600000
+ 27387 strings out of 476919
+ 612422 string characters out of 5821391
+ 1250489 words of memory out of 5000000
+ 46819 multiletter control sequences out of 15000+600000
  407243 words of font info for 62 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 113i,10n,116p,601b,700s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 113i,10n,116p,601b,696s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 Output written on main.pdf (18 pages).
