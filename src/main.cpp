@@ -6,7 +6,7 @@
 #include <optional>
 
 int main(int argc, char* argv[]) {
-    using namespace ::Log;
+    using namespace    ::Log;
     using ::std::chrono::milliseconds;
 
     argparse::ArgumentParser _program("FEM", "1.0.0");
@@ -18,6 +18,7 @@ int main(int argc, char* argv[]) {
         .help("path to output files");
 
     try {
+
         _program.parse_args(argc, argv);
 
         std::optional _opt            = _program.present("-o");
@@ -27,24 +28,27 @@ int main(int argc, char* argv[]) {
                 _program.get<std::string>("-o") :
                 _input / "sparse";
 
-        cxxtimer::Timer timer(true);
+        cxxtimer::Timer _timer(true);
+        FEM _FEM(_input);
 
-        FEM fem(_input);
-        fem.writeFile(_output, 1E-14, 10000);
-        LOS<double> los(_output);
-        los.solve(Cond::HOLLESKY, true);
+        _FEM.printAll();        /// print input FEM data
+        _FEM.printSparse();     /// print input FEM data (sparse format)
 
-        timer.stop();
-        std::cout << "Milliseconds: "
-                  << timer.count<milliseconds>();
+        LOS<double> _LOS (
+            _FEM.takeDate(),    /// data
+            _FEM.getNodes(),    /// count nodes
+            1E-16, 1000 );      /// epsilon and max iteration
+        _LOS.solve(Cond::DIAGONAL, true);
 
-        los.printX();       /// print solution vector
-        fem.printAll();     /// print input FEM data
-        fem.printSparse();  /// print input FEM data (sparse format)
+        _timer.stop();
+        _LOS.printX();          /// print solution vector
+
+        std::cout << "Milliseconds: " <<
+            _timer.count<milliseconds>();
 
     } catch(const std::runtime_error& err) {
 
-        Logger::append(getLog("argc != 3 (FEM -i input -o output)"));
+        Logger::append(getLog("argc != 2 (FEM --input ./input)"));
         std::cerr << err.what();
         std::cerr << _program;
         std::exit(1);       /// program termination with error

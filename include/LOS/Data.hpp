@@ -1,6 +1,8 @@
 #ifndef _DATA_HPP_
 #define _DATA_HPP_
+#include "../utils/friendly.hpp"
 #include "../Logger.hpp"
+
 #include <filesystem>
 #include <iostream>
 #include <cassert>
@@ -45,6 +47,20 @@ protected:
 
 public:
     Data(std::filesystem::path _path) { assert(loadData(_path)); }
+    Data(Friendly* _friend, size_t _n, T _eps, size_t _max_iter) {
+        param.n        = _n;
+        param.epsilon  = _eps;
+        param.max_iter = _max_iter;
+
+        ig = std::move(_friend->ig);
+        jg = std::move(_friend->jg);
+        gg = std::move(_friend->gg);
+        di = std::move(_friend->di);
+        b  = std::move(_friend->gb);
+
+        x.resize(_n);
+        delete _friend;
+    }
     ~Data() { }
 
     std::vector<T>& getX() const { return x;    }                               /// Получить вектор решений

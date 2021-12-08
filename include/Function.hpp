@@ -52,6 +52,7 @@ double secondBound(const Union::XY coord, const size_t type) {
     {
         case 0: return  1; break;
         case 1: return -1; break;
+        case 2: return  0; break;
         default:
             Logger::append(getLog("The second boundary do not exist"));
             return 0;

@@ -3,18 +3,20 @@
 #include "Data.hpp"
 
 #include "LOS_Function.hpp"
-#include "../Logger.hpp"
 
 using namespace Symmetric;
 
-#define LOGGER if (isLog) \
-                    printLog(this->iter, eps);
+#define LOGGER if (isLog)   \
+    printLog(this->iter, eps);
 
 template <class T>
 class LOS : public Data<T>
 {
 public:
-     LOS(std::filesystem::path _path) : Data<T>(_path) { }
+    LOS(std::filesystem::path _path) : Data<T>(_path) { }
+    LOS(Friendly* _friend, size_t _n,  T _eps, size_t _max_iter)
+        : Data<T>(_friend, _n, _eps, _max_iter) { }
+
     ~LOS() { }
 
     void solve(Cond _cond, bool isLog = true);

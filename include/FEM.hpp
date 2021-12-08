@@ -10,6 +10,7 @@
 #define _FEM_HPP_
 #include "utils/lightweight.hpp"
 #include "utils/overload.hpp"
+#include "utils/friendly.hpp"
 #include "Function.hpp"
 #include "Logger.hpp"
 #include "Union.hpp"
@@ -56,6 +57,9 @@ public:
         const size_t
     ) const;
 
+    Friendly* takeDate();
+    size_t getNodes() { return _size.nodes; }
+
 private:
     void global();                                                              /// Функция построения глобальной матрицы и вектора
 
@@ -84,6 +88,18 @@ private:
 
     void resize();
 };
+
+Friendly* FEM::takeDate() {
+    Friendly* _friend =
+        new Friendly {
+            std::move(gb),
+            std::move(gg),
+            std::move(di),
+            std::move(ig),
+            std::move(jg)
+        };
+    return _friend;
+}
 
 void FEM::global() {
 
@@ -142,6 +158,7 @@ void FEM::first(const Union::Boundary& bound) {
     for (size_t k = 0; k < 2; k++) {                                            /// Зануляем в строке все стоящие элементы
         size_t node = bound.nodeIdx[k];                                         /// кроме диагонального и делаем симметричной
         for (size_t i = ig[node]; i < ig[node + 1]; i++) {
+            // if(di[i] != 1)
             gb[jg[i]] -= gg[i] * gb[node];                                      /// Отнимаем от правой части зануляемый элемент
             gg[i] = 0;                                                          /// Зануление в нижнем треугольнике
         }
@@ -149,7 +166,7 @@ void FEM::first(const Union::Boundary& bound) {
         for(size_t i = node + 1; i < _size.nodes; i++) {                        /// Зануление в верхнем треугольнике
             size_t lbeg = ig[i];
             size_t lend = ig[i + 1];
-            for(int p = lbeg; p < lend; p++) {
+            for(size_t p = lbeg; p < lend; p++) {
                 if(jg[p] == node) {
                     gb[i] -= gg[p] * gb[node];
                     gg[p] = 0;
