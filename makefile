@@ -12,7 +12,7 @@ debug: clean remove_log compile running
 release: clean remove_log compile_release running
 
 running:
-	$(OUTPUT)/FEM.exe --input file/nodes-6 --output file/nodes-6/sparse
+	$(OUTPUT)/FEM.exe --input file/study-nodes-5 --output file/study-nodes-5/sparse
 
 compile:
 	$(CXX) $(CXXFLAGS) $(SRC)/main.cpp -o $(OUTPUT)/FEM.exe -I$(INCLUDE)

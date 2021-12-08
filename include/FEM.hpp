@@ -43,7 +43,7 @@ public:
         assert(readFile(_path));                                                /// Читаем входные данные
         portrait(true);                                                         /// Создаём портрет
         global();                                                               /// Создание глобальной матрицы
-        boundaryСondition();                                                    /// Учёт краевых условий
+        // boundaryCondition();                                                    /// Учёт краевых условий
     }
     ~FEM() { }
 
@@ -59,13 +59,13 @@ public:
 private:
     void global();                                                              /// Функция построения глобальной матрицы и вектора
 
-    template<size_t N, typename _Struct>                                   /// Шаблон занесения локальной
+    template<size_t N, typename _Struct>                                        /// Шаблон занесения локальной
     void loc_A_to_global(                                                       /// матрицы в глобальную
         const std::array<std::array<double, N>, N>&,
         const _Struct&
     );
 
-    template<size_t N, typename _Struct>                                   /// Шаблон занемения локального
+    template<size_t N, typename _Struct>                                        /// Шаблон занемения локального
     void loc_b_to_global(const std::array<double, N>&, const _Struct& );        /// вектора в глобыльный
 
     array::xxx localA(const std::array<Union::XY, 3>&, size_t) const;
@@ -77,7 +77,7 @@ private:
     bool readFile(const std::filesystem::path&  );
     void portrait(const bool isWriteList = false);
 
-    void boundaryСondition();
+    void boundaryCondition();
     void first (const Union::Boundary& bound);                                  /// Первое краевое условие
     void second(const Union::Boundary& bound);                                  /// Второе краевое условие
     void third (const Union::Boundary& bound);                                  /// Третье краевое условие
@@ -96,6 +96,7 @@ void FEM::global() {
             coords[j].y = nodes[point].y;
         }
         array::x   local_b = buildF(coords, elems[i].area);
+
         array::xxx local_A = localA(coords, elems[i].area);
 
         pretty(local_A);
@@ -105,7 +106,7 @@ void FEM::global() {
     }
 }
 
-void FEM::boundaryСondition() {
+void FEM::boundaryCondition() {
     using namespace ::Log;
 
     for (size_t _count = 0; _count < _size.conds; _count++) {

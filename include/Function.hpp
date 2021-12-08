@@ -7,7 +7,7 @@
 #define _FUNCTION_END                      }
 
 _FUNCTION_BEGIN
-#define TEST1
+#define STUDY_TEST1
 using namespace ::Log;
 
 

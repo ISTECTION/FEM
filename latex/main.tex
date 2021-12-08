@@ -3,6 +3,8 @@
 
 %  - documentation minted -
 % https://tools.ietf.org/doc/texlive-doc/latex/minted/minted.pdf
+% - documentation tcolorbox -
+% https://ctan.math.washington.edu/tex-archive/macros/latex/contrib/tcolorbox/tcolorbox.pdf
 
 
 \usepackage{styles/preamble}
@@ -36,26 +38,40 @@
     breaklines                  % Перенос строк
 }
 
+
+\definecolor{background-gray}{gray}{0.625}
+\usepackage[most]{tcolorbox}    % для управления цветом
+\newtcolorbox{myquote}{
+    colback=background-gray,
+    coltext=white,
+    grow to right by=-1mm,
+    grow to left by=-1mm,
+    boxrule=-1mm,
+    boxsep=0pt
+} % настройки области с изменённым фоном
+
 % =================================================
 % НАЧАЛО ДОКУМЕНТА
 % =================================================
-
 \begin{document}
 \import{titlepage/}{title}
 
 \section{Условие задачи}                % Условие задачи
 \subsection*{Формулировка задачи}       % Формулировка задачи
 
-МКЭ для двумерной краевой задачи для эллиптического уравнения в декартовой
-системе координат. Базисные функции линейные на треугольниках. Краевые условия
-всех ти-пов. Коэффициент   разложить по линейным базисным функциям.
-Матрицу СЛАУ генери-ровать в разреженном строчном формате. Для решения
-СЛАУ использовать МСГ или ЛОС с неполной факторизацией.
+МКЭ для двумерной краевой задачи для эллиптического
+уравнения в декартовой системе координат. Базисные
+функции линейные на треугольниках. Краевые условия
+всех ти-пов. Коэффициент разложить по линейным
+базисным функциям. Матрицу СЛАУ генери-ровать
+в разреженном строчном формате. Для решения
+СЛАУ использовать МСГ или ЛОС с неполной
+факторизацией.
 
 \subsection*{Постановка задачи}
 
-Эллиптическая краевая задача для функции \textit{u} определяется дифференциальным
-уравнением
+Эллиптическая краевая задача для функции \textit{u}
+определяется дифференциальным уравнением
 
 \[ -div( \lambda grad u) + \gamma u = f \]
 
@@ -67,8 +83,8 @@ $S=S_1 \cup S_2 \cup S_3$ и краевыми условиями:
 \[ \lambda \frac{\partial u}{\partial n} \bigg\vert_{S_3}
     + \beta(u \vert_{S_3} - u_{\beta}) = 0 \]
 
-\noindent В декартовой системе координат {x,y} это уравнение может быть записано
-в виде
+\noindent В декартовой системе координат {x,y} это
+уравнение может быть записано в виде
 
 \[ -\frac{\partial}{\partial x}
     \left( \lambda \frac{\partial u}{\partial x} \right)
@@ -299,25 +315,677 @@ $$
 
 \subsection*{Учёт вторых и трeтьих краевых условий}
 
+Рассмотрим краевые условия второго и третьего рода:
+$$
+    \lambda \frac{\partial u}{\partial n}
+    \bigg\vert_{S_2} = \theta
+$$
 
+$$
+    \lambda \frac{\partial u}{\partial n}
+    \bigg\vert_{S_3} +
+    \beta(u \vert_{S_3} - u_{\beta}) = 0
+$$
 
-% \begin{lstlisting}[label=some-code,caption=main.cpp]
-% \end{lstlisting}
+\noindent Отсюда получаем, что для учёта краевых условий
+необходимо вычислить интегралы:
+
+$$
+    \int \limits_{S_2} \theta \psi_j dxdy,          \hspace{25pt}
+    \int \limits_{S_3} \beta u_{\beta} \psi_j dxdy, \hspace{25pt}
+    \int \limits_{S_3} \beta \psi_i \psi_j dxdy
+$$
+
+\noindent Краевые условия второго и третьего рода задаются
+на рёбрах, т.е. определяются двумя узлами, лежащими на
+ребру. Будем считать, что параметр $\beta$ на $S_3$
+постоянен, тогда параметр $г_{\beta}$ будем
+раскладывать по двум базисным функциям,
+определённым на этом ребре:
+$$ u_{\beta} = u_{\beta 1} \phi_1 + u_{\beta 2} \phi_2 $$
+
+\noindent где $\phi_i, \hspace{5pt} i=\overline{0,1}$
+
+- локально занумерованные линейные базисные функции,
+которые имеют также свои глобальные номера во всей
+расчетной области, а $u_{\beta i}$ - значение функции
+$u_{\beta}$ в узлах ребра. \\
+
+\noindent Аналогично поступаем и при учете вторых
+краевых условий, раскладывая по базису ребра функцию
+$\theta = \theta_0 \phi_0 + theta_1 \phi_1$.
+
+\noindent Тогда приведенные выше интегралы примут вид:
+
+$$ I_1 = \int \limits_{S_2} (\theta_0 \phi_0 + \theta_1 \phi_1) \phi_i dxdy $$
+$$ I_2 = \beta \int \limits_{S_3} (u_{\beta 1} \phi_0 + u_{\beta 2} \phi_1) \phi_i dxdy $$
+$$ I_3 = \beta \int \limits_{S_3} \phi_i \phi_j dxdy $$
+
+\noindent Фактически, решая задачу учета краевых условий второго
+и третьего рода, мы переходим к решению одномерной
+задачи на ребре для того, чтобы занести соответствующие
+результаты в глобальную матрицу и вектор. \\
+
+\noindent Базисными функциями ребра являются две
+ненулевые на данном ребре базисные функции из
+$\phi_i, \hspace{5pt} i=\overline{0,1}$
+конечного элемента. \\
+
+\noindent Для учёта вклада вторых и третьих краевых условий
+рассчитываются 2 матрицы $2 \times 2$. \\
+
+\noindent Игтегралы $I_1, I_2, I_3$ будем вычислять по формуле:
+$$
+    \int \limits_Г (L_i)^{v_i} (L_j)^{v_j} dS =
+    \frac{v_i ! v_j !}{(v_i + v_j + 1)!} mes \Gamma,
+    \hspace{5pt} i \neq j
+$$
+
+\noindent где $mes \Gamma$ длина ребра. При этом независимо
+от того, что на каждом из ребер присутствуют свои функции,
+интегралы, посчитанные по приведенным выше формулам,
+будут равны.
+
+\renewcommand{\arraystretch}{1.25}
+\begin{equation*}
+    I_1 =
+    \begin{pmatrix}
+        \int \limits_{S_2} L_1L_1dxdy & \int \limits_{S_2} L_1L_2dxdy \\
+        \int \limits_{S_2} L_2L_1dxdy & \int \limits_{S_2} L_2L_2dxdy
+    \end{pmatrix}
+    \begin{pmatrix}
+        \theta_1 \\
+        \theta_2
+    \end{pmatrix}
+    = \frac{1}{6} mes S_2
+    \begin{pmatrix}
+        2 & 1 \\
+        1 & 2
+    \end{pmatrix}
+    \begin{pmatrix}
+        \theta_1 \\
+        \theta_2
+    \end{pmatrix}
+\end{equation*}
+\renewcommand{\arraystretch}{1.0}
+
+\noindent Этот вектор поправок в правую
+часть позволяет учесть не только вторые
+краевые условия, но и часть
+$\beta u_{\beta}$ из третьих.
+Осталось рассмотреть матрицу
+поправок в левую часть:
+$$
+I_3 = \beta \int \limits_{S_3}
+\phi_i \phi_j dxdy
+$$
+
+\noindent Очевидно, что получится та же
+матрица, только не умноженная на вектор
+констант.
+
+$$
+I_3 = \frac{1}{6} mes S_3
+\begin{pmatrix}
+    2 & 1 \\
+    1 & 2
+\end{pmatrix}
+$$
+
+\noindent Добавляя эту матрицу в левую часть,
+на места соответствующие номерам узлов,
+получаем учет третьих краевых условий.
 
 
 \section{Текст программы}
+\begin{myquote}
+    \begin{center}
+        \textbf{main.cpp}
+    \end{center}
+\end{myquote}
 \cppcode{../src/main.cpp}
+
+\begin{myquote}
+    \begin{center}
+        \textbf{FEM.hpp}
+    \end{center}
+\end{myquote}
+
+\begin{minted}[
+    bgcolor=mintedbackground,
+    fontfamily=tt,
+    linenos=true,
+    numberblanklines=true,
+    numbersep=3pt,
+    gobble=0,
+    frame=leftline,
+    framerule=0.2pt,
+    framesep=5pt,
+    funcnamehighlighting=true
+    tabsize=4,
+    mathescape=true,
+    showspaces=false,
+    showtabs=false,
+    baselinestretch=1.1,
+    breaklines
+]{c++}
+#ifndef _FEM_HPP_
+#define _FEM_HPP_
+#include "utils/lightweight.hpp"
+#include "utils/overload.hpp"
+#include "Function.hpp"
+#include "Logger.hpp"
+#include "Union.hpp"
+
+#include <algorithm>
+#include <cmath>
+#include <set>
+
+#define FIRST_BOUNDARY_COND  1
+#define SECOND_BOUNDARY_COND 2
+#define THIRD_BOUNDARY_COND  3
+
+class FEM
+{
+private:
+    Union::Param _size;
+
+    std::vector<Union::XY>       nodes;
+    std::vector<Union::Element>  elems;
+    std::vector<Union::Boundary> boundarys;
+    std::vector<Union::Material> materials;
+
+    std::vector<double> gb;
+    std::vector<double> gg;
+    std::vector<double> di;
+    std::vector<size_t> ig;
+    std::vector<size_t> jg;
+
+public:
+    FEM(std::filesystem::path _path) {
+        assert(readFile(_path));
+        portrait(true);
+        global();
+        boundaryСondition();
+    }
+    ~FEM() { }
+
+    void printAll()    const;
+    void printSparse() const;
+
+    void writeFile(
+        const std::filesystem::path&,
+        const double,
+        const size_t
+    ) const;
+
+private:
+    void global();
+
+    template<size_t N, typename _Struct>
+    void loc_A_to_global(
+        const std::array<std::array<double, N>, N>&,
+        const _Struct&
+    );
+
+    template<size_t N, typename _Struct>
+    void loc_b_to_global(const std::array<double, N>&, const _Struct& );
+
+    array::xxx localA(const std::array<Union::XY, 3>&, size_t) const;
+    array::x   buildF(const std::array<Union::XY, 3>&, size_t) const;
+
+    array::xxx G(const std::array<Union::XY, 3>&, size_t) const;
+    array::xxx M(const std::array<Union::XY, 3>&, size_t) const;
+
+    bool readFile(const std::filesystem::path&  );
+    void portrait(const bool isWriteList = false);
+
+    void boundaryСondition();
+    void first (const Union::Boundary& bound);
+    void second(const Union::Boundary& bound);
+    void third (const Union::Boundary& bound);
+
+    void resize();
+};
+
+void FEM::global() {
+
+    std::array<Union::XY, 3> coords;
+
+    for (size_t i = 0; i < _size.elems; i++) {
+        for (size_t j = 0; j < 3; j++) {
+            size_t point = elems[i].nodeIdx[j];
+            coords[j].x = nodes[point].x;
+            coords[j].y = nodes[point].y;
+        }
+        array::x   local_b = buildF(coords, elems[i].area);
+        array::xxx local_A = localA(coords, elems[i].area);
+
+        pretty(local_A);
+
+        loc_A_to_global<3>(local_A, elems[i]);
+        loc_b_to_global<3>(local_b, elems[i]);
+    }
+}
+
+void FEM::boundaryСondition() {
+    using namespace ::Log;
+
+    for (size_t _count = 0; _count < _size.conds; _count++) {
+
+        switch (boundarys[_count].cond)
+        {
+            case FIRST_BOUNDARY_COND:
+                first(boundarys[_count]);
+                break;
+            case SECOND_BOUNDARY_COND:
+                second(boundarys[_count]);
+                break;
+            case THIRD_BOUNDARY_COND:
+                third(boundarys[_count]);
+                break;
+            default:
+                Logger::append(getLog("There is no such condition"));
+        }
+    }
+}
+
+void FEM::first(const Union::Boundary& bound) {
+    di[bound.nodeIdx[0]] = { 1 };
+    di[bound.nodeIdx[1]] = { 1 };
+
+    for (size_t i = 0; i < 2; i++)
+        gb[bound.nodeIdx[i]] =
+            Function::firstBound({
+                nodes[bound.nodeIdx[i]].x,
+                nodes[bound.nodeIdx[i]].y
+            }, bound.type);
+
+    for (size_t k = 0; k < 2; k++) {
+        size_t node = bound.nodeIdx[k];
+        for (size_t i = ig[node]; i < ig[node + 1]; i++) {
+            gb[jg[i]] -= gg[i] * gb[node];
+            gg[i] = 0;
+        }
+
+        for(size_t i = node + 1; i < _size.nodes; i++) {
+            size_t lbeg = ig[i];
+            size_t lend = ig[i + 1];
+            for(int p = lbeg; p < lend; p++) {
+                if(jg[p] == node) {
+                    gb[i] -= gg[p] * gb[node];
+                    gg[p] = 0;
+                }
+            }
+        }
+    }
+}
+
+void FEM::second(const Union::Boundary& bound) {
+
+    std::array<Union::XY, 2>
+        coord_borders = {
+            nodes[bound.nodeIdx[0]],
+            nodes[bound.nodeIdx[1]]
+        };
+
+    double _koef = edgeLength(coord_borders) / 6;
+
+    std::array<double, 2> corr_b;
+    for (size_t i = 0; i < 2; i++)
+        corr_b[i] = _koef * (
+            2 * Function::secondBound({
+                    nodes[bound.nodeIdx[i]].x,
+                    nodes[bound.nodeIdx[i]].y
+                }, bound.type) +
+                Function::secondBound({
+                    nodes[bound.nodeIdx[1 - i]].x,
+                    nodes[bound.nodeIdx[1 - i]].y
+                }, bound.type)
+            );
+
+    loc_b_to_global<2>(corr_b, bound);
+}
+
+void FEM::third(const Union::Boundary& bound) {
+
+    std::array<Union::XY, 2> coord_borders = {
+        nodes[bound.nodeIdx[0]],
+        nodes[bound.nodeIdx[1]]
+    };
+
+    double _koef =
+        materials[bound.area].betta *
+        edgeLength(coord_borders) / 6;
+
+
+    std::array<std::array<double, 2>, 2> corr_a;
+
+    std::array<double, 2> corr_b;
+    for (size_t i = 0; i < 2; i++) {
+
+        corr_b[i] = _koef * (
+            2 * Function::thirdBound({
+                    nodes[bound.nodeIdx[i]].x,
+                    nodes[bound.nodeIdx[i]].y
+                }, bound.type) +
+                Function::thirdBound({
+                    nodes[bound.nodeIdx[1 - i]].x,
+                    nodes[bound.nodeIdx[1 - i]].y
+                }, bound.type)
+            );
+
+        for (size_t j = 0; j < 2; j++) {
+            corr_a[i][j] =
+                (i == j) ? (2 * _koef) :
+                           (    _koef) ;
+        }
+    }
+    loc_b_to_global<2>(corr_b, bound);
+    loc_A_to_global<2>(corr_a, bound);
+}
+template<size_t N, typename _Struct>
+void FEM::loc_A_to_global(
+        const std::array<std::array<double, N>, N>& locA,
+        const _Struct& elem) {
+
+    using            ::std::vector;
+    using iterator = ::std::vector<size_t>::iterator;
+
+    for (size_t i = 0; i < N; i++) {
+        di[elem.nodeIdx[i]] += locA[i][i];
+
+        for (int j = 0; j < i; j++) {
+            size_t a = elem.nodeIdx[i];
+            size_t b = elem.nodeIdx[j];
+            if (a < b) std::swap(a, b);
+
+            if (ig[a + 1] > ig[a]) {
+                iterator _beg = jg.begin() + ig[a];
+                iterator _end = jg.begin() + ig[a + 1] - ig[0];
+
+                auto _itr = std::lower_bound(_beg, _end, b);
+                auto _idx = _itr - jg.begin();
+                gg[_idx] += locA[i][j];
+            }
+        }
+    }
+}
+
+template<size_t N, typename _Struct>
+void FEM::loc_b_to_global(
+        const std::array<double, N>& loc_b,
+        const _Struct& elem) {
+
+    for (size_t i = 0; i < N; i++)
+        gb[elem.nodeIdx[i]]
+            += loc_b[i];
+}
+
+array::x FEM::buildF(const std::array<Union::XY, 3>& elem, size_t area) const {
+    std::array<double, 3> function {
+        Function::f(elem[0], area),
+        Function::f(elem[1], area),
+        Function::f(elem[2], area)
+    };
+
+    double det_D = abs(determinant(elem)) / 24;
+    return {
+        det_D * (2 * function[0] + function[1] + function[2]),
+        det_D * (2 * function[1] + function[0] + function[2]),
+        det_D * (2 * function[2] + function[0] + function[1]),
+    };
+}
+
+array::xxx FEM::localA(const std::array<Union::XY, 3>& elem, size_t area) const
+    std::array<std::array<double, 3>, 3> G = FEM::G(elem, area);
+    std::array<std::array<double, 3>, 3> M = FEM::M(elem, area);
+    std::array<std::array<double, 3>, 3> A = G + M;
+    return A;
+
+}
+
+array::xxx FEM::G(const std::array<Union::XY, 3>& elem, size_t area) const {
+    double det   = abs(determinant(elem));
+    double _koef = Function::lambda(area) / (2 * det);
+
+    std::array<std::array<double, 3>, 3> G;
+    std::array<std::array<double, 2>, 3> a {
+
+            elem[1].y - elem[2].y,
+            elem[2].x - elem[1].x,
+
+            elem[2].y - elem[0].y,
+            elem[0].x - elem[2].x,
+
+            elem[0].y - elem[1].y,
+            elem[1].x - elem[0].x
+    };
+
+    for (int i = 0; i < 3; i++)
+    for (int j = 0; j < 3; j++)
+        G[i][j] = _koef * (a[i][0] * a[j][0] + a[i][1] * a[j][1]);
+
+    return G;
+}
+
+array::xxx FEM::M(const std::array<Union::XY, 3>& elem, size_t area) const {
+    double det = abs(determinant(elem));
+    double gammaKoef = materials[area].gamma * det / 24;
+    std::array<std::array<double, 3>, 3> M;
+    for (size_t i = 0; i < 3; i++)
+    for (size_t j = 0; j < 3; j++) {
+        M[i][j] =
+            (i == j) ? (2 * gammaKoef) :
+                       (    gammaKoef) ;
+    }
+    return  M;
+}
+
+void FEM::portrait(const bool isWriteList) {
+
+    const size_t N {    _size.nodes     };
+    std::vector<std::set<size_t>> list(N);
+
+    for (size_t el = 0; el < _size.elems; el++)
+    for (size_t point = 0; point < 3; point++) {
+        for (size_t i = point + 1; i < 3; i++) {
+            size_t idx1 = { elems[el].nodeIdx[point] };
+            size_t idx2 = { elems[el].nodeIdx[  i  ] };
+            idx1 > idx2 ?
+                list[idx1].insert(idx2) :
+                list[idx2].insert(idx1) ;
+        }
+    }
+
+    for (size_t i = 2; i < ig.size(); i++)
+        ig[i] = ig[i - 1] + list[i - 1].size();
+
+    jg.resize(ig[N] - ig[0]);
+    gg.resize(ig[N] - ig[0]);
+
+   for (size_t index = 0, i = 1; i < list.size(); i++)
+    for (size_t value : list[i])
+        jg[index++] = value;
+
+    if (isWriteList) {
+        std::cout << "list: " << '\n';
+        for (size_t i = 0; i < list.size(); i++) {
+            std::cout << i << ':' << ' ';
+            for (size_t j : list[i])
+                std::cout << j << ' ';
+            std::cout << std::endl;
+        }
+    }
+}
+
+void FEM::printAll() const {
+    #define PRINTLINE \
+        for (size_t i = 0; i < 20; std::cout << '-', i++);
+    #define ENDLINE std::cout << '\n';
+    SetConsoleOutputCP(65001);
+    PRINTLINE ENDLINE
+    std::cout << "PARAMS:         "                 << '\n';
+    std::cout << "Size nodes:     " << _size.nodes  << '\n';
+    std::cout << "Size element:   " << _size.elems  << '\n';
+    std::cout << "Size areas:     " << _size.areas  << '\n';
+    std::cout << "Size condition: " << _size.conds  << '\n';
+    PRINTLINE ENDLINE
+    std::cout << std::setw(4) << "X" << std::setw(4) << "Y" << '\n';
+    for (size_t i = 0; i < _size.nodes; i++)
+        std::cout << std::setw(4) << nodes[i].x
+                  << std::setw(4) << nodes[i].y << '\n';
+    PRINTLINE ENDLINE
+    std::cout << "Elements: " << '\n';
+    for (size_t i = 0; i < _size.elems; i++)
+        std::cout << elems[i].nodeIdx[0] << ' '
+                  << elems[i].nodeIdx[1] << ' '
+                  << elems[i].nodeIdx[2] << " -> area "
+                  << elems[i].area       << '\n';
+    PRINTLINE ENDLINE
+    std::cout << "Areas: " << '\n';
+    for (size_t i = 0; i < _size.areas; i++) {
+        std::cout << "\u03B3 = " << materials[i].gamma  << ',' << ' '
+                  << "\u03B2 = " << materials[i].betta
+                  << " -> area " << i << '\n';
+    }
+    PRINTLINE ENDLINE
+    std::cout << "Borders: " << '\n';
+    for (size_t i = 0; i < _size.conds; i++)
+        std::cout << boundarys[i].area       << ' '
+                  << boundarys[i].nodeIdx[0] << ' '
+                  << boundarys[i].nodeIdx[1] << ' '
+                  << boundarys[i].cond       << ' '
+                  << boundarys[i].type       << ' ' << '\n';
+    PRINTLINE ENDLINE
+    #undef PRINTLINE
+    #undef ENDLINE
+}
+
+void FEM::printSparse() const {
+    #define PRINTLINE \
+        for (size_t i = 0; i < 20; std::cout << '-', i++); \
+        std::cout << '\n';
+
+    PRINTLINE
+    std::cout << "ig: "; print(ig);
+    std::cout << "jg: "; print(jg);
+    std::cout << "di: "; print(di);
+    std::cout << "gg: "; print(gg);
+    PRINTLINE
+
+    #undef PRINTLINE
+}
+
+bool FEM::readFile(const std::filesystem::path& path) {
+    using namespace ::Log;
+    bool isError { true };
+
+    std::ifstream fin(path / "params.txt");
+    isError &= is_open(fin, getLog("Error - params.txt"));
+    fin >> _size.nodes
+        >> _size.elems
+        >> _size.areas
+        >> _size.conds;
+    fin.close();
+
+    resize();
+    std::fill_n(ig.begin(), 2, 0);
+
+    fin.open(path / "nodes.txt");
+    isError &= is_open(fin, getLog("Error - nodes.txt"));
+    for (size_t i = 0; i < _size.nodes; i++)
+		fin >> nodes[i].x >> nodes[i].y;
+    fin.close();
+
+    fin.open(path / "elems.txt");
+    isError &= is_open(fin, getLog("Error - elems.txt"));
+	for (size_t i = 0; i < _size.elems; i++) {
+		fin >> elems[i].nodeIdx[0]
+            >> elems[i].nodeIdx[1]
+            >> elems[i].nodeIdx[2];
+    }
+    fin.close();
+
+    fin.open(path / "areas.txt");
+    isError &= is_open(fin, getLog("Error - areas.txt"));
+    for (size_t i = 0; i < _size.areas; i++)
+        fin >> materials[i].gamma
+            >> materials[i].betta;
+
+    for (size_t i = 0; i < _size.elems; i++)
+        fin >> elems[i].area;
+    fin.close();
+
+    fin.open(path / "bords.txt");
+    isError &= is_open(fin, getLog("Error - bords.txt"));
+    for (size_t i = 0; i < _size.conds; i++)
+        fin >> boundarys[i].area
+            >> boundarys[i].nodeIdx[0]
+            >> boundarys[i].nodeIdx[1]
+            >> boundarys[i].cond
+            >> boundarys[i].type;
+    fin.close();
+    return isError;
+}
+
+void FEM::writeFile(
+        const std::filesystem::path& _path,
+        const double _eps,
+        const size_t _max_iter) const {
+
+    std::filesystem::create_directories(_path);
+    bool is_dir = std::filesystem::is_directory(_path);
+
+    using namespace ::Log;
+    if (not is_dir) assert(
+        Logger::append(getLog("Error - create directory"))
+    );
+
+    std::ofstream fout(_path / "kuslau.txt");
+    fout << _size.nodes             << '\n';
+    fout << std::scientific << _eps << '\n';
+    fout << _max_iter;
+    fout.close();
+
+    Output::write(_path / "gg.txt", gg, { 14, ' ' });
+    Output::write(_path / "di.txt", di, { 14, ' ' });
+    Output::write(_path / "jg.txt", jg);
+    Output::write(_path / "ig.txt", ig);
+    Output::write(_path / "gb.txt", gb);
+}
+
+void FEM::resize() {
+    nodes.    resize(  _size.nodes  );
+    elems.    resize(  _size.elems  );
+    boundarys.resize(  _size.conds  );
+    materials.resize(  _size.areas  );
+
+    gb.resize(  _size.nodes  );
+    di.resize(  _size.nodes  );
+    ig.resize(_size.nodes + 1);
+}
+
+#undef FIRST_BOUNDARY_COND
+#undef SECOND_BOUNDARY_COND
+#undef THIRD_BOUNDARY_COND
+#endif /// _FEM_HPP_
+\end{minted}
+
+
+
 
 
 
 \section{Тестирование}
 \section{Выводы}
 
+\end{document}
 
 
 
 
-
+% ~~~~~~~~ INFO ~~~~~~~~ %
 
 % Добавления кода в одну строку
 % \inputminted[
@@ -368,4 +1036,3 @@ $$
 %     return 0;
 % }
 % \end{minted}
-\end{document}
