@@ -92,11 +92,11 @@ private:
 Friendly* FEM::takeDate() {
     Friendly* _friend =
         new Friendly {
-            std::move(gb),
-            std::move(gg),
-            std::move(di),
-            std::move(ig),
-            std::move(jg)
+            gb,
+            gg,
+            di,
+            ig,
+            jg
         };
     return _friend;
 }
@@ -112,10 +112,11 @@ void FEM::global() {
             coords[j].y = nodes[point].y;
         }
         array::x   local_b = buildF(coords, elems[i].area);
-
         array::xxx local_A = localA(coords, elems[i].area);
 
+        #if DEBUG != 0
         pretty(local_A);
+        #endif
 
         loc_A_to_global<3>(local_A, elems[i]);
         loc_b_to_global<3>(local_b, elems[i]);
@@ -158,7 +159,6 @@ void FEM::first(const Union::Boundary& bound) {
     for (size_t k = 0; k < 2; k++) {                                            /// Зануляем в строке все стоящие элементы
         size_t node = bound.nodeIdx[k];                                         /// кроме диагонального и делаем симметричной
         for (size_t i = ig[node]; i < ig[node + 1]; i++) {
-            // if(di[i] != 1)
             gb[jg[i]] -= gg[i] * gb[node];                                      /// Отнимаем от правой части зануляемый элемент
             gg[i] = 0;                                                          /// Зануление в нижнем треугольнике
         }
@@ -212,7 +212,6 @@ void FEM::third(const Union::Boundary& bound) {
     double _koef =
         materials[bound.area].betta *
         edgeLength(coord_borders) / 6;
-
 
     std::array<std::array<double, 2>, 2> corr_a;
 
@@ -273,8 +272,7 @@ void FEM::loc_b_to_global(
         const _Struct& elem) {
 
     for (size_t i = 0; i < N; i++)
-        gb[elem.nodeIdx[i]]
-            += loc_b[i];
+        gb[elem.nodeIdx[i]] += loc_b[i];
 }
 
 array::x FEM::buildF(const std::array<Union::XY, 3>& elem, size_t area) const {
@@ -363,6 +361,7 @@ void FEM::portrait(const bool isWriteList) {
     for (size_t value : list[i])
         jg[index++] = value;
 
+    #if DEBUG != 0
     if (isWriteList) {                                                          /// Вывод списка связности если isWriteList = true
         std::cout << "list: " << '\n';
         for (size_t i = 0; i < list.size(); i++) {
@@ -372,6 +371,7 @@ void FEM::portrait(const bool isWriteList) {
             std::cout << std::endl;
         }
     }
+    #endif
 }
 
 void FEM::printAll() const {
@@ -421,14 +421,12 @@ void FEM::printSparse() const {
     #define PRINTLINE \
         for (size_t i = 0; i < 20; std::cout << '-', i++); \
         std::cout << '\n';
-
     PRINTLINE
     std::cout << "ig: "; print(ig);
     std::cout << "jg: "; print(jg);
     std::cout << "di: "; print(di);
     std::cout << "gg: "; print(gg);
     PRINTLINE
-
     #undef PRINTLINE
 }
 

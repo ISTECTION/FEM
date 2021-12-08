@@ -25,7 +25,7 @@ determinant(const std::array<Union::XY, 3>& elem) {
 double                                                                          /// Функция вычисляет расстояние
 edgeLength(const std::array<Union::XY, 2>& elem) {                              /// между 2-я координатами
     return (
-        sqrt(
+        sqrt (
             pow(elem[1].x - elem[0].x ,2) +
             pow(elem[1].y - elem[0].y, 2)
         )
@@ -53,8 +53,7 @@ void print(const std::vector<T>& _vec) {
 
 template<typename _It>                                                          /// Красивый вывод, для двумерных - vector, array -
 void pretty(_It _beg, _It _end, const size_t _n = 3)  {                         /// с указанием итератора начала и конца, и размера
-                                                                                /// строки если он отличен от 3-ёх
-    if (_beg == _end) { std::cout << "Empty" << '\n'; }
+    if (_beg == _end) { std::cout << "Empty" << '\n'; }                         /// строки если он отличен от 3-ёх
     else {
 
         #define EPSILON 0.0000000001

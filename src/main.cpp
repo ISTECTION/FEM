@@ -3,7 +3,11 @@
 #include "LOS/LOS.hpp"
 #include "FEM.hpp"
 
+#include <streambuf>
+#include <iostream>
 #include <optional>
+#include <fstream>
+#include <memory>
 
 int main(int argc, char* argv[]) {
     using namespace    ::Log;
@@ -18,7 +22,6 @@ int main(int argc, char* argv[]) {
         .help("path to output files");
 
     try {
-
         _program.parse_args(argc, argv);
 
         std::optional _opt            = _program.present("-o");
@@ -28,31 +31,28 @@ int main(int argc, char* argv[]) {
                 _program.get<std::string>("-o") :
                 _input / "sparse";
 
-        cxxtimer::Timer _timer(true);
-        FEM _FEM(_input);
+        Function::setFunction(_input.filename().string());
 
-        _FEM.printAll();        /// print input FEM data
-        _FEM.printSparse();     /// print input FEM data (sparse format)
-
+        cxxtimer::Timer _timer(true);       /// start timer
+        FEM _FEM(_input);                   /// start FEM
         LOS<double> _LOS (
-            _FEM.takeDate(),    /// data
-            _FEM.getNodes(),    /// count nodes
-            1E-16, 1000 );      /// epsilon and max iteration
-        _LOS.solve(Cond::DIAGONAL, true);
+            _FEM.takeDate(),                /// data
+            _FEM.getNodes(),                /// count nodes
+            1E-16, 1000);                   /// epsilon and max iteration
+        _LOS.solve(Cond::DIAGONAL, true);   /// solve LOS + DIAGONAL
+        _timer.stop();                      /// stop timer
 
-        _timer.stop();
-        _LOS.printX();          /// print solution vector
+        _FEM.printAll();                    /// print input FEM data
+        _FEM.printSparse();                 /// print input FEM data (sparse format)
+        _LOS.printX();                      /// print solution vector
 
-        std::cout << "Milliseconds: " <<
-            _timer.count<milliseconds>();
+        std::cout << "Milliseconds: " << _timer.count<milliseconds>();
 
     } catch(const std::runtime_error& err) {
-
         Logger::append(getLog("argc != 2 (FEM --input ./input)"));
         std::cerr << err.what();
         std::cerr << _program;
-        std::exit(1);       /// program termination with error
-
+        std::exit(1);                       /// program termination with error
     }
     return 0;
 }

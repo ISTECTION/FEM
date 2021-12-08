@@ -8,6 +8,8 @@
 #include <ctime>
 #include <tuple>
 
+#define DEBUG 1000
+
 #define _LOG_BEGIN namespace Log {
 #define _LOG_END                 }
 

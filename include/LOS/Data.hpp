@@ -52,11 +52,11 @@ public:
         param.epsilon  = _eps;
         param.max_iter = _max_iter;
 
-        ig = std::move(_friend->ig);
-        jg = std::move(_friend->jg);
-        gg = std::move(_friend->gg);
-        di = std::move(_friend->di);
-        b  = std::move(_friend->gb);
+        ig = _friend->ig;
+        jg = _friend->jg;
+        gg = _friend->gg;
+        di = _friend->di;
+        b  = _friend->gb;
 
         x.resize(_n);
         delete _friend;
