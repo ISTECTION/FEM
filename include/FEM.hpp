@@ -116,11 +116,13 @@ void FEM::global() {
 
         #if DEBUG != 0
         pretty(local_A);
+        pretty(local_b);
         #endif
 
         loc_A_to_global<3>(local_A, elems[i]);
         loc_b_to_global<3>(local_b, elems[i]);
     }
+
 }
 
 void FEM::boundaryCondition() {

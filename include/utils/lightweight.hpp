@@ -51,11 +51,10 @@ void print(const std::vector<T>& _vec) {
     std::cout << std::endl;
 }
 
-template<typename _It>                                                          /// Красивый вывод, для двумерных - vector, array -
-void pretty(_It _beg, _It _end, const size_t _n = 3)  {                         /// с указанием итератора начала и конца, и размера
-    if (_beg == _end) { std::cout << "Empty" << '\n'; }                         /// строки если он отличен от 3-ёх
+template<typename _It>                                                          /// Красивый вывод, для двумерных:
+void pretty(_It _beg, _It _end, const size_t _n)  {                             /// vector, array, с указанием итератора
+    if (_beg == _end) { std::cout << "Empty" << '\n'; }                         /// начала и конца и размера строки
     else {
-
         #define EPSILON 0.0000000001
         #define EQUAL(a, b) (abs((a) - (b)) < EPSILON)
         SetConsoleOutputCP(65001);
@@ -77,7 +76,6 @@ void pretty(_It _beg, _It _end, const size_t _n = 3)  {                         
                 mwidth = nl > mwidth ? nl : mwidth;
             }
         }
-
         size_t midwidth = (mwidth * _n) + ((_n + 1) << 1);
         main << "\u250c\u2500" << std::setw(midwidth - 2)
              << "" << "\u2500\u2510";
@@ -100,6 +98,60 @@ void pretty(_It _beg, _It _end, const size_t _n = 3)  {                         
         #undef EPSILON
         #undef EQUAL
     }
+}
+
+template<typename _It>                                                          /// Красивый вывод, для одномерных:
+void pretty(_It _beg, _It _end)  {                                              /// vector, array, с указанием итератора
+    if (_beg == _end) { std::cout << "Empty" << '\n'; }                         /// начала и конца
+    else {
+        #define EPSILON 0.0000000001
+        #define EQUAL(a, b) (abs((a) - (b)) < EPSILON)
+        SetConsoleOutputCP(65001);
+
+        std::ostringstream osstr, main;
+        std::vector<std::string> strs;
+        size_t mwidth = 0;
+
+        size_t _count = 0;
+        for(auto iter = _beg; iter != _end; iter++) {
+            double term = *iter;
+            if (EQUAL(term, 0)) term = 0;
+            osstr << term;
+            std::string str = osstr.str();
+            osstr.str(std::string());
+            strs.push_back(str);
+            size_t nl = str.size();
+            mwidth = nl > mwidth ? nl : mwidth;
+            _count++;
+        }
+        size_t midwidth = (mwidth * _count) + ((_count + 1) << 1);
+        main << "\u250c\u2500" << std::setw(midwidth - 2) << ""
+             << "\u2500\u2510" << std::endl << "\u2502";
+        for (size_t i = 0; i < _count; i++) {
+            std::string& str = strs[i];
+            int wlen = (str.size() + mwidth + 1) >> 1;
+            main << "  ";
+            main << std::setw(wlen);
+            main << str;
+            main << std::setw(mwidth - wlen) << "";
+        }
+        main << "  \u2502" << std::endl
+             << "\u2514\u2500" << std::setw(midwidth - 2)
+             << ""         << "\u2500\u2518" << std::endl;
+        std::cout << main.str();
+        #undef EPSILON
+        #undef EQUAL
+    }
+}
+
+template <typename T>                                                           /// Шаблон функции для вывода красивого вектора
+void pretty(const std::vector<T>& _vec) {                                       /// которая автоматически передаёт параметры
+        pretty(_vec.begin(), _vec.end());                                       /// одномерного вектора методу написаному выше
+}
+
+template <size_t _Size, typename T>                                             /// Шаблон функции для вывода красивого вектора
+void pretty(const std::array<T, _Size>& _arr) {                                 /// которая автоматически передаёт параметры
+        pretty(_arr.begin(), _arr.end());                                       /// одномерного массива методу написаному выше
 }
 
 template <typename T>                                                           /// Шаблон функции для вывода красивой матрицы
