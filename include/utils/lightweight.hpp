@@ -56,7 +56,7 @@ void pretty(_It _beg, _It _end, const size_t _n)  {                             
     if (_beg == _end) { std::cout << "Empty" << '\n'; }                         /// начала и конца и размера строки
     else {
         #define EPSILON 0.0000000001
-        #define EQUAL(a, b) (abs((a) - (b)) < EPSILON)
+        #define EQUAL(a, b) (fabs((a) - (b)) < EPSILON)
         SetConsoleOutputCP(65001);
 
         std::ostringstream osstr, main;
@@ -83,7 +83,7 @@ void pretty(_It _beg, _It _end, const size_t _n)  {                             
             main << std::endl;
             main << "\u2502";
             for (size_t j = 0; j < _n; j++) {
-                std::string& str = strs[i + (j * 3)];
+                std::string& str = strs[j + (i * _n)];
                 int wlen = (str.size() + mwidth + 1) >> 1;
                 main << "  ";
                 main << std::setw(wlen);
@@ -105,7 +105,7 @@ void pretty(_It _beg, _It _end)  {                                              
     if (_beg == _end) { std::cout << "Empty" << '\n'; }                         /// начала и конца
     else {
         #define EPSILON 0.0000000001
-        #define EQUAL(a, b) (abs((a) - (b)) < EPSILON)
+        #define EQUAL(a, b) (fabs((a) - (b)) < EPSILON)
         SetConsoleOutputCP(65001);
 
         std::ostringstream osstr, main;
@@ -142,6 +142,29 @@ void pretty(_It _beg, _It _end)  {                                              
         #undef EPSILON
         #undef EQUAL
     }
+}
+
+template <typename T>                                                           /// Шаблон функции для вывода красивой глобальной
+void prettyG(                                                                   /// матрицы, которая автоматически передаёт
+        const std::vector<size_t>& ig,                                          /// параметры методу написаному выше
+        const std::vector<size_t>& jg,
+        const std::vector<T>& di,
+        const std::vector<T>& gg) {
+
+    std::vector<std::vector<double>> gm;
+    gm.resize(di.size(), std::vector<double>(di.size()));
+
+    size_t pos = 0;
+    for(size_t i = 0; i < di.size(); i++) {
+        gm[i][i] = di[i];
+
+        for(size_t j = ig[i]; j < ig[i + 1]; j++) {
+            gm[i][jg[pos]] = gg[pos];
+            pos++;
+        }
+    }
+
+    pretty(gm.begin(), gm.end(), di.size());
 }
 
 template <typename T>                                                           /// Шаблон функции для вывода красивого вектора

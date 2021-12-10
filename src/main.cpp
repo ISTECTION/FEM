@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
         _timer.stop();                      /// stop timer
 
         _FEM.printAll();                    /// print input FEM data
-        _FEM.printSparse();                 /// print input FEM data (sparse format)
+        _FEM.printSparse();                 /// print sparse format
         _LOS.printX();                      /// print solution vector
 
         std::cout << "Milliseconds: " << _timer.count<milliseconds>();
@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
         Logger::append(getLog("argc != 2 (FEM --input ./input)"));
         std::cerr << err.what();
         std::cerr << _program;
-        std::exit(1);                       /// program termination with error
+        std::exit(1);                       /// program error
     }
     return 0;
 }

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  9 DEC 2021 01:55
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  9 DEC 2021 20:08
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -977,9 +977,9 @@ Missing character: There is no Г ("413) in font cmmi8!
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/b/n' will be
 (Font)              scaled to size 12.0pt on input line 445.
  (./_minted-main/default-pyg-prefix.pygstyle) (./_minted-main/xcode.pygstyle)
-runsystem(pygmentize -l cpp -f latex -P commandprefix=PYG -F tokenmerge -F gobble:n=0 -P funcnamehighlighting=True -P mathescape=True -o _minted-main/E7FF9DDD6EC3449ED9B04D52B58F4C1904726604FB183BEBBFBF7F90B1016412.pygtex ../src/main.cpp)...executed.
+runsystem(pygmentize -l cpp -f latex -P commandprefix=PYG -F tokenmerge -F gobble:n=0 -P funcnamehighlighting=True -P mathescape=True -o _minted-main/796AB10200F909320E086F7F1464FB5304726604FB183BEBBFBF7F90B1016412.pygtex ../src/main.cpp)...executed.
 
- (./_minted-main/E7FF9DDD6EC3449ED9B04D52B58F4C1904726604FB183BEBBFBF7F90B1016412.pygtex
+ (./_minted-main/796AB10200F909320E086F7F1464FB5304726604FB183BEBBFBF7F90B1016412.pygtex
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/n' will be
 (Font)              scaled to size 6.0pt on input line 2.
 ) [6]
@@ -1085,7 +1085,7 @@ Underfull \vbox (badness 10000) detected at line 975
  []
 
 [18]
-runsystem(del _minted-main\FB5310D9C1A224117FEFFCA06B8B37A304726604FB183BEBBFBF7F90B1016412.pygtex)...executed.
+runsystem(del _minted-main\A16D386F66A3D6CDCF62BE22723BE62F04726604FB183BEBBFBF7F90B1016412.pygtex)...executed.
 
  [19] (./main.aux)
 runsystem(del main.pyg)...executed.
@@ -1094,7 +1094,7 @@ runsystem(del main.pyg)...executed.
 Here is how much of TeX's memory you used:
  27387 strings out of 476919
  612422 string characters out of 5821391
- 1255977 words of memory out of 5000000
+ 1257658 words of memory out of 5000000
  46819 multiletter control sequences out of 15000+600000
  407243 words of font info for 62 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191

@@ -2,23 +2,24 @@ SRC              := src
 INCLUDE          := include
 OUTPUT           := output
 CXX              := g++
-CXXFLAGS         := -std=c++20
+CXXFLAGS         := -std=c++20 -Wall
+
+CXXFLAGS_DEBUG   := # -g
 CXXFLAGS_RELEASE := -O2
 
 RM := del /q /f
 
-debug: clean remove_log compile running
-
-release: clean remove_log compile_release running
+debug:   remove_log compile_debug   running
+release: remove_log compile_release running
 
 running:
-	$(OUTPUT)/FEM.exe --input file/study-nodes-5
+	$(OUTPUT)/FEM.exe --input file/nodes-9
 
-compile:
-	$(CXX) $(CXXFLAGS) $(SRC)/main.cpp -o $(OUTPUT)/FEM.exe -I$(INCLUDE)
+compile_debug:
+	$(CXX) $(CXXFLAGS) $(CXXFLAGS_DEBUG) $(SRC)/main.cpp -o $(OUTPUT)/FEM.exe -I$(INCLUDE)
 
 compile_release:
-	$(CXX) $(CXXFLAGS) $(CXXFLAGS_RELEASE) $(SRC)/FEM.cpp -o $(OUTPUT)/main.exe -I$(INCLUDE)
+	$(CXX) $(CXXFLAGS) $(CXXFLAGS_RELEASE) $(SRC)/main.cpp -o $(OUTPUT)/FEM.exe -I$(INCLUDE)
 
 clean:
 	$(RM) $(OUTPUT)\*.exe

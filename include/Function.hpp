@@ -5,15 +5,18 @@
 #include <unordered_map>
 #include <cassert>
 #include <string>
+#include <cmath>
 
 using namespace ::Log;
 
 /// path to file - file/...
 static std::unordered_map<std::string, size_t> functions = {
         {"nodes-6",       1 },
-        {"nodes-12",      2 },
-        {"nodes-24",      3 },
+        {"nodes-unknown", 2 },
+        {"nodes-9",       3 },
+
         {"study-nodes-5", 11},
+
 
         {"error",         0 }
     };
@@ -44,134 +47,159 @@ void Function::setFunction(const std::string& _path) {
 }
 
 double Function::f(const Union::XY coord, const size_t area){
+
+    #define SWITCH switch (area) {
+    #define BREAK  } break;
+
     switch (Function::_func) {
-        /// file/nodes-6
-        case 1: {
-            switch (area) {
-                case 0: return 2 * coord.x; break;
-                default:
-                    throw std::runtime_error("f - error");
-            }
-            break;
-        }
-        /// file/study-nodes-5
-        case 11: {
-            switch (area) {
-                case 0: return -20; break;
-                case 1: return  0;  break;
-                default:
-                    throw std::runtime_error("f - error");
-            }
-            break;
-        }
+        case 1:
+                    SWITCH
+                    case 0:  return 2 * coord.x; break;
+                    default: std::exit(1);
+                    BREAK
+        case 3:
+                    SWITCH
+                    case 0:  return -exp(coord.x + coord.y); break;
+                    default: std::exit(1);
+                    BREAK
+        case 11:
+                    SWITCH
+                    case 0:  return -20; break;
+                    case 1:  return  0;  break;
+                    default: std::exit(1);
+                    BREAK
         default:
-            Logger::append(getLog("the number func do not exist"));
-            throw std::runtime_error("number func - error");
+                    Logger::append(
+                        getLog("the number func do not exist")
+                    );  std::exit(1);
     }
+    #undef SWITCH
+    #undef BREAK
 }
 
 double Function::lambda(size_t area) {
-    switch (Function::_func) {
-        case 1: {
-            switch (area) {
-                case 0: return 1; break;
-                default:
-                    throw std::runtime_error("lambda - error");
-            }
-            break;
-        }
-        case 11: {
-            switch (area) {
-                case 0: return 10; break;
-                case 1: return 1;  break;
-                default:
-                    throw std::runtime_error("lambda - error");
-            }
-            break;
-        }
-        default:
-            Logger::append(getLog("the number func do not exist"));
-            throw std::runtime_error("number func - error");
 
+    #define SWITCH switch (area) {
+    #define BREAK  } break;
+
+    switch (Function::_func) {
+        case 1:
+                    SWITCH
+                    case 0:  return 1; break;
+                    default: std::exit(1);
+                    BREAK
+        case 3:
+                    SWITCH
+                    case 0:  return 2; break;
+                    default: std::exit(1);
+                    BREAK
+        case 11:
+                    SWITCH
+                    case 0:  return 10; break;
+                    case 1:  return 1;  break;
+                    default: std::exit(1);
+                    BREAK
+        default:
+                    Logger::append(
+                        getLog("the number func do not exist")
+                    ); std::exit(1);
     }
+    #undef SWITCH
+    #undef BREAK
 }
 
 double Function::firstBound(const Union::XY coord, const size_t type) {
-    switch (Function::_func) {
-        case 1: {
-            switch (type) {
-                case 0: return coord.x; break;
-                default:
-                    throw std::runtime_error("first - error");
-            }
-            break;
-        }
-        case 11: {
-            switch (type) {
-                case 0: return coord.y * coord.y; break;
-                default:
-                    throw std::runtime_error("first - error");
-            }
-            break;
-        }
-        default:
-            Logger::append(getLog("the number func do not exist"));
-            throw std::runtime_error("number func - error");
 
+    #define SWITCH switch (type) {
+    #define BREAK  } break;
+
+    switch (Function::_func) {
+        case 1:
+                    SWITCH
+                    case 0:  return coord.x; break;
+                    default: std::exit(1);
+                    BREAK
+        case 3:
+                    SWITCH
+                    case 0:  return exp(coord.x); break;
+                    default: std::exit(1);
+                    BREAK
+        case 11:
+                    SWITCH
+                    case 0:  return coord.y * coord.y; break;
+                    default: std::exit(1);
+                    BREAK
+        default:
+                    Logger::append(
+                        getLog("the number func do not exist")
+                    ); std::exit(1);
     }
+    #undef SWITCH
+    #undef BREAK
 }
 
 double Function::secondBound(const Union::XY coord, const size_t type) {
-    switch (Function::_func) {
-        case 1: {
-            switch (type) {
-                case 0: return  1; break;
-                case 1: return -1; break;
-                case 2: return  0; break;
-                default:
-                    throw std::runtime_error("second - error");
-            }
-            break;
-        }
-        case 11: {
-            switch (type) {
-                case 0: return 20; break;
-                case 1: return 0;  break;
-                default:
-                    throw std::runtime_error("second - error");
-            }
-            break;
-        }
-        default:
-            Logger::append(getLog("the number func do not exist"));
-            throw std::runtime_error("number func - error");
 
+    #define SWITCH switch (type) {
+    #define BREAK  } break;
+
+    switch (Function::_func) {
+        case 1:
+                    SWITCH
+                    case 0:  return  1; break;
+                    case 1:  return -1; break;
+                    case 2:  return  0; break;
+                    default: std::exit(1);
+                    BREAK
+        case 3:
+                    SWITCH
+                    case 0:  return  2 * exp(coord.x + coord.y); break;
+                    case 1:  return -2 * exp(coord.x + coord.y); break;
+                    default: std::exit(1);
+                    BREAK
+        case 11:
+                    SWITCH
+                    case 0:  return 20; break;
+                    case 1:  return 0;  break;
+                    default: std::exit(1);
+                    BREAK
+        default:
+                    Logger::append(
+                        getLog("the number func do not exist")
+                    ); std::exit(1);
     }
+    #undef SWITCH
+    #undef BREAK
 }
 
 double Function::thirdBound(const Union::XY coord, const size_t type) {
+
+    #define SWITCH switch (type) {
+    #define BREAK  } break;
+
     switch (Function::_func) {
-        case 1: {
-            switch (type) {
-                case 0: return coord.x; break;
-                default:
-                    throw std::runtime_error("third - error");
-            }
-            break;
-        }
-        case 11: {
-            switch (type) {
-                case 0: return 20 * coord.y - 27; break;
-                default:
-                    throw std::runtime_error("third - error");
-            }
-            break;
-        }
+        case 1:
+                    SWITCH
+                    case 0:  return coord.x; break;
+                    default: std::exit(1);
+                    BREAK
+        case 3:
+                    SWITCH
+                    case 0:  return exp(coord.x + 1) - 2 * exp(coord.x + coord.y); break;
+                    default: std::exit(1);
+                    BREAK
+        case 11:
+                    SWITCH
+                    case 0:  return 20 * coord.y - 27; break;
+                    default: std::exit(1);
+                    BREAK
         default:
-            Logger::append(getLog("the number func do not exist"));
-            throw std::runtime_error("number func - error");
+                    Logger::append(
+                        getLog("the number func do not exist")
+                    ); std::exit(1);
 
     }
+    #undef SWITCH
+    #undef BREAK
 }
-
 #endif /// _FUNCTION_HPP_

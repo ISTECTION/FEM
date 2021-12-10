@@ -44,7 +44,8 @@ public:
         assert(readFile(_path));                                                /// Читаем входные данные
         portrait(true);                                                         /// Создаём портрет
         global();                                                               /// Создание глобальной матрицы
-        boundaryCondition();                                                    /// Учёт краевых условий
+        // boundaryCondition();                                                    /// Учёт краевых условий
+
     }
     ~FEM() { }
 
@@ -57,11 +58,21 @@ public:
         const size_t
     ) const;
 
-    Friendly* takeDate();
-    size_t getNodes() { return _size.nodes; }
-
+    size_t    getNodes() { return _size.nodes; }
+    Friendly* takeDate() {
+        Friendly* _friend =
+            new Friendly {
+                gb,
+                gg,
+                di,
+                ig,
+                jg
+            };
+        return _friend;
+    }
 private:
     void global();                                                              /// Функция построения глобальной матрицы и вектора
+    void resize();
 
     template<size_t N, typename _Struct>                                        /// Шаблон занесения локальной
     void loc_A_to_global(                                                       /// матрицы в глобальную
@@ -85,21 +96,7 @@ private:
     void first (const Union::Boundary& bound);                                  /// Первое краевое условие
     void second(const Union::Boundary& bound);                                  /// Второе краевое условие
     void third (const Union::Boundary& bound);                                  /// Третье краевое условие
-
-    void resize();
 };
-
-Friendly* FEM::takeDate() {
-    Friendly* _friend =
-        new Friendly {
-            gb,
-            gg,
-            di,
-            ig,
-            jg
-        };
-    return _friend;
-}
 
 void FEM::global() {
 
@@ -115,12 +112,21 @@ void FEM::global() {
         array::xxx local_A = localA(coords, elems[i].area);
 
         #if DEBUG != 0
+        std::cout << "Element: "
+                    << elems[i].nodeIdx[0] << ' '
+                    << elems[i].nodeIdx[1] << ' '
+                    << elems[i].nodeIdx[2] << '\n';
         pretty(local_A);
         pretty(local_b);
         #endif
 
         loc_A_to_global<3>(local_A, elems[i]);
         loc_b_to_global<3>(local_b, elems[i]);
+
+        #if DEBUG != 0
+        prettyG(ig, jg, di, gg);
+        pretty(gb);
+        #endif
     }
 
 }
@@ -129,7 +135,6 @@ void FEM::boundaryCondition() {
     using namespace ::Log;
 
     for (size_t _count = 0; _count < _size.conds; _count++) {
-
         switch (boundarys[_count].cond)
         {
             case FIRST_BOUNDARY_COND:
@@ -161,6 +166,7 @@ void FEM::first(const Union::Boundary& bound) {
     for (size_t k = 0; k < 2; k++) {                                            /// Зануляем в строке все стоящие элементы
         size_t node = bound.nodeIdx[k];                                         /// кроме диагонального и делаем симметричной
         for (size_t i = ig[node]; i < ig[node + 1]; i++) {
+            // if(di[jg[i]] != 1)
             gb[jg[i]] -= gg[i] * gb[node];                                      /// Отнимаем от правой части зануляемый элемент
             gg[i] = 0;                                                          /// Зануление в нижнем треугольнике
         }
@@ -170,6 +176,7 @@ void FEM::first(const Union::Boundary& bound) {
             size_t lend = ig[i + 1];
             for(size_t p = lbeg; p < lend; p++) {
                 if(jg[p] == node) {
+                    // if(di[i] != 1)
                     gb[i] -= gg[p] * gb[node];
                     gg[p] = 0;
                 }
@@ -251,7 +258,7 @@ void FEM::loc_A_to_global(
     for (size_t i = 0; i < N; i++) {
         di[elem.nodeIdx[i]] += locA[i][i];
 
-        for (int j = 0; j < i; j++) {
+        for (size_t j = 0; j < i; j++) {
             size_t a = elem.nodeIdx[i];
             size_t b = elem.nodeIdx[j];
             if (a < b) std::swap(a, b);
@@ -284,7 +291,7 @@ array::x FEM::buildF(const std::array<Union::XY, 3>& elem, size_t area) const {
         Function::f(elem[2], area)
     };
 
-    double det_D = abs(determinant(elem)) / 24;
+    double det_D = fabs(determinant(elem)) / 24;
     return {                                                                    /// Локальный вектор b
         det_D * (2 * function[0] + function[1] + function[2]),
         det_D * (2 * function[1] + function[0] + function[2]),
@@ -297,11 +304,10 @@ array::xxx FEM::localA(const std::array<Union::XY, 3>& elem, size_t area) const 
     std::array<std::array<double, 3>, 3> M = FEM::M(elem, area);
     std::array<std::array<double, 3>, 3> A = G + M;                             /// Локальная матрица A
     return A;
-
 }
 
 array::xxx FEM::G(const std::array<Union::XY, 3>& elem, size_t area) const {
-    double det   = abs(determinant(elem));
+    double det   = fabs(determinant(elem));
     double _koef = Function::lambda(area) / (2 * det);
 
     std::array<std::array<double, 3>, 3> G;
@@ -319,13 +325,16 @@ array::xxx FEM::G(const std::array<Union::XY, 3>& elem, size_t area) const {
 
     for (int i = 0; i < 3; i++)
     for (int j = 0; j < 3; j++)
-        G[i][j] = _koef * (a[i][0] * a[j][0] + a[i][1] * a[j][1]);
+        G[i][j] = _koef * (
+            a[i][0] * a[j][0] +
+            a[i][1] * a[j][1]
+        );
 
     return G;
 }
 
 array::xxx FEM::M(const std::array<Union::XY, 3>& elem, size_t area) const {
-    double det = abs(determinant(elem));
+    double det = fabs(determinant(elem));
     double gammaKoef = materials[area].gamma * det / 24;
     std::array<std::array<double, 3>, 3> M;
     for (size_t i = 0; i < 3; i++)
@@ -359,7 +368,7 @@ void FEM::portrait(const bool isWriteList) {
     jg.resize(ig[N] - ig[0]);                                                   /// Выделение памяти происходит в данном методе, т.к. размер
     gg.resize(ig[N] - ig[0]);                                                   /// векторов jd и gg равен последнему элементу вектора ig
 
-   for (size_t index = 0, i = 1; i < list.size(); i++)
+    for (size_t index = 0, i = 1; i < list.size(); i++)
     for (size_t value : list[i])
         jg[index++] = value;
 

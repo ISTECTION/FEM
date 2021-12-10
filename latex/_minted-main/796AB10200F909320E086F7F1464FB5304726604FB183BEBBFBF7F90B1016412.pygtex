@@ -4,7 +4,11 @@
 \PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZdq{}LOS/LOS.hpp\PYGZdq{}}
 \PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZdq{}FEM.hpp\PYGZdq{}}
 
+\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}streambuf\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}iostream\PYGZgt{}}
 \PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}optional\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}fstream\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}memory\PYGZgt{}}
 
 \PYG{k+kt}{int}\PYG{+w}{ }\PYG{n+nf}{main}\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{argc}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{char}\PYG{o}{*}\PYG{+w}{ }\PYG{n}{argv}\PYG{p}{[])}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
 \PYG{+w}{    }\PYG{k}{using}\PYG{+w}{ }\PYG{k}{namespace}\PYG{+w}{    }\PYG{o}{::}\PYG{n+nn}{Log}\PYG{p}{;}
@@ -19,7 +23,6 @@
 \PYG{+w}{        }\PYG{p}{.}\PYG{n}{help}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}path to output files\PYGZdq{}}\PYG{p}{);}
 
 \PYG{+w}{    }\PYG{k}{try}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
-
 \PYG{+w}{        }\PYG{n}{\PYGZus{}program}\PYG{p}{.}\PYG{n}{parse\PYGZus{}args}\PYG{p}{(}\PYG{n}{argc}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{argv}\PYG{p}{);}
 
 \PYG{+w}{        }\PYG{n}{std}\PYG{o}{::}\PYG{n}{optional}\PYG{+w}{ }\PYG{n}{\PYGZus{}opt}\PYG{+w}{            }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{\PYGZus{}program}\PYG{p}{.}\PYG{n}{present}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZhy{}o\PYGZdq{}}\PYG{p}{);}
@@ -29,31 +32,28 @@
 \PYG{+w}{                }\PYG{n}{\PYGZus{}program}\PYG{p}{.}\PYG{n}{get}\PYG{o}{\PYGZlt{}}\PYG{n}{std}\PYG{o}{::}\PYG{n}{string}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZhy{}o\PYGZdq{}}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{:}
 \PYG{+w}{                }\PYG{n}{\PYGZus{}input}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}sparse\PYGZdq{}}\PYG{p}{;}
 
-\PYG{+w}{        }\PYG{n}{cxxtimer}\PYG{o}{::}\PYG{n}{Timer}\PYG{+w}{ }\PYG{n+nf}{\PYGZus{}timer}\PYG{p}{(}\PYG{n+nb}{true}\PYG{p}{);}
-\PYG{+w}{        }\PYG{n}{FEM}\PYG{+w}{ }\PYG{n+nf}{\PYGZus{}FEM}\PYG{p}{(}\PYG{n}{\PYGZus{}input}\PYG{p}{);}
+\PYG{+w}{        }\PYG{n}{Function}\PYG{o}{::}\PYG{n}{setFunction}\PYG{p}{(}\PYG{n}{\PYGZus{}input}\PYG{p}{.}\PYG{n}{filename}\PYG{p}{().}\PYG{n}{string}\PYG{p}{());}
 
-\PYG{+w}{        }\PYG{n}{\PYGZus{}FEM}\PYG{p}{.}\PYG{n}{printAll}\PYG{p}{();}\PYG{+w}{        }\PYG{c+c1}{/// print input FEM data}
-\PYG{+w}{        }\PYG{n}{\PYGZus{}FEM}\PYG{p}{.}\PYG{n}{printSparse}\PYG{p}{();}\PYG{+w}{     }\PYG{c+c1}{/// print input FEM data (sparse format)}
-
+\PYG{+w}{        }\PYG{n}{cxxtimer}\PYG{o}{::}\PYG{n}{Timer}\PYG{+w}{ }\PYG{n+nf}{\PYGZus{}timer}\PYG{p}{(}\PYG{n+nb}{true}\PYG{p}{);}\PYG{+w}{       }\PYG{c+c1}{/// start timer}
+\PYG{+w}{        }\PYG{n}{FEM}\PYG{+w}{ }\PYG{n+nf}{\PYGZus{}FEM}\PYG{p}{(}\PYG{n}{\PYGZus{}input}\PYG{p}{);}\PYG{+w}{                   }\PYG{c+c1}{/// start FEM}
 \PYG{+w}{        }\PYG{n}{LOS}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{double}\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{\PYGZus{}LOS}\PYG{+w}{ }\PYG{p}{(}
-\PYG{+w}{            }\PYG{n}{\PYGZus{}FEM}\PYG{p}{.}\PYG{n}{takeDate}\PYG{p}{(),}\PYG{+w}{    }\PYG{c+c1}{/// data}
-\PYG{+w}{            }\PYG{n}{\PYGZus{}FEM}\PYG{p}{.}\PYG{n}{getNodes}\PYG{p}{(),}\PYG{+w}{    }\PYG{c+c1}{/// count nodes}
-\PYG{+w}{            }\PYG{l+m+mf}{1E\PYGZhy{}16}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{1000}\PYG{+w}{ }\PYG{p}{);}\PYG{+w}{      }\PYG{c+c1}{/// epsilon and max iteration}
-\PYG{+w}{        }\PYG{n}{\PYGZus{}LOS}\PYG{p}{.}\PYG{n}{solve}\PYG{p}{(}\PYG{n}{Cond}\PYG{o}{::}\PYG{n}{DIAGONAL}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nb}{true}\PYG{p}{);}
+\PYG{+w}{            }\PYG{n}{\PYGZus{}FEM}\PYG{p}{.}\PYG{n}{takeDate}\PYG{p}{(),}\PYG{+w}{                }\PYG{c+c1}{/// data}
+\PYG{+w}{            }\PYG{n}{\PYGZus{}FEM}\PYG{p}{.}\PYG{n}{getNodes}\PYG{p}{(),}\PYG{+w}{                }\PYG{c+c1}{/// count nodes}
+\PYG{+w}{            }\PYG{l+m+mf}{1E\PYGZhy{}16}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{1000}\PYG{p}{);}\PYG{+w}{                   }\PYG{c+c1}{/// epsilon and max iteration}
+\PYG{+w}{        }\PYG{n}{\PYGZus{}LOS}\PYG{p}{.}\PYG{n}{solve}\PYG{p}{(}\PYG{n}{Cond}\PYG{o}{::}\PYG{n}{DIAGONAL}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nb}{true}\PYG{p}{);}\PYG{+w}{   }\PYG{c+c1}{/// solve LOS + DIAGONAL}
+\PYG{+w}{        }\PYG{n}{\PYGZus{}timer}\PYG{p}{.}\PYG{n}{stop}\PYG{p}{();}\PYG{+w}{                      }\PYG{c+c1}{/// stop timer}
 
-\PYG{+w}{        }\PYG{n}{\PYGZus{}timer}\PYG{p}{.}\PYG{n}{stop}\PYG{p}{();}
-\PYG{+w}{        }\PYG{n}{\PYGZus{}LOS}\PYG{p}{.}\PYG{n}{printX}\PYG{p}{();}\PYG{+w}{          }\PYG{c+c1}{/// print solution vector}
+\PYG{+w}{        }\PYG{n}{\PYGZus{}FEM}\PYG{p}{.}\PYG{n}{printAll}\PYG{p}{();}\PYG{+w}{                    }\PYG{c+c1}{/// print input FEM data}
+\PYG{+w}{        }\PYG{n}{\PYGZus{}FEM}\PYG{p}{.}\PYG{n}{printSparse}\PYG{p}{();}\PYG{+w}{                 }\PYG{c+c1}{/// print sparse format}
+\PYG{+w}{        }\PYG{n}{\PYGZus{}LOS}\PYG{p}{.}\PYG{n}{printX}\PYG{p}{();}\PYG{+w}{                      }\PYG{c+c1}{/// print solution vector}
 
-\PYG{+w}{        }\PYG{n}{std}\PYG{o}{::}\PYG{n}{cout}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Milliseconds: \PYGZdq{}}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}
-\PYG{+w}{            }\PYG{n}{\PYGZus{}timer}\PYG{p}{.}\PYG{n}{count}\PYG{o}{\PYGZlt{}}\PYG{n}{milliseconds}\PYG{o}{\PYGZgt{}}\PYG{p}{();}
+\PYG{+w}{        }\PYG{n}{std}\PYG{o}{::}\PYG{n}{cout}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Milliseconds: \PYGZdq{}}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{n}{\PYGZus{}timer}\PYG{p}{.}\PYG{n}{count}\PYG{o}{\PYGZlt{}}\PYG{n}{milliseconds}\PYG{o}{\PYGZgt{}}\PYG{p}{();}
 
 \PYG{+w}{    }\PYG{p}{\PYGZcb{}}\PYG{+w}{ }\PYG{k}{catch}\PYG{p}{(}\PYG{k}{const}\PYG{+w}{ }\PYG{n}{std}\PYG{o}{::}\PYG{n}{runtime\PYGZus{}error}\PYG{o}{\PYGZam{}}\PYG{+w}{ }\PYG{n}{err}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
-
 \PYG{+w}{        }\PYG{n}{Logger}\PYG{o}{::}\PYG{n}{append}\PYG{p}{(}\PYG{n}{getLog}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}argc != 2 (FEM \PYGZhy{}\PYGZhy{}input ./input)\PYGZdq{}}\PYG{p}{));}
 \PYG{+w}{        }\PYG{n}{std}\PYG{o}{::}\PYG{n}{cerr}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{n}{err}\PYG{p}{.}\PYG{n}{what}\PYG{p}{();}
 \PYG{+w}{        }\PYG{n}{std}\PYG{o}{::}\PYG{n}{cerr}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{n}{\PYGZus{}program}\PYG{p}{;}
-\PYG{+w}{        }\PYG{n}{std}\PYG{o}{::}\PYG{n}{exit}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{);}\PYG{+w}{       }\PYG{c+c1}{/// program termination with error}
-
+\PYG{+w}{        }\PYG{n}{std}\PYG{o}{::}\PYG{n}{exit}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{);}\PYG{+w}{                       }\PYG{c+c1}{/// program error}
 \PYG{+w}{    }\PYG{p}{\PYGZcb{}}
 \PYG{+w}{    }\PYG{k}{return}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
 \PYG{p}{\PYGZcb{}}

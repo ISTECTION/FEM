@@ -85,11 +85,11 @@ void Data<T>::convertToLU() {
         T sum_diag = 0;
         for (size_t j = ig[i]; j < ig[i + 1] ; j++) {
             T sum = 0;
-            int jk = ig[jg[j]];
-            int ik = ig[i];
+            size_t jk = ig[jg[j]];
+            size_t ik = ig[i];
             while ((ik < j) && (jk < ig[jg[j] + 1]))
             {
-                int l = jg[jk] - jg[ik];
+                size_t l = jg[jk] - jg[ik];
                 if (l == 0) {
                     sum += gg_l[jk] * gg_l[ik];
                     ik++; jk++;
@@ -102,7 +102,7 @@ void Data<T>::convertToLU() {
             sum_diag += gg_l[j] * gg_l[j];
         }
         di_l[i] -= sum_diag;
-        di_l[i] = sqrt(abs(di_l[i]));
+        di_l[i] = sqrt(fabs(di_l[i]));
     }
 }
 
