@@ -44,7 +44,7 @@ public:
         assert(readFile(_path));                                                /// Читаем входные данные
         portrait(true);                                                         /// Создаём портрет
         global();                                                               /// Создание глобальной матрицы
-        // boundaryCondition();                                                    /// Учёт краевых условий
+        boundaryCondition();                                                    /// Учёт краевых условий
 
     }
     ~FEM() { }
@@ -166,8 +166,8 @@ void FEM::first(const Union::Boundary& bound) {
     for (size_t k = 0; k < 2; k++) {                                            /// Зануляем в строке все стоящие элементы
         size_t node = bound.nodeIdx[k];                                         /// кроме диагонального и делаем симметричной
         for (size_t i = ig[node]; i < ig[node + 1]; i++) {
-            // if(di[jg[i]] != 1)
-            gb[jg[i]] -= gg[i] * gb[node];                                      /// Отнимаем от правой части зануляемый элемент
+            if(di[jg[i]] != 1)
+                gb[jg[i]] -= gg[i] * gb[node];                                  /// Отнимаем от правой части зануляемый элемент
             gg[i] = 0;                                                          /// Зануление в нижнем треугольнике
         }
 
@@ -176,8 +176,8 @@ void FEM::first(const Union::Boundary& bound) {
             size_t lend = ig[i + 1];
             for(size_t p = lbeg; p < lend; p++) {
                 if(jg[p] == node) {
-                    // if(di[i] != 1)
-                    gb[i] -= gg[p] * gb[node];
+                    if(di[i] != 1)
+                        gb[i] -= gg[p] * gb[node];
                     gg[p] = 0;
                 }
             }

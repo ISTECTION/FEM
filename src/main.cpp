@@ -3,11 +3,9 @@
 #include "LOS/LOS.hpp"
 #include "FEM.hpp"
 
-#include <streambuf>
 #include <iostream>
 #include <optional>
 #include <fstream>
-#include <memory>
 
 int main(int argc, char* argv[]) {
     using namespace    ::Log;
@@ -31,20 +29,22 @@ int main(int argc, char* argv[]) {
                 _program.get<std::string>("-o") :
                 _input / "sparse";
 
-        Function::setFunction(_input.filename().string());
-
+        Function::setFunction(_input.string());
+        
         cxxtimer::Timer _timer(true);       /// start timer
         FEM _FEM(_input);                   /// start FEM
         LOS<double> _LOS (
             _FEM.takeDate(),                /// data
             _FEM.getNodes(),                /// count nodes
             1E-16, 1000);                   /// epsilon and max iteration
-        _LOS.solve(Cond::DIAGONAL, true);   /// solve LOS + DIAGONAL
+        _LOS.solve(Cond::HOLLESKY, true);   /// solve LOS + DIAGONAL
         _timer.stop();                      /// stop timer
 
+        #if DEBUG != 0
         _FEM.printAll();                    /// print input FEM data
         _FEM.printSparse();                 /// print sparse format
         _LOS.printX();                      /// print solution vector
+        #endif
 
         std::cout << "Milliseconds: " << _timer.count<milliseconds>();
 
