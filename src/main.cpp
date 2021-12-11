@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
                 _input / "sparse";
 
         Function::setFunction(_input.string());
-        
+
         cxxtimer::Timer _timer(true);       /// start timer
         FEM _FEM(_input);                   /// start FEM
         LOS<double> _LOS (
@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
         #if DEBUG != 0
         _FEM.printAll();                    /// print input FEM data
         _FEM.printSparse();                 /// print sparse format
-        _LOS.printX();                      /// print solution vector
+        _LOS.printX(14);                    /// print solution vector
         #endif
 
         std::cout << "Milliseconds: " << _timer.count<milliseconds>();

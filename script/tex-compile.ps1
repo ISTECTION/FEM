@@ -1,0 +1,1 @@
+function Tex-Compile ($file) { xelatex --shel-escape -syntex=1 -interaction=nonstopmode $file }

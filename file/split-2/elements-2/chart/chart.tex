@@ -18,35 +18,34 @@
 \thispagestyle{empty}
 
     \begin{center}
-        \begin{tikzpicture}[scale=1.5]
-            \draw[step=1cm,lightgray,very thin] (-0.9,-0.9) grid (5.9,9.9);
+        \begin{tikzpicture}[scale=2]
+            \draw[step=1cm,lightgray,very thin] (-0.9,-0.9) grid (5.9,4.9);
 
             \draw[thick,->] (-0.5,0) -- (5.5,0) node[anchor=north west] {x axis};
-            \draw[thick,->] (0,-0.5) -- (0,9.5) node[anchor=south east] {y axis};
+            \draw[thick,->] (0,-0.5) -- (0,4.5) node[anchor=south east] {y axis};
 
             \foreach \x in {1,2,3,4,5}
                 \draw (\x cm,1pt) -- (\x cm,-1pt) node[anchor=north] {$\x$};
-            \foreach \y in {1,2,3,4,5,6,7,8,9}
+            \foreach \y in {1,2,3,4}
                 \draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east] {$\y$};
 
-            \draw[very thick, blue] (1,1) -- (5,1) -- (5,9);
-            \draw[very thick, blue] (1,1) -- (1,9) -- (5,9);
-            \draw[very thick, blue] (1,1) -- (5,9);
+            \draw[very thick, blue] (1,1) -- (5,1) -- (5,4);
+            \draw[very thick, blue] (1,1) -- (1,4) -- (5,4);
+            \draw[very thick, blue] (1,1) -- (5,4);
 
             \draw[thick, dashed, red] (1,0) -- (1,1);
             \draw[thick, dashed, red] (5,0) -- (5,1);
             \draw[thick, dashed, red] (0,1) -- (1,1);
-            \draw[thick, dashed, red] (0,9) -- (1,9);
+            \draw[thick, dashed, red] (0,4) -- (1,4);
 
             \Large
-            \node[below left] at (1,1) {\color{blue}$0$};
-            \node[above left] at (1,9) {\color{blue}$1$};
-            \node[above right] at (5,9) {\color{blue}$2$};
+            \node[below left]  at (1,1) {\color{blue}$0$};
+            \node[above left]  at (1,4) {\color{blue}$1$};
+            \node[above right] at (5,4) {\color{blue}$2$};
             \node[below right] at (5,1) {\color{blue}$3$};
 
-            \huge
-            \node at (2.5,6.5) {$\Omega_1$};
-            \node at (3.5,3.5) {$\Omega_2$};
+            \node at (2,3) {$\Omega_1$};
+            \node at (4,2) {$\Omega_2$};
             \normalsize
 
         \end{tikzpicture}
