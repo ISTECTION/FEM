@@ -1,25 +1,50 @@
 \documentclass[12pt,a4paper]{article}
 \usepackage[left=20mm,top=20mm,total={170mm,257mm}]{geometry}
 
+\usepackage[main=russian,english]{babel}
+\usepackage{pgfplots}
+
 \newcommand{\romannumeralcaps}[1]{\MakeUppercase{\romannumeral #1}}
 
 \begin{document}
-    \thispagestyle{empty}
+\thispagestyle{empty}
 
+    \begin{center}
+        \begin{tikzpicture}[scale=2]
+            \draw[step=1cm,lightgray,very thin] (-0.9,-0.9) grid (3.9,3.9);
+
+            \draw[thick,->] (-0.5,0) -- (4.5,0) node[anchor=north west] {x axis};
+            \draw[thick,->] (0,-0.5) -- (0,3.5) node[anchor=south east] {y axis};
+
+            \foreach \x in {1,2,3}
+                \draw (\x cm,1pt) -- (\x cm,-1pt) node[anchor=north] {$\x$};
+            \foreach \y in {1,2,3}
+                \draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east] {$\y$};
+
+            \draw[very thick, blue] (1,1) -- (3,1) -- (2,3) -- (1,1);
+
+            \draw[thick, dashed, red] (0,3) -- (2,3);
+            \draw[thick, dashed, red] (0,1) -- (1,1);
+
+            \Large
+            \node[below left]  at (1,1) {\color{blue}$0$};
+            \node[below right] at (3,1) {\color{blue}$1$};
+            \node[above]       at (2,3) {\color{blue}$2$};
+
+            \node at (2,1.75) {$\Omega_1$};
+            \normalsize
+
+        \end{tikzpicture}
+    \end{center}
     \Large
-
     \[ u(x,y) = x \]
-
     \[
-    \lambda = 1 \hspace{15pt}
-    \gamma  = 0 \hspace{15pt}
-    \beta   = 0
+        \lambda = 1 \hspace{15pt}
+        \gamma  = 0 \hspace{15pt}
+        \beta   = 0
     \]
-
     \[ f(x,y) = 0 \]
-
     \begin{eqnarray*}
         \romannumeralcaps{1}_0 = x
     \end{eqnarray*}
-
 \end{document}

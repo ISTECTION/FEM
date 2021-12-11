@@ -2,17 +2,11 @@
 \usepackage[left=20mm,top=20mm,total={170mm,257mm}]{geometry}
 
 \usepackage[main=russian,english]{babel}
-\usepackage[no-math]{fontspec}
-\usepackage{geometry}
-\usepackage[dvips,xetex]{graphicx}
-\usepackage{fancyhdr}
-\usepackage[subpreambles=true]{standalone}
-\usepackage{import}
 \usepackage{pgfplots}
-\pgfplotsset{compat=1.9}
+\usepackage{mathtools}              % Для математических формул
+\usepackage{amsmath}
 
-\setmainfont[Scale=1.0]{Noto Sans}
-\pgfplotsset{experiment/.style = {blue}}
+\newcommand{\romannumeralcaps}[1]{\MakeUppercase{\romannumeral #1}}
 
 \begin{document}
 \thispagestyle{empty}
@@ -51,5 +45,32 @@
                 \draw (1cm-1pt,\y cm) -- (1cm+1pt,\y cm) node[anchor=east] {$\y$};
         \end{tikzpicture}
     \end{center}
+
+
+    \Large
+
+    \[ u(x,y) = -20 \]
+
+    \begin{equation*}
+        \lambda =
+        \begin{cases}
+            10 \\
+            1
+        \end{cases}
+    \end{equation*}
+
+    \[
+    \gamma  = 0 \hspace{15pt}
+    \beta   = 2
+    \]
+
+    \[ f(x,y) = 10x + 4y \]
+
+    \begin{eqnarray*}
+        \romannumeralcaps{1}_0 = & y^2    \\
+        \romannumeralcaps{2}_0 = & 20     \\
+        \romannumeralcaps{2}_1 = & 0      \\
+        \romannumeralcaps{3}_0 = & 20y - 27
+    \end{eqnarray*}
 
 \end{document}
