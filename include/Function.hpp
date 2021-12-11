@@ -11,27 +11,37 @@ using namespace ::Log;
 
 /// path to file - file/...
 static std::unordered_map<std::string, size_t> functions = {
-        {"file/nodes-6",                1 },
-        {"file/nodes-unknown",          2 },
-        {"file/nodes-9",                3 },
+        ///          unidentified        ///
+        {"file/nodes-6",                1  },
+        {"file/nodes-unknown",          2  },
+        {"file/nodes-9",                3  },
 
-        {"file/study-nodes-5",          11},
 
-
-        /// Rombeo test )=( Don't touch ///
+        /// Rombeo test )==( Don't touch ///
         {"file/split-1/elements-2",     100},
         {"file/split-1/elements-4",     100},
         {"file/split-1/elements-8",     100},
         {"file/split-1/elements-16",    100},
 
-        /// My test (function: u = 5x + 2y)
+
+        ///         Verified tests       ///
+        {"file/light-test-u-const",     50 },   /// Non realisation
+        {"file/light-test-u-func",      51 },
+
+
+        /// my test (function: u =5x+2y) ///
         {"file/split-2/elements-2",     101},
         {"file/split-2/elements-4",     101},
         {"file/split-2/elements-8",     101},
         {"file/split-2/elements-16",    101},
 
-        {"error",         0 }
-    };
+
+        ///      tests from textbook     ///
+        {"file/study-nodes-5",          11 },
+
+        ///              error           ///
+        {"error",                       0  }};
+
 
 class Function
 {
@@ -82,6 +92,17 @@ double Function::f(const Union::XY coord, const size_t area){
                     BREAK
 
 
+        case 50:
+                    SWITCH
+                    case 0:  return 0; break;
+                    default: std::exit(1);
+                    BREAK
+        case 51:
+                    SWITCH
+                    case 0:  return 0; break;
+                    default: std::exit(1);
+                    BREAK
+
 
         case 100:
                     SWITCH
@@ -126,6 +147,17 @@ double Function::lambda(size_t area) {
                     BREAK
 
 
+        case 50:
+                    SWITCH
+                    case 0:  return 1; break;
+                    default: std::exit(1);
+                    BREAK
+        case 51:
+                    SWITCH
+                    case 0:  return 1; break;
+                    default: std::exit(1);
+                    BREAK
+
 
         case 100:
                     SWITCH
@@ -168,6 +200,17 @@ double Function::firstBound(const Union::XY coord, const size_t type) {
                     default: std::exit(1);
                     BREAK
 
+
+        case 50:
+                    SWITCH
+                    case 0:  return 1; break;
+                    default: std::exit(1);
+                    BREAK
+        case 51:
+                    SWITCH
+                    case 0:  return coord.x; break;
+                    default: std::exit(1);
+                    BREAK
 
 
         case 100:
@@ -216,6 +259,15 @@ double Function::secondBound(const Union::XY coord, const size_t type) {
                     BREAK
 
 
+        case 50:
+                    SWITCH
+                    default: std::exit(1);
+                    BREAK
+        case 51:
+                    SWITCH
+                    default: std::exit(1);
+                    BREAK
+
 
         case 100:
                     SWITCH
@@ -260,6 +312,15 @@ double Function::thirdBound(const Union::XY coord, const size_t type) {
                     default: std::exit(1);
                     BREAK
 
+
+        case 50:
+                    SWITCH
+                    default: std::exit(1);
+                    BREAK
+        case 51:
+                    SWITCH
+                    default: std::exit(1);
+                    BREAK
 
 
         case 100:

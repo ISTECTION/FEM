@@ -1,0 +1,50 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[left=20mm,top=20mm,total={170mm,257mm}]{geometry}
+
+\usepackage[main=russian,english]{babel}
+\usepackage[no-math]{fontspec}
+\usepackage{geometry}
+\usepackage[dvips,xetex]{graphicx}
+\usepackage{fancyhdr}
+\usepackage[subpreambles=true]{standalone}
+\usepackage{import}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.9}
+
+\setmainfont[Scale=1.0]{Noto Sans}
+\pgfplotsset{experiment/.style = {blue}}
+
+\begin{document}
+\thispagestyle{empty}
+
+    \begin{center}
+        \begin{tikzpicture}[scale=2]
+            \draw[step=1cm,lightgray,very thin] (-0.9,-0.9) grid (3.9,3.9);
+
+            \draw[thick,->] (-0.5,0) -- (4.5,0) node[anchor=north west] {x axis};
+            \draw[thick,->] (0,-0.5) -- (0,3.5) node[anchor=south east] {y axis};
+
+            \foreach \x in {1,2,3}
+                \draw (\x cm,1pt) -- (\x cm,-1pt) node[anchor=north] {$\x$};
+            \foreach \y in {1,2,3}
+                \draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east] {$\y$};
+
+            \draw[very thick, blue] (1,1) -- (3,1) -- (2,3) -- (1,1);
+
+
+            \draw[thick, dashed, red] (0,3) -- (2,3);
+            \draw[thick, dashed, red] (0,1) -- (1,1);
+
+
+            \Large
+            \node[below left]  at (1,1) {\color{blue}$0$};
+            \node[below right] at (3,1) {\color{blue}$1$};
+            \node[above]       at (2,3) {\color{blue}$2$};
+
+            \node at (2,1.75) {$\Omega_1$};
+            \normalsize
+
+        \end{tikzpicture}
+    \end{center}
+
+\end{document}
