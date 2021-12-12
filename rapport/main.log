@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  12 DEC 2021 23:05
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  13 DEC 2021 00:54
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1191,6 +1191,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 475--481
  
  []
 
+
+Package pgfplots Warning: Axis range for axis z is approximately empty; enlarging it (it is [1.0000000000:1.0000000000]) on input line 536.
+
+ [warning /pgfplots/warning/approx empty range enlarged]
 > Step: init table outer spec.
 > Step: parse table options.
 > Step: split table.
@@ -1209,12 +1213,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 475--481
 > Step: build the whole table.
 [8] (./main.aux) ) 
 Here is how much of TeX's memory you used:
- 39418 strings out of 476919
- 1001320 string characters out of 5821391
- 1577461 words of memory out of 5000000
- 58709 multiletter control sequences out of 15000+600000
+ 39841 strings out of 476919
+ 1013767 string characters out of 5821391
+ 1649242 words of memory out of 5000000
+ 59132 multiletter control sequences out of 15000+600000
  409342 words of font info for 67 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 113i,10n,116p,785b,688s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 113i,10n,116p,785b,2334s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 Output written on main.pdf (8 pages).
