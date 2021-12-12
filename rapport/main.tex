@@ -5,18 +5,27 @@
 % https://tools.ietf.org/doc/texlive-doc/latex/minted/minted.pdf
 % - documentation tcolorbox -
 % https://ctan.math.washington.edu/tex-archive/macros/latex/contrib/tcolorbox/tcolorbox.pdf
-
+% - documentation tabular -
+% https://mirror.truenetwork.ru/CTAN/macros/latex/contrib/tabularray/tabularray.pdf
+% - documentation pgfplots -
+% http://www.bakoma-tex.com/doc/latex/pgfplots/pgfplots.pdf
 
 \usepackage{styles/preamble}
 \usepackage{minted}                 % Для вставок с кодом
+\usemintedstyle{vs}                                     % Стиль кода пакета minted
 \usepackage{amsmath}
 \usepackage{mathtools}              % Для математических формул
 
 \usepackage[dvipsnames]{xcolor}
 \setmainfont[Scale=1.0]{Noto Sans}  % Connect font
 
-\usemintedstyle{xcode}                                  % Стиль кода пакета minted
 \definecolor{mintedbackground}{rgb}{0.98,0.98,0.98}     % Color minted background
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}                                           % Версия pgfplots
+\newcommand{\romannumeralcaps}[1]{\MakeUppercase{\romannumeral #1}} % Римские цифры
+
+\usepackage{multicol}           % Мультиколонки
 
 % Property for C++ code
 \newmintedfile[cppcode]{cpp}{
@@ -38,7 +47,6 @@
     breaklines                  % Перенос строк
 }
 
-
 \definecolor{background-gray}{gray}{0.625}
 \usepackage[most]{tcolorbox}    % для управления цветом
 \newtcolorbox{myquote}{
@@ -50,13 +58,14 @@
     boxsep=0pt
 } % настройки области с изменённым фоном
 
+\usepackage{tabularray}
+
 % =================================================
 % НАЧАЛО ДОКУМЕНТА
 % =================================================
 
 \begin{document}
 \import{titlepage/}{title}
-
 
 \section{Условие задачи}                % Условие задачи
 \subsection*{Формулировка задачи}       % Формулировка задачи
@@ -453,537 +462,103 @@ $$
     \end{center}
 \end{myquote}
 
-\begin{minted}[
-    bgcolor=mintedbackground,
-    fontfamily=tt,
-    linenos=true,
-    numberblanklines=true,
-    numbersep=3pt,
-    gobble=0,
-    frame=leftline,
-    framerule=0.2pt,
-    framesep=5pt,
-    funcnamehighlighting=true
-    tabsize=4,
-    mathescape=false,
-    showspaces=false,
-    showtabs=false,
-    baselinestretch=1.1,
-    breaklines
-]{c++}
-#ifndef _FEM_HPP_
-#define _FEM_HPP_
-#include "utils/lightweight.hpp"
-#include "utils/overload.hpp"
-#include "Function.hpp"
-#include "Logger.hpp"
-#include "Union.hpp"
 
-#include <algorithm>
-#include <cmath>
-#include <set>
-
-#define FIRST_BOUNDARY_COND  1
-#define SECOND_BOUNDARY_COND 2
-#define THIRD_BOUNDARY_COND  3
-
-class FEM
-{
-private:
-    Union::Param _size;
-
-    std::vector<Union::XY>       nodes;
-    std::vector<Union::Element>  elems;
-    std::vector<Union::Boundary> boundarys;
-    std::vector<Union::Material> materials;
-
-    std::vector<double> gb;
-    std::vector<double> gg;
-    std::vector<double> di;
-    std::vector<size_t> ig;
-    std::vector<size_t> jg;
-
-public:
-    FEM(std::filesystem::path _path) {
-        assert(readFile(_path));
-        portrait(true);
-        global();
-        boundaryСondition();
-    }
-    ~FEM() { }
-
-    void printAll()    const;
-    void printSparse() const;
-
-    void writeFile(
-        const std::filesystem::path&,
-        const double,
-        const size_t
-    ) const;
-
-private:
-    void global();
-
-    template<size_t N, typename _Struct>
-    void loc_A_to_global(
-        const std::array<std::array<double, N>, N>&,
-        const _Struct&
-    );
-
-    template<size_t N, typename _Struct>
-    void loc_b_to_global(const std::array<double, N>&, const _Struct& );
-
-    array::xxx localA(const std::array<Union::XY, 3>&, size_t) const;
-    array::x   buildF(const std::array<Union::XY, 3>&, size_t) const;
-
-    array::xxx G(const std::array<Union::XY, 3>&, size_t) const;
-    array::xxx M(const std::array<Union::XY, 3>&, size_t) const;
-
-    bool readFile(const std::filesystem::path&  );
-    void portrait(const bool isWriteList = false);
-
-    void boundaryСondition();
-    void first (const Union::Boundary& bound);
-    void second(const Union::Boundary& bound);
-    void third (const Union::Boundary& bound);
-
-    void resize();
-};
-
-void FEM::global() {
-
-    std::array<Union::XY, 3> coords;
-
-    for (size_t i = 0; i < _size.elems; i++) {
-        for (size_t j = 0; j < 3; j++) {
-            size_t point = elems[i].nodeIdx[j];
-            coords[j].x = nodes[point].x;
-            coords[j].y = nodes[point].y;
-        }
-        array::x   local_b = buildF(coords, elems[i].area);
-        array::xxx local_A = localA(coords, elems[i].area);
-
-        pretty(local_A);
-
-        loc_A_to_global<3>(local_A, elems[i]);
-        loc_b_to_global<3>(local_b, elems[i]);
-    }
-}
-
-void FEM::boundaryСondition() {
-    using namespace ::Log;
-
-    for (size_t _count = 0; _count < _size.conds; _count++) {
-
-        switch (boundarys[_count].cond)
-        {
-            case FIRST_BOUNDARY_COND:
-                first(boundarys[_count]);
-                break;
-            case SECOND_BOUNDARY_COND:
-                second(boundarys[_count]);
-                break;
-            case THIRD_BOUNDARY_COND:
-                third(boundarys[_count]);
-                break;
-            default:
-                Logger::append(getLog("There is no such condition"));
-        }
-    }
-}
-
-void FEM::first(const Union::Boundary& bound) {
-    di[bound.nodeIdx[0]] = { 1 };
-    di[bound.nodeIdx[1]] = { 1 };
-
-    for (size_t i = 0; i < 2; i++)
-        gb[bound.nodeIdx[i]] =
-            Function::firstBound({
-                nodes[bound.nodeIdx[i]].x,
-                nodes[bound.nodeIdx[i]].y
-            }, bound.type);
-
-    for (size_t k = 0; k < 2; k++) {
-        size_t node = bound.nodeIdx[k];
-        for (size_t i = ig[node]; i < ig[node + 1]; i++) {
-            gb[jg[i]] -= gg[i] * gb[node];
-            gg[i] = 0;
-        }
-
-        for(size_t i = node + 1; i < _size.nodes; i++) {
-            size_t lbeg = ig[i];
-            size_t lend = ig[i + 1];
-            for(int p = lbeg; p < lend; p++) {
-                if(jg[p] == node) {
-                    gb[i] -= gg[p] * gb[node];
-                    gg[p] = 0;
-                }
-            }
-        }
-    }
-}
-
-void FEM::second(const Union::Boundary& bound) {
-
-    std::array<Union::XY, 2>
-        coord_borders = {
-            nodes[bound.nodeIdx[0]],
-            nodes[bound.nodeIdx[1]]
-        };
-
-    double _koef = edgeLength(coord_borders) / 6;
-
-    std::array<double, 2> corr_b;
-    for (size_t i = 0; i < 2; i++)
-        corr_b[i] = _koef * (
-            2 * Function::secondBound({
-                    nodes[bound.nodeIdx[i]].x,
-                    nodes[bound.nodeIdx[i]].y
-                }, bound.type) +
-                Function::secondBound({
-                    nodes[bound.nodeIdx[1 - i]].x,
-                    nodes[bound.nodeIdx[1 - i]].y
-                }, bound.type)
-            );
-
-    loc_b_to_global<2>(corr_b, bound);
-}
-
-void FEM::third(const Union::Boundary& bound) {
-
-    std::array<Union::XY, 2> coord_borders = {
-        nodes[bound.nodeIdx[0]],
-        nodes[bound.nodeIdx[1]]
-    };
-
-    double _koef =
-        materials[bound.area].betta *
-        edgeLength(coord_borders) / 6;
-
-
-    std::array<std::array<double, 2>, 2> corr_a;
-
-    std::array<double, 2> corr_b;
-    for (size_t i = 0; i < 2; i++) {
-
-        corr_b[i] = _koef * (
-            2 * Function::thirdBound({
-                    nodes[bound.nodeIdx[i]].x,
-                    nodes[bound.nodeIdx[i]].y
-                }, bound.type) +
-                Function::thirdBound({
-                    nodes[bound.nodeIdx[1 - i]].x,
-                    nodes[bound.nodeIdx[1 - i]].y
-                }, bound.type)
-            );
-
-        for (size_t j = 0; j < 2; j++) {
-            corr_a[i][j] =
-                (i == j) ? (2 * _koef) :
-                           (    _koef) ;
-        }
-    }
-    loc_b_to_global<2>(corr_b, bound);
-    loc_A_to_global<2>(corr_a, bound);
-}
-template<size_t N, typename _Struct>
-void FEM::loc_A_to_global(
-        const std::array<std::array<double, N>, N>& locA,
-        const _Struct& elem) {
-
-    using            ::std::vector;
-    using iterator = ::std::vector<size_t>::iterator;
-
-    for (size_t i = 0; i < N; i++) {
-        di[elem.nodeIdx[i]] += locA[i][i];
-
-        for (int j = 0; j < i; j++) {
-            size_t a = elem.nodeIdx[i];
-            size_t b = elem.nodeIdx[j];
-            if (a < b) std::swap(a, b);
-
-            if (ig[a + 1] > ig[a]) {
-                iterator _beg = jg.begin() + ig[a];
-                iterator _end = jg.begin() + ig[a + 1] - ig[0];
-
-                auto _itr = std::lower_bound(_beg, _end, b);
-                auto _idx = _itr - jg.begin();
-                gg[_idx] += locA[i][j];
-            }
-        }
-    }
-}
-
-template<size_t N, typename _Struct>
-void FEM::loc_b_to_global(
-        const std::array<double, N>& loc_b,
-        const _Struct& elem) {
-
-    for (size_t i = 0; i < N; i++)
-        gb[elem.nodeIdx[i]]
-            += loc_b[i];
-}
-
-array::x FEM::buildF(const std::array<Union::XY, 3>& elem, size_t area) const {
-    std::array<double, 3> function {
-        Function::f(elem[0], area),
-        Function::f(elem[1], area),
-        Function::f(elem[2], area)
-    };
-
-    double det_D = abs(determinant(elem)) / 24;
-    return {
-        det_D * (2 * function[0] + function[1] + function[2]),
-        det_D * (2 * function[1] + function[0] + function[2]),
-        det_D * (2 * function[2] + function[0] + function[1]),
-    };
-}
-
-array::xxx FEM::localA(const std::array<Union::XY, 3>& elem, size_t area) const
-    std::array<std::array<double, 3>, 3> G = FEM::G(elem, area);
-    std::array<std::array<double, 3>, 3> M = FEM::M(elem, area);
-    std::array<std::array<double, 3>, 3> A = G + M;
-    return A;
-
-}
-
-array::xxx FEM::G(const std::array<Union::XY, 3>& elem, size_t area) const {
-    double det   = abs(determinant(elem));
-    double _koef = Function::lambda(area) / (2 * det);
-
-    std::array<std::array<double, 3>, 3> G;
-    std::array<std::array<double, 2>, 3> a {
-
-            elem[1].y - elem[2].y,
-            elem[2].x - elem[1].x,
-
-            elem[2].y - elem[0].y,
-            elem[0].x - elem[2].x,
-
-            elem[0].y - elem[1].y,
-            elem[1].x - elem[0].x
-    };
-
-    for (int i = 0; i < 3; i++)
-    for (int j = 0; j < 3; j++)
-        G[i][j] = _koef * (a[i][0] * a[j][0] + a[i][1] * a[j][1]);
-
-    return G;
-}
-
-array::xxx FEM::M(const std::array<Union::XY, 3>& elem, size_t area) const {
-    double det = abs(determinant(elem));
-    double gammaKoef = materials[area].gamma * det / 24;
-    std::array<std::array<double, 3>, 3> M;
-    for (size_t i = 0; i < 3; i++)
-    for (size_t j = 0; j < 3; j++) {
-        M[i][j] =
-            (i == j) ? (2 * gammaKoef) :
-                       (    gammaKoef) ;
-    }
-    return  M;
-}
-
-void FEM::portrait(const bool isWriteList) {
-
-    const size_t N {    _size.nodes     };
-    std::vector<std::set<size_t>> list(N);
-
-    for (size_t el = 0; el < _size.elems; el++)
-    for (size_t point = 0; point < 3; point++) {
-        for (size_t i = point + 1; i < 3; i++) {
-            size_t idx1 = { elems[el].nodeIdx[point] };
-            size_t idx2 = { elems[el].nodeIdx[  i  ] };
-            idx1 > idx2 ?
-                list[idx1].insert(idx2) :
-                list[idx2].insert(idx1) ;
-        }
-    }
-
-    for (size_t i = 2; i < ig.size(); i++)
-        ig[i] = ig[i - 1] + list[i - 1].size();
-
-    jg.resize(ig[N] - ig[0]);
-    gg.resize(ig[N] - ig[0]);
-
-   for (size_t index = 0, i = 1; i < list.size(); i++)
-    for (size_t value : list[i])
-        jg[index++] = value;
-
-    if (isWriteList) {
-        std::cout << "list: " << '\n';
-        for (size_t i = 0; i < list.size(); i++) {
-            std::cout << i << ':' << ' ';
-            for (size_t j : list[i])
-                std::cout << j << ' ';
-            std::cout << std::endl;
-        }
-    }
-}
-
-void FEM::printAll() const {
-    #define PRINTLINE \
-        for (size_t i = 0; i < 20; std::cout << '-', i++);
-    #define ENDLINE std::cout << '\n';
-    SetConsoleOutputCP(65001);
-    PRINTLINE ENDLINE
-    std::cout << "PARAMS:         "                 << '\n';
-    std::cout << "Size nodes:     " << _size.nodes  << '\n';
-    std::cout << "Size element:   " << _size.elems  << '\n';
-    std::cout << "Size areas:     " << _size.areas  << '\n';
-    std::cout << "Size condition: " << _size.conds  << '\n';
-    PRINTLINE ENDLINE
-    std::cout << std::setw(4) << "X" << std::setw(4) << "Y" << '\n';
-    for (size_t i = 0; i < _size.nodes; i++)
-        std::cout << std::setw(4) << nodes[i].x
-                  << std::setw(4) << nodes[i].y << '\n';
-    PRINTLINE ENDLINE
-    std::cout << "Elements: " << '\n';
-    for (size_t i = 0; i < _size.elems; i++)
-        std::cout << elems[i].nodeIdx[0] << ' '
-                  << elems[i].nodeIdx[1] << ' '
-                  << elems[i].nodeIdx[2] << " -> area "
-                  << elems[i].area       << '\n';
-    PRINTLINE ENDLINE
-    std::cout << "Areas: " << '\n';
-    for (size_t i = 0; i < _size.areas; i++) {
-        std::cout << "\u03B3 = " << materials[i].gamma  << ',' << ' '
-                  << "\u03B2 = " << materials[i].betta
-                  << " -> area " << i << '\n';
-    }
-    PRINTLINE ENDLINE
-    std::cout << "Borders: " << '\n';
-    for (size_t i = 0; i < _size.conds; i++)
-        std::cout << boundarys[i].area       << ' '
-                  << boundarys[i].nodeIdx[0] << ' '
-                  << boundarys[i].nodeIdx[1] << ' '
-                  << boundarys[i].cond       << ' '
-                  << boundarys[i].type       << ' ' << '\n';
-    PRINTLINE ENDLINE
-    #undef PRINTLINE
-    #undef ENDLINE
-}
-
-void FEM::printSparse() const {
-    #define PRINTLINE \
-        for (size_t i = 0; i < 20; std::cout << '-', i++); \
-        std::cout << '\n';
-
-    PRINTLINE
-    std::cout << "ig: "; print(ig);
-    std::cout << "jg: "; print(jg);
-    std::cout << "di: "; print(di);
-    std::cout << "gg: "; print(gg);
-    PRINTLINE
-
-    #undef PRINTLINE
-}
-
-bool FEM::readFile(const std::filesystem::path& path) {
-    using namespace ::Log;
-    bool isError { true };
-
-    std::ifstream fin(path / "params.txt");
-    isError &= is_open(fin, getLog("Error - params.txt"));
-    fin >> _size.nodes
-        >> _size.elems
-        >> _size.areas
-        >> _size.conds;
-    fin.close();
-
-    resize();
-    std::fill_n(ig.begin(), 2, 0);
-
-    fin.open(path / "nodes.txt");
-    isError &= is_open(fin, getLog("Error - nodes.txt"));
-    for (size_t i = 0; i < _size.nodes; i++)
-		fin >> nodes[i].x >> nodes[i].y;
-    fin.close();
-
-    fin.open(path / "elems.txt");
-    isError &= is_open(fin, getLog("Error - elems.txt"));
-	for (size_t i = 0; i < _size.elems; i++) {
-		fin >> elems[i].nodeIdx[0]
-            >> elems[i].nodeIdx[1]
-            >> elems[i].nodeIdx[2];
-    }
-    fin.close();
-
-    fin.open(path / "areas.txt");
-    isError &= is_open(fin, getLog("Error - areas.txt"));
-    for (size_t i = 0; i < _size.areas; i++)
-        fin >> materials[i].gamma
-            >> materials[i].betta;
-
-    for (size_t i = 0; i < _size.elems; i++)
-        fin >> elems[i].area;
-    fin.close();
-
-    fin.open(path / "bords.txt");
-    isError &= is_open(fin, getLog("Error - bords.txt"));
-    for (size_t i = 0; i < _size.conds; i++)
-        fin >> boundarys[i].area
-            >> boundarys[i].nodeIdx[0]
-            >> boundarys[i].nodeIdx[1]
-            >> boundarys[i].cond
-            >> boundarys[i].type;
-    fin.close();
-    return isError;
-}
-
-void FEM::writeFile(
-        const std::filesystem::path& _path,
-        const double _eps,
-        const size_t _max_iter) const {
-
-    std::filesystem::create_directories(_path);
-    bool is_dir = std::filesystem::is_directory(_path);
-
-    using namespace ::Log;
-    if (not is_dir) assert(
-        Logger::append(getLog("Error - create directory"))
-    );
-
-    std::ofstream fout(_path / "kuslau.txt");
-    fout << _size.nodes             << '\n';
-    fout << std::scientific << _eps << '\n';
-    fout << _max_iter;
-    fout.close();
-
-    Output::write(_path / "gg.txt", gg, { 14, ' ' });
-    Output::write(_path / "di.txt", di, { 14, ' ' });
-    Output::write(_path / "jg.txt", jg);
-    Output::write(_path / "ig.txt", ig);
-    Output::write(_path / "gb.txt", gb);
-}
-
-void FEM::resize() {
-    nodes.    resize(  _size.nodes  );
-    elems.    resize(  _size.elems  );
-    boundarys.resize(  _size.conds  );
-    materials.resize(  _size.areas  );
-
-    gb.resize(  _size.nodes  );
-    di.resize(  _size.nodes  );
-    ig.resize(_size.nodes + 1);
-}
-
-#undef FIRST_BOUNDARY_COND
-#undef SECOND_BOUNDARY_COND
-#undef THIRD_BOUNDARY_COND
-#endif /// _FEM_HPP_
-\end{minted}
-
-
+% Тестирование
 \section{Тестирование}
+
+\subsection*{Тест №1}
+
+\setlength{\columnsep}{-4.5cm}
+\begin{multicols}{2}
+
+    \setlength{\leftskip}{2.5cm}
+    \noindent   \vspace{5mm} \\
+    $u(x,y)=1$  \vspace{2mm} \\
+    $f(x,y)=0$  \vspace{2mm} \\
+    $\lambda=1$ \vspace{2mm} \\
+    $\gamma=0$  \vspace{2mm} \\
+    $\beta=0$   \vspace{2mm} \\
+
+    \columnbreak
+    \setlength{\leftskip}{2.25cm}
+    \begin{tikzpicture}[scale=1.25]
+        \draw[step=1cm,lightgray,very thin] (-0.9,-0.9) grid (3.9,3.9);     % Сетка
+
+        \draw[thick,->] (-0.5,0) -- (4.5,0) node[anchor=north west] {x};    % Ось X
+        \draw[thick,->] (0,-0.5) -- (0,3.5) node[anchor=south east] {y};    % Ось Y
+
+        % Красные пунктирные линии
+        \draw[thick, dashed, red] (0,3) -- (2,3);
+        \draw[thick, dashed, red] (0,1) -- (1,1);
+
+        % Узлы
+        \node[fill=blue, circle, inner sep=1pt, minimum size=1pt] (A) at (1,1){};
+        \node[fill=blue, circle, inner sep=1pt, minimum size=1pt] (B) at (3,1){};
+        \node[fill=blue, circle, inner sep=1pt, minimum size=1pt] (C) at (2,3){};
+
+        % ПОдписи узлов
+        \node[below left]  at (1,1){\color{blue}$0$};
+        \node[below right] at (3,1){\color{blue}$1$};
+        \node[above]       at (2,3){\color{blue}$2$};
+
+        % Линии с подписями
+        \draw[blue] (A) -- (B) node [midway, below, black] {$S_1$};
+        \draw[blue] (B) -- (C) node [midway, above right, black] {$S_1$};
+        \draw[blue] (C) -- (A) node [midway, above left, black] {$S_1$};
+
+        % Области
+        \node at (2,1.75) {$\Omega_1$};
+
+        % Координаты осей
+        \foreach \x in {1,2,3} \draw (\x cm,1pt) -- (\x cm,-1pt) node[anchor=north] {$\x$};
+        \foreach \y in {1,2,3} \draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east] {$\y$};
+    \end{tikzpicture}
+\end{multicols}
+
+\setlength{\columnsep}{-2.0cm}
+\begin{multicols}{2}
+    \begin{tblr}{vline{1-5}={0mm,solid},
+        row{odd}={bg=azure9},
+        row{1}={bg=azure3,fg=white,font=\sffamily}}
+        \hline[1.25pt]
+        nodes & elems & area & bords     \\
+        \hline
+        1 1   & 0 1 2 & 0    & 0 0 1 1 0 \\
+        3 1   &       &      & 0 1 2 1 0 \\
+        2 3   &       &      & 0 2 0 1 0 \\
+        \hline[1.25pt]
+    \end{tblr}
+
+    \columnbreak
+    \setlength{\leftskip}{1cm}
+    \begin{tblr}{vline{1-5} = {0mm,solid},
+        row{odd}={bg=azure9},
+        row{1}={bg=azure3,fg=white,font=\sffamily}}
+        \hline[1.25pt]
+        $x$ & $x^*$ & $x^*-x$ & $\|x^*-x\|$ \\
+        1.000 & 1.000 & 0.00E+00 &          \\
+        1.000 & 1.000 & 0.00E+00 & 0.00E+00 \\
+        1.000 & 1.000 & 0.00E+00 &          \\
+        \hline[1.25pt]
+    \end{tblr}
+\end{multicols}
+
+% $\romannumeralcaps{1}_0 = 1$
+
+
+
+% \renewcommand{\arraystretch}{2}     % Растянуть таблицу
+% \renewcommand{\tabcolsep}{5mm}      % Отступы между столбацами
+% \centering %  Центрирование
+
+
+\raggedright % Прижать к левому краю
 \section{Выводы}
 
+gdfgdfgddgdgd
+
 \end{document}
-
-
-
 % ~~~~~~~~ INFO ~~~~~~~~ %
-
 % Добавления кода в одну строку
 % \inputminted[
 % baselinestretch=1.0,

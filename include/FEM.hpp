@@ -45,7 +45,6 @@ public:
         portrait(true);                                                         /// Создаём портрет
         global();                                                               /// Создание глобальной матрицы
         boundaryCondition();                                                    /// Учёт краевых условий
-
     }
     ~FEM() { }
 
@@ -57,6 +56,15 @@ public:
         const double,
         const size_t
     ) const;
+
+    void printAnalitics() {
+        std::vector<size_t> ax;                                                 /// Вектор с аналитическим решением
+        ax.resize(_size.nodes);
+        for (size_t i = 0; i < _size.nodes; i++)
+            ax[i] = Function::analitics(
+                nodes[i]);
+        pretty(ax);
+    }
 
     size_t    getNodes() { return _size.nodes; }
     Friendly* takeDate() {
@@ -455,11 +463,17 @@ bool FEM::readFile(const std::filesystem::path& path) {
 
     resize();                                                                   /// Выделение памяти под вектора
     std::fill_n(ig.begin(), 2, 0);                                              /// Заполнение первых 2 ячеек веткора ig нулями
-                                                                                ///         (при желании можно поменять на единицы)
+
     fin.open(path / "nodes.txt");
     isError &= is_open(fin, getLog("Error - nodes.txt"));
     for (size_t i = 0; i < _size.nodes; i++)
 		fin >> nodes[i].x >> nodes[i].y;
+    fin.close();
+
+    fin.open(path / "nodes_area.txt");
+    isError &= is_open(fin, getLog("Error - nodes_area.txt"));
+    for (size_t i = 0; i < _size.nodes; i++)
+        fin >> nodes[i].area;
     fin.close();
 
     fin.open(path / "elems.txt");

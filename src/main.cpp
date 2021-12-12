@@ -44,8 +44,10 @@ int main(int argc, char* argv[]) {
         _FEM.printAll();                    /// print input FEM data
         _FEM.printSparse();                 /// print sparse format
         _LOS.printX(14);                    /// print solution vector
+        _FEM.printAnalitics();              /// print analicals solve
         #endif
 
+        std::cout << std::scientific << 0.1341234 << std::endl;
         std::cout << "Milliseconds: " << _timer.count<milliseconds>();
 
     } catch(const std::runtime_error& err) {

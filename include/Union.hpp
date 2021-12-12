@@ -11,6 +11,7 @@ _UNION_BEGIN
 struct XY {
     double x;                                                                   /// Координаты узла по X
     double y;                                                                   /// Координаты узла по Y
+    size_t area;                                                                /// Область координаты для аналитической функции
 };
 
 struct Material {
