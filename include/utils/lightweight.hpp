@@ -1,6 +1,7 @@
 #ifndef _LIGHTWEIGHT_HPP_
 #define _LIGHTWEIGHT_HPP_
 #include "../Union.hpp"
+#include "friendly.hpp"
 #include <windows.h>
 
 #include <filesystem>

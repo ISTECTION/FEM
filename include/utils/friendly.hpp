@@ -2,6 +2,14 @@
 #define _FRIENDLY_HPP_
 #include <vector>
 
+struct Sparse {
+    std::vector<double> gg;
+    std::vector<double> di;
+    std::vector<size_t> ig;
+    std::vector<size_t> jg;
+};
+
+
 struct Friendly {
     std::vector<double>& gb;
     std::vector<double>& gg;

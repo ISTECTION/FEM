@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  13 DEC 2021 00:54
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  13 DEC 2021 19:05
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1183,16 +1183,172 @@ Missing character: There is no Г ("413) in font cmmi8!
 [5]
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/b/n' will be
 (Font)              scaled to size 12.0pt on input line 454.
- (./_minted-main/default-pyg-prefix.pygstyle) (./_minted-main/vs.pygstyle) (./_minted-main/3A3F92AA02C89C06928A9D408226013004726604FB183BEBBFBF7F90B1016412.pygtex
+ (./_minted-main/default-pyg-prefix.pygstyle) (./_minted-main/vs.pygstyle) (./_minted-main/3A3F92AA02C89C06928A9D408226013056BF1A09C8F559D9906C82508026A994.pygtex
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/n' will be
 (Font)              scaled to size 6.0pt on input line 2.
-) [6] [7]
-Underfull \hbox (badness 10000) in paragraph at lines 475--481
- 
+) [6] (./_minted-main/EEB35251A7335A0C49DBEAC2DB066BB538EAA7AE166122FC5A6D7255FAF69EBF.pygtex)
+Overfull \vbox (3.33801pt too high) detected at line 464
+ []
+
+[7]
+runsystem(pygmentize -l cpp -f latex -P commandprefix=PYG -F tokenmerge -F gobble:n=0 -P funcnamehighlighting=True -P mathescape=True -o _minted-main/719E61399A51E79E898DD10D7CC97695FA57E529A413609C5A688EAC7C3E5227.pygtex source/FEM.hpp)...executed.
+
+ (./_minted-main/719E61399A51E79E898DD10D7CC97695FA57E529A413609C5A688EAC7C3E5227.pygtex)
+Overfull \vbox (3.25401pt too high) detected at line 471
+ []
+
+[8]
+Underfull \vbox (badness 10000) detected at line 471
  []
 
 
-Package pgfplots Warning: Axis range for axis z is approximately empty; enlarging it (it is [1.0000000000:1.0000000000]) on input line 536.
+Underfull \vbox (badness 10000) detected at line 471
+ []
+
+[9]
+Underfull \vbox (badness 10000) detected at line 471
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 471
+ []
+
+[10]
+Underfull \vbox (badness 10000) detected at line 471
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 471
+ []
+
+[11]
+Underfull \vbox (badness 10000) detected at line 471
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 471
+ []
+
+[12]
+Underfull \vbox (badness 10000) detected at line 471
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 471
+ []
+
+[13]
+Underfull \vbox (badness 10000) detected at line 471
+ []
+
+
+Overfull \vbox (5.76344pt too high) detected at line 471
+ []
+
+[14]
+Underfull \vbox (badness 10000) detected at line 471
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 471
+ []
+
+[15]
+Underfull \vbox (badness 10000) detected at line 471
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 471
+ []
+
+[16]
+Underfull \vbox (badness 10000) detected at line 471
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 471
+ []
+
+[17]
+Underfull \vbox (badness 10000) detected at line 471
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 471
+ []
+
+[18]
+Underfull \vbox (badness 10000) detected at line 471
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 471
+ []
+
+[19] (./_minted-main/C7E97BF1F8FFB620E125498AAE561DB931F531E5DA9D3518EC5C6384DB37D7C0.pygtex)
+Overfull \vbox (3.25401pt too high) detected at line 478
+ []
+
+[20]
+Underfull \vbox (badness 10000) detected at line 478
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 478
+ []
+
+[21]
+Underfull \vbox (badness 10000) detected at line 478
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 478
+ []
+
+[22]
+Underfull \vbox (badness 10000) detected at line 478
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 478
+ []
+
+[23] (./_minted-main/AD912611123E49E3E97DF6106294EF64C5BBD61B19955BE1808CE2B81B32653A.pygtex)
+Overfull \vbox (3.25401pt too high) detected at line 485
+ []
+
+[24]
+Underfull \vbox (badness 10000) detected at line 485
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 485
+ []
+
+[25]
+Underfull \vbox (badness 10000) detected at line 485
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 485
+ []
+
+[26] (./_minted-main/77CD9C8293F6F09EAC781C6C3C55D946374BFB77B1089A76075B2D133DC69DA4.pygtex)
+Overfull \vbox (3.33801pt too high) detected at line 492
+ []
+
+[27] (./_minted-main/3C164D551678866588DFC4C1DACE4CA5D39DC2AD74E47CACD64C689AD8CB667D.pygtex)
+Overfull \vbox (3.33801pt too high) detected at line 499
+ []
+
+[28] (./_minted-main/C1B88A357F33AF46D659DD44BEFF60E4495A091686F55359409EBCB61C1EB6C3.pygtex)
+Underfull \hbox (badness 10000) in paragraph at lines 517--523
+ 
+ []
+
+[29]
+
+Package pgfplots Warning: Axis range for axis z is approximately empty; enlarging it (it is [1.0000000000:1.0000000000]) on input line 578.
 
  [warning /pgfplots/warning/approx empty range enlarged]
 > Step: init table outer spec.
@@ -1211,14 +1367,16 @@ Package pgfplots Warning: Axis range for axis z is approximately empty; enlargin
 > Step: execute table commands.
 > Step: calculate cell and line sizes.
 > Step: build the whole table.
-[8] (./main.aux) ) 
+runsystem(del _minted-main\3318468E0C31114055E8675EED24BFA4FA57E529A413609C5A688EAC7C3E5227.pygtex)...executed.
+
+[30] (./main.aux) ) 
 Here is how much of TeX's memory you used:
- 39841 strings out of 476919
- 1013767 string characters out of 5821391
- 1649242 words of memory out of 5000000
- 59132 multiletter control sequences out of 15000+600000
- 409342 words of font info for 67 fonts, out of 8000000 for 9000
+ 39889 strings out of 476919
+ 1016901 string characters out of 5821391
+ 1718044 words of memory out of 5000000
+ 59156 multiletter control sequences out of 15000+600000
+ 409577 words of font info for 69 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  113i,10n,116p,785b,2334s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on main.pdf (8 pages).
+Output written on main.pdf (30 pages).

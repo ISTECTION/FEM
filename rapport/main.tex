@@ -19,6 +19,7 @@
 \usepackage[dvipsnames]{xcolor}
 \setmainfont[Scale=1.0]{Noto Sans}  % Connect font
 
+\definecolor{background-gray}{gray}{1}
 \definecolor{mintedbackground}{rgb}{0.98,0.98,0.98}     % Color minted background
 
 \usepackage{pgfplots}
@@ -29,7 +30,7 @@
 
 % Property for C++ code
 \newmintedfile[cppcode]{cpp}{
-    bgcolor=mintedbackground,   % Background
+    bgcolor=background-gray,    % Background
     fontfamily=tt,              % Font
     linenos=true,               % Numbering
     numberblanklines=true,      %
@@ -37,21 +38,20 @@
     gobble=0,                   % Сожрать первые символы каждой строки
     frame=leftline,             % Left line
     framerule=0.2pt,            % Ширина линии
-    framesep=5pt,               % Отступ от разделителя
+    framesep=10pt,              % Отступ от разделителя
     funcnamehighlighting=true,  %
     tabsize=4,                  % Количество пробелов табуляции
     mathescape=true,            % Включение математических формул
     showspaces=false,           % Показывать пробелы
     showtabs=false,             % Показывать табуляции
-    baselinestretch=1.1,        % Расстояние между строчками
+    baselinestretch=1,          % Расстояние между строчками
     breaklines                  % Перенос строк
 }
 
-\definecolor{background-gray}{gray}{0.625}
 \usepackage[most]{tcolorbox}    % для управления цветом
 \newtcolorbox{myquote}{
     colback=background-gray,
-    coltext=white,
+    coltext=black,
     grow to right by=-1mm,
     grow to left by=-1mm,
     boxrule=-1mm,
@@ -454,14 +454,56 @@ $$
         \textbf{main.cpp}
     \end{center}
 \end{myquote}
-\cppcode{../src/main.cpp}
+\cppcode{source/main.cpp}
+
+\begin{myquote}
+    \begin{center}
+        \textbf{Union.hpp}
+    \end{center}
+\end{myquote}
+\cppcode{source/Union.hpp}
 
 \begin{myquote}
     \begin{center}
         \textbf{FEM.hpp}
     \end{center}
 \end{myquote}
+\cppcode{source/FEM.hpp}
 
+\begin{myquote}
+    \begin{center}
+        \textbf{Data.hpp}
+    \end{center}
+\end{myquote}
+\cppcode{source/Data.hpp}
+
+\begin{myquote}
+    \begin{center}
+        \textbf{LOS.hpp}
+    \end{center}
+\end{myquote}
+\cppcode{source/LOS.hpp}
+
+\begin{myquote}
+    \begin{center}
+        \textbf{LOS\_Function.hpp}
+    \end{center}
+\end{myquote}
+\cppcode{source/LOS_Function.hpp}
+
+\begin{myquote}
+    \begin{center}
+        \textbf{lightweight.hpp}
+    \end{center}
+\end{myquote}
+\cppcode{source/lightweight.hpp}
+
+\begin{myquote}
+    \begin{center}
+        \textbf{overload.hpp}
+    \end{center}
+\end{myquote}
+\cppcode{source/overload.hpp}
 
 % Тестирование
 \section{Тестирование}
