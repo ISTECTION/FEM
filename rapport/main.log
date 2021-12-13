@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  13 DEC 2021 23:02
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  14 DEC 2021 02:13
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1299,13 +1299,7 @@ Missing character: There is no Г ("413) in font cmmi8!
 [7]
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/b/n' will be
 (Font)              scaled to size 12.0pt on input line 602.
- (./_minted-main/default-pyg-prefix.pygstyle) (./_minted-main/vs.pygstyle)
-runsystem(pygmentize -l cpp -f latex -P commandprefix=PYG -F tokenmerge -F gobble:n=0 -P funcnamehighlighting=True -P mathescape=True -o _minted-main/1FC30ECA74E56EC9C42FC2611C924C1256BF1A09C8F559D9906C82508026A994.pygtex source/main.cpp)...executed.
-
- (./_minted-main/1FC30ECA74E56EC9C42FC2611C924C1256BF1A09C8F559D9906C82508026A994.pygtex) [8]
-runsystem(pygmentize -l cpp -f latex -P commandprefix=PYG -F tokenmerge -F gobble:n=0 -P funcnamehighlighting=True -P mathescape=True -o _minted-main/2665A1C894C69D6BB0B53F6764337A8038EAA7AE166122FC5A6D7255FAF69EBF.pygtex source/Union.hpp)...executed.
-
- (./_minted-main/2665A1C894C69D6BB0B53F6764337A8038EAA7AE166122FC5A6D7255FAF69EBF.pygtex)
+ (./_minted-main/default-pyg-prefix.pygstyle) (./_minted-main/vs.pygstyle) (./_minted-main/1FC30ECA74E56EC9C42FC2611C924C1256BF1A09C8F559D9906C82508026A994.pygtex) [8] (./_minted-main/2665A1C894C69D6BB0B53F6764337A8038EAA7AE166122FC5A6D7255FAF69EBF.pygtex)
 Overfull \vbox (3.33801pt too high) detected at line 612
  []
 
@@ -1369,10 +1363,7 @@ Underfull \vbox (badness 10000) detected at line 619
 Underfull \vbox (badness 10000) detected at line 619
  []
 
-[17]
-runsystem(pygmentize -l cpp -f latex -P commandprefix=PYG -F tokenmerge -F gobble:n=0 -P funcnamehighlighting=True -P mathescape=True -o _minted-main/3F1D0E36B517E4DB2E0E1327C72BC53C31F531E5DA9D3518EC5C6384DB37D7C0.pygtex source/Data.hpp)...executed.
-
- [18] (./_minted-main/3F1D0E36B517E4DB2E0E1327C72BC53C31F531E5DA9D3518EC5C6384DB37D7C0.pygtex)
+[17] [18] (./_minted-main/3F1D0E36B517E4DB2E0E1327C72BC53C31F531E5DA9D3518EC5C6384DB37D7C0.pygtex)
 Overfull \vbox (4.25394pt too high) detected at line 626
  []
 
@@ -1392,10 +1383,7 @@ Underfull \vbox (badness 10000) detected at line 626
 Underfull \vbox (badness 10000) detected at line 626
  []
 
-[21]
-runsystem(pygmentize -l cpp -f latex -P commandprefix=PYG -F tokenmerge -F gobble:n=0 -P funcnamehighlighting=True -P mathescape=True -o _minted-main/536BC50812BB911F5DF8465A29D83C37C5BBD61B19955BE1808CE2B81B32653A.pygtex source/LOS.hpp)...executed.
-
- (./_minted-main/536BC50812BB911F5DF8465A29D83C37C5BBD61B19955BE1808CE2B81B32653A.pygtex)
+[21] (./_minted-main/536BC50812BB911F5DF8465A29D83C37C5BBD61B19955BE1808CE2B81B32653A.pygtex)
 Overfull \vbox (3.25401pt too high) detected at line 633
  []
 
@@ -1456,24 +1444,37 @@ Package pgfplots Warning: Axis range for axis z is approximately empty; enlargin
 > Step: execute table commands.
 > Step: calculate cell and line sizes.
 > Step: build the whole table.
-runsystem(del _minted-main\AD31ADD9C47743DF4DDE52E34C7C49B156BF1A09C8F559D9906C82508026A994.pygtex)...executed.
+[28]
+Underfull \hbox (badness 10000) in paragraph at lines 766--772
+ 
+ []
 
-runsystem(del _minted-main\DB590CB9557B6D1E063609A68FEEA97538EAA7AE166122FC5A6D7255FAF69EBF.pygtex)...executed.
-
-runsystem(del _minted-main\1678D4B35595ABC2D8FB98F6B8B96F9F31F531E5DA9D3518EC5C6384DB37D7C0.pygtex)...executed.
-
-runsystem(del _minted-main\AD912611123E49E3E97DF6106294EF64C5BBD61B19955BE1808CE2B81B32653A.pygtex)...executed.
-
-[28] [29] (./main.aux)
+> Step: init table outer spec.
+> Step: parse table options.
+> Step: split table.
+> Step: init table inner spec.
+> Step: parse table inner spec.
+> Step: execute table commands.
+> Step: calculate cell and line sizes.
+> Step: build the whole table.
+> Step: init table outer spec.
+> Step: parse table options.
+> Step: split table.
+> Step: init table inner spec.
+> Step: parse table inner spec.
+> Step: execute table commands.
+> Step: calculate cell and line sizes.
+> Step: build the whole table.
+[29] (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: A6268DE9D373BD04A15FF4F00CDF8553;548.
  ) 
 Here is how much of TeX's memory you used:
- 46048 strings out of 476919
- 1108871 string characters out of 5821391
- 1790402 words of memory out of 5000000
- 65222 multiletter control sequences out of 15000+600000
- 409945 words of font info for 71 fonts, out of 8000000 for 9000
+ 46108 strings out of 476919
+ 1110093 string characters out of 5821391
+ 1801156 words of memory out of 5000000
+ 65286 multiletter control sequences out of 15000+600000
+ 412403 words of font info for 77 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  113i,10n,116p,785b,2339s stack positions out of 5000i,500n,10000p,200000b,80000s
 

@@ -164,6 +164,7 @@ double Function::analitics(const Union::XY coord, size_t area){
                     BREAK
         case 101:
                     SWITCH
+                    case 0: return 5 * coord.x + 2 * coord.y;
                     default: std::exit(1);
                     BREAK
         default:

@@ -33,9 +33,9 @@ int main(int argc, char* argv[]) {
 
         cxxtimer::Timer _timer(true);           /// start timer
         FEM _FEM(_input);                       /// start FEM
-        _FEM.writeFile(_output, 1E-14, 10000);  /// overwriting files
+        _FEM.writeFile(_output, 1E-30, 10000);  /// overwriting files
         LOS<double> _LOS(_output);              /// here is reading
-        _LOS.solve(Cond::DIAGONAL, true);
+        _LOS.solve(Cond::HOLLESKY, true);
         _timer.stop();                          /// stop timer
 
         #if DEBUG != 0

@@ -686,7 +686,7 @@ $$
         \node[fill=blue, circle, inner sep=1pt, minimum size=1pt] (B) at (3,1){};
         \node[fill=blue, circle, inner sep=1pt, minimum size=1pt] (C) at (2,3){};
 
-        % ПОдписи узлов
+        % Подписи узлов
         \node[below left]  at (1,1){\color{blue}$0$};
         \node[below right] at (3,1){\color{blue}$1$};
         \node[above]       at (2,3){\color{blue}$2$};
@@ -755,10 +755,131 @@ $$
     \end{tblr}
 \end{multicols}
 
+\newpage
 \subsection*{Тест №2}
+\subsubsection*{Количество елементов - 2}
+
+\setlength{\columnsep}{-4.5cm}
+\begin{multicols}{2}
+
+    \setlength{\leftskip}{2.5cm}
+    \noindent   \vspace{5mm} \\
+    $u(x,y)=5x+2y$  \vspace{2mm} \\
+    $f(x,y)=10x+4y$ \vspace{2mm} \\
+    $\lambda=2$ \vspace{2mm} \\
+    $\gamma=2$  \vspace{2mm} \\
+    $\beta=5$   \vspace{2mm} \\
+
+    \columnbreak
+    \setlength{\leftskip}{2.25cm}
+    \begin{tikzpicture}[scale=1.0]
+        \draw[step=1cm,lightgray,very thin] (-0.9,-0.9) grid (5.9,4.9);
+
+        \draw[thick,->] (-0.5,0) -- (5.5,0) node[anchor=north west] {x};
+        \draw[thick,->] (0,-0.5) -- (0,4.5) node[anchor=south east] {y};
+
+        % Красные пунктирные линии
+        \draw[thick, dashed, red] (1,0) -- (1,1);
+        \draw[thick, dashed, red] (5,0) -- (5,1);
+        \draw[thick, dashed, red] (0,1) -- (1,1);
+        \draw[thick, dashed, red] (0,4) -- (1,4);
+
+        % Узлы
+        \node[fill=blue, circle, inner sep=1pt, minimum size=1pt] (A) at (1,1){};
+        \node[fill=blue, circle, inner sep=1pt, minimum size=1pt] (B) at (5,1){};
+        \node[fill=blue, circle, inner sep=1pt, minimum size=1pt] (C) at (5,4){};
+        \node[fill=blue, circle, inner sep=1pt, minimum size=1pt] (D) at (1,4){};
+
+        % Подписи узлов
+        \node[below left]  at (1,1) {\color{blue}$0$};
+        \node[above left]  at (1,4) {\color{blue}$1$};
+        \node[above right] at (5,4) {\color{blue}$2$};
+        \node[below right] at (5,1) {\color{blue}$3$};
+
+        % Линии с подписями
+        \draw[blue] (A) -- (B) node [midway, below, black] {$S_1$};
+        \draw[blue] (A) -- (D) node [midway, left , black] {$S_2^1$};
+        \draw[blue] (B) -- (C) node [midway, right, black] {$S_2^2$};
+        \draw[blue] (D) -- (C) node [midway, above, black] {$S_3$};
+        \draw[very thick, blue] (1,1) -- (5,4);
+
+        % Области
+        \node at (2,3) {$\Omega_1$};
+        \node at (4,2) {$\Omega_2$};
+
+        % Координаты осей
+        \foreach \x in {1,2,3,4,5} \draw (\x cm,1pt) -- (\x cm,-1pt) node[anchor=north] {$\x$};
+        \foreach \y in {1,2,3,4} \draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east] {$\y$};
+    \end{tikzpicture}
+\end{multicols}
+
+
+
+\setlength{\columnsep}{-2.0cm}
+\begin{multicols}{2}
+    \setlength{\leftskip}{2.5cm}
+    \noindent   \vspace{5mm} \\
+    $\romannumeralcaps{1}_0 = 5x + 2$ \\
+    $\romannumeralcaps{2}_0 = -10$    \\
+    $\romannumeralcaps{2}_1 = 10$     \\
+    $\romannumeralcaps{3}_0 = 5x + 8,8$
+
+    \columnbreak
+    \setlength{\leftskip}{1cm}
+    \begin{tikzpicture}[scale=0.9]
+        \begin{axis}[view={-60}{30}]
+            \addplot3[
+                surf,
+                domain=1:5,
+                domain y=1:4,
+                samples=10,
+                fill opacity=0.75,
+                shader=interp
+            ]
+            {5*x+2*y};
+        \end{axis}
+    \end{tikzpicture}
+\end{multicols}
+
+\setlength{\columnsep}{-2.0cm}
+\begin{multicols}{2}
+    \begin{tblr}{vline{1-5}={0mm,solid},
+        row{odd}={bg=azure9},
+        row{1}={bg=azure3,fg=white,font=\sffamily}}
+        \hline[1.25pt]
+        nodes & elems & area & bords     \\
+        \hline
+        1 1   & 0 1 2 & 0    & 0 0 3 1 0 \\
+        1 4   & 0 2 3 & 0    & 0 0 1 2 0 \\
+        5 4   &       &      & 0 3 2 2 1 \\
+        5 1   &       &      & 0 1 2 3 0 \\
+        \hline[1.25pt]
+    \end{tblr}
+
+    \columnbreak
+    \setlength{\leftskip}{1cm}
+    \begin{tblr}{vline{1-5} = {0mm,solid},
+        row{odd}={bg=azure9},
+        row{1}={bg=azure3,fg=white,font=\sffamily}}
+        \hline[1.25pt]
+        $x$ & $x^*$ & $x^*-x$ & $\|x^*-x\|$    \\
+         7.000 &  7.000 &  0.00E+00 &          \\
+        13.000 & 13.000 & -9.61E-08 & 3.04E-07 \\
+        33.000 & 32.999 &  2.88E-07 &          \\
+        27.000 & 27.000 &  0.00E+00 &          \\
+        \hline[1.25pt]
+    \end{tblr}
+\end{multicols}
+
+\subsubsection*{Количество елементов - 4}
+\subsubsection*{Количество елементов - 8}
+\subsubsection*{Количество елементов - 16}
+
+
+
+
 \subsection*{Тест №3}
-\subsection*{Тест №4}
-\subsection*{Тест №5}
+
 
 
 
