@@ -71,6 +71,7 @@
         "any": "cpp",
         "numeric": "cpp",
         "unordered_map": "cpp",
-        "xhash": "cpp"
+        "xhash": "cpp",
+        "unordered_set": "cpp"
     }
 }

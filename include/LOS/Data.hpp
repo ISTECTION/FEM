@@ -63,9 +63,8 @@ public:
     }
     ~Data() { }
 
-    std::vector<T>& getX() const { return x;    }                               /// Получить вектор решений
-    size_t  getIteration() const { return iter; }                               /// Получить количество итераций
-    void printX(std::streamsize count = 0) const;                               /// Вывести вектор решений
+    const std::vector<T>& getX() const { return x;    }                         /// Получить вектор решений
+    size_t getIteration()        const { return iter; }                         /// Получить количество итераций
 
     void convertToLU();                                                         /// LL^T-разложение
     std::vector<T> normal (std::vector<T> b);                                   /// Прямой   ход
@@ -142,21 +141,6 @@ std::vector<T> Data<T>::mult(const std::vector<T>& _vec) {
         }
     }
     return pr;
-}
-
-template <class T>
-void Data<T>::printX(std::streamsize count) const {
-    std::ostringstream ostream;
-    ostream << '\n';
-    if (count) {
-        ostream.setf(std::ios::fixed);
-        ostream.precision(count);
-    }
-    ostream << "[ ";
-    for (size_t i = 0; i < x.size(); i++)
-        ostream << x[i] << " ";
-    ostream << "]\n";
-    std::cout << ostream.str();
 }
 
 template <typename T>

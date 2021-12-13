@@ -53,7 +53,7 @@ public:
 
     static double lambda(size_t area);
     static double f(const Union::XY coord, const size_t area);
-    static double analitics(const Union::XY coord);
+    static double analitics(const Union::XY coord, size_t area);
 
     static double firstBound (const Union::XY coord, const size_t type);
     static double secondBound(const Union::XY coord, const size_t type);
@@ -125,9 +125,9 @@ double Function::f(const Union::XY coord, const size_t area){
 }
 
 
-double Function::analitics(const Union::XY coord){
+double Function::analitics(const Union::XY coord, size_t area){
 
-    #define SWITCH switch (coord.area) {
+    #define SWITCH switch (area) {
     #define BREAK  } break;
 
     switch (Function::_func) {
@@ -141,6 +141,8 @@ double Function::analitics(const Union::XY coord){
                     BREAK
         case 11:
                     SWITCH
+                    case 0: return coord.y * coord.y;
+                    case 1: return 20 * coord.y - 19;
                     default: std::exit(1);
                     BREAK
 

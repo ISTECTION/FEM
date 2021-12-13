@@ -45,11 +45,20 @@ void printXXX(const std::array<std::array<T, _Size>, _Size>& A) {               
     #undef ENDLINE
 }
 
-template<typename T>                                                            /// Примитивный вывод вектора
-void print(const std::vector<T>& _vec) {
-    for (size_t _pos = 0; _pos < _vec.size(); _pos++)
-        std::cout << _vec[_pos] << ' ';
-    std::cout << std::endl;
+
+
+template <typename T>
+void print(const std::vector<T>& _vec, std::streamsize count = 0) {             /// Примитивный вывод вектора
+    std::ostringstream ostream;
+    if (count) {
+        ostream.setf(std::ios::fixed);
+        ostream.precision(count);
+    }
+    ostream << "[ ";
+    for (size_t i = 0; i < _vec.size(); i++)
+        ostream << _vec[i] << " ";
+    ostream << "]\n";
+    std::cout << ostream.str();
 }
 
 template<typename _It>                                                          /// Красивый вывод, для двумерных:

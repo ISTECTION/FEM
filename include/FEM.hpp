@@ -60,10 +60,16 @@ public:
     void printAnalitics() {
         std::vector<size_t> ax;                                                 /// Вектор с аналитическим решением
         ax.resize(_size.nodes);
-        for (size_t i = 0; i < _size.nodes; i++)
-            ax[i] = Function::analitics(
-                nodes[i]);
-        pretty(ax);
+
+        for (const auto& _elem : elems) {
+            for (size_t i = 0; i < 3; i++)
+                ax[_elem.nodeIdx[i]] =
+                    Function::analitics(
+                        nodes[_elem.nodeIdx[i]],
+                        _elem.area
+                    );
+        }
+        std::cout << "ANALITIC: "; print(ax, 14);
     }
 
     size_t    getNodes() { return _size.nodes; }
@@ -476,12 +482,6 @@ bool FEM::readFile(const std::filesystem::path& path) {
     isError &= is_open(fin, getLog("Error - nodes.txt"));
     for (size_t i = 0; i < _size.nodes; i++)
 		fin >> nodes[i].x >> nodes[i].y;
-    fin.close();
-
-    fin.open(path / "nodes_area.txt");
-    isError &= is_open(fin, getLog("Error - nodes_area.txt"));
-    for (size_t i = 0; i < _size.nodes; i++)
-        fin >> nodes[i].area;
     fin.close();
 
     fin.open(path / "elems.txt");
