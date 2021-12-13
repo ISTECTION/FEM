@@ -78,6 +78,15 @@ public:
             };
         return _friend;
     }
+
+    Sparse getSparse() {
+        return Sparse {
+                gg,
+                di,
+                ig,
+                jg
+        };
+    }
 private:
     void global();                                                              /// Функция построения глобальной матрицы и вектора
     void resize();
@@ -132,11 +141,10 @@ void FEM::global() {
         loc_b_to_global<3>(local_b, elems[i]);
 
         #if DEBUG != 0
-        prettyG(ig, jg, di, gg);
+        prettyG(getSparse());
         pretty(gb);
         #endif
     }
-
 }
 
 void FEM::boundaryCondition() {

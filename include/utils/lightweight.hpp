@@ -144,27 +144,21 @@ void pretty(_It _beg, _It _end)  {                                              
     }
 }
 
-template <typename T>                                                           /// Шаблон функции для вывода красивой глобальной
-void prettyG(                                                                   /// матрицы, которая автоматически передаёт
-        const std::vector<size_t>& ig,                                          /// параметры методу написаному выше
-        const std::vector<size_t>& jg,
-        const std::vector<T>& di,
-        const std::vector<T>& gg) {
-
-    std::vector<std::vector<double>> gm;
-    gm.resize(di.size(), std::vector<double>(di.size()));
+void prettyG(const Sparse& sparse) {                                            /// матрицы, которая автоматически передаёт
+    std::vector<std::vector<double>> gm;                                        /// параметры методу написаному выше
+    gm.resize(sparse.di.size(),
+        std::vector<double>(sparse.di.size()));
 
     size_t pos = 0;
-    for(size_t i = 0; i < di.size(); i++) {
-        gm[i][i] = di[i];
+    for(size_t i = 0; i < sparse.di.size(); i++) {
+        gm[i][i] = sparse.di[i];
 
-        for(size_t j = ig[i]; j < ig[i + 1]; j++) {
-            gm[i][jg[pos]] = gg[pos];
+        for(size_t j = sparse.ig[i]; j < sparse.ig[i + 1]; j++) {
+            gm[i][sparse.jg[pos]] = sparse.gg[pos];
             pos++;
         }
     }
-
-    pretty(gm.begin(), gm.end(), di.size());
+    pretty(gm.begin(), gm.end(), sparse.di.size());
 }
 
 template <typename T>                                                           /// Шаблон функции для вывода красивого вектора

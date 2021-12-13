@@ -6,6 +6,13 @@
 #define _UNION_BEGIN namespace Union {
 #define _UNION_END                   }
 
+struct Sparse {
+    std::vector<double> gg;
+    std::vector<double> di;
+    std::vector<size_t> ig;
+    std::vector<size_t> jg;
+};
+
 _UNION_BEGIN
 
 struct XY {

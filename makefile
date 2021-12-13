@@ -13,7 +13,7 @@ debug:   remove_log compile_debug   running
 release: remove_log compile_release running
 
 running:
-	$(OUTPUT)/FEM.exe --input file/light-test-u-const
+	$(OUTPUT)/FEM.exe --input file/study-nodes-5
 
 compile_debug:
 	$(CXX) $(CXXFLAGS) $(CXXFLAGS_DEBUG) $(SRC)/main.cpp -o $(OUTPUT)/FEM.exe -I$(INCLUDE)
