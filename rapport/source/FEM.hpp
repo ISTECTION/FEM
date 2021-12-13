@@ -11,10 +11,6 @@
 #include <cmath>
 #include <set>
 
-#define FIRST_BOUNDARY_COND  1
-#define SECOND_BOUNDARY_COND 2
-#define THIRD_BOUNDARY_COND  3
-
 class FEM
 {
 private:
@@ -40,36 +36,20 @@ public:
     }
     ~FEM() { }
 
-    void printAll()    const;
-    void printSparse() const;
-
-    void writeFile(
-        const std::filesystem::path&,
-        const double,
-        const size_t
-    ) const;
-
     void printAnalitics() {
         std::vector<size_t> ax;
-        ax.resize(_size.nodes);
-        for (size_t i = 0; i < _size.nodes; i++)
-            ax[i] = Function::analitics(
-                nodes[i]);
-        pretty(ax);
-    }
 
-    size_t    getNodes() { return _size.nodes; }
-    Friendly* takeDate() {
-        Friendly* _friend =
-            new Friendly {
-                gb,
-                gg,
-                di,
-                ig,
-                jg
-            };
-        return _friend;
+        for (const auto& _elem : elems) {
+            for (size_t i = 0; i < 3; i++)
+                ax[_elem.nodeIdx[i]] =
+                    Function::analitics(
+                        nodes[_elem.nodeIdx[i]],
+                        _elem.area
+                    );
+        }
+        std::cout << "ANALITIC: "; print(ax, 14);
     }
+    size_t    getNodes() { return _size.nodes; }
 
 private:
     void global();
@@ -78,12 +58,11 @@ private:
     template<size_t N, typename _Struct>
     void loc_A_to_global(
         const std::array<std::array<double, N>, N>&,
-        const _Struct& );
+        const _Struct&
+    );
 
     template<size_t N, typename _Struct>
-    void loc_b_to_global(
-        const std::array<double, N>&,
-        const _Struct& );
+    void loc_b_to_global(const std::array<double, N>&, const _Struct& );
 
     array::xxx localA(const std::array<Union::XY, 3>&, size_t) const;
     array::x   buildF(const std::array<Union::XY, 3>&, size_t) const;
@@ -101,7 +80,9 @@ private:
 };
 
 void FEM::global() {
+
     std::array<Union::XY, 3> coords;
+
     for (size_t i = 0; i < _size.elems; i++) {
         for (size_t j = 0; j < 3; j++) {
             size_t point = elems[i].nodeIdx[j];
@@ -111,22 +92,8 @@ void FEM::global() {
         array::x   local_b = buildF(coords, elems[i].area);
         array::xxx local_A = localA(coords, elems[i].area);
 
-        #if DEBUG != 0
-        std::cout << "Element: "
-                    << elems[i].nodeIdx[0] << ' '
-                    << elems[i].nodeIdx[1] << ' '
-                    << elems[i].nodeIdx[2] << '\n';
-        pretty(local_A);
-        pretty(local_b);
-        #endif
-
         loc_A_to_global<3>(local_A, elems[i]);
         loc_b_to_global<3>(local_b, elems[i]);
-
-        #if DEBUG != 0
-        prettyG(getSparse());
-        pretty(gb);
-        #endif
     }
 }
 
@@ -246,6 +213,7 @@ void FEM::third(const Union::Boundary& bound) {
     loc_b_to_global<2>(corr_b, bound);
     loc_A_to_global<2>(corr_a, bound);
 }
+
 template<size_t N, typename _Struct>
 void FEM::loc_A_to_global(
         const std::array<std::array<double, N>, N>& locA,
@@ -384,62 +352,6 @@ void FEM::portrait(const bool isWriteList) {
     #endif
 }
 
-void FEM::printAll() const {
-    #define PRINTLINE \
-        for (size_t i = 0; i < 20; std::cout << '-', i++);
-    #define ENDLINE std::cout << '\n';
-    SetConsoleOutputCP(65001);
-    PRINTLINE ENDLINE
-    std::cout << "PARAMS:         "                 << '\n';
-    std::cout << "Size nodes:     " << _size.nodes  << '\n';
-    std::cout << "Size element:   " << _size.elems  << '\n';
-    std::cout << "Size areas:     " << _size.areas  << '\n';
-    std::cout << "Size condition: " << _size.conds  << '\n';
-    PRINTLINE ENDLINE
-    std::cout << std::setw(4) << "X" << std::setw(4) << "Y" << '\n';
-    for (size_t i = 0; i < _size.nodes; i++)
-        std::cout << std::setw(4) << nodes[i].x
-                  << std::setw(4) << nodes[i].y << '\n';
-    PRINTLINE ENDLINE
-    std::cout << "Elements: " << '\n';
-    for (size_t i = 0; i < _size.elems; i++)
-        std::cout << elems[i].nodeIdx[0] << ' '
-                  << elems[i].nodeIdx[1] << ' '
-                  << elems[i].nodeIdx[2] << " -> area "
-                  << elems[i].area       << '\n';
-    PRINTLINE ENDLINE
-    std::cout << "Areas: " << '\n';
-    for (size_t i = 0; i < _size.areas; i++) {
-        std::cout << "\u03B3 = " << materials[i].gamma  << ',' << ' '
-                  << "\u03B2 = " << materials[i].betta
-                  << " -> area " << i << '\n';
-    }
-    PRINTLINE ENDLINE
-    std::cout << "Borders: " << '\n';
-    for (size_t i = 0; i < _size.conds; i++)
-        std::cout << boundarys[i].area       << ' '
-                  << boundarys[i].nodeIdx[0] << ' '
-                  << boundarys[i].nodeIdx[1] << ' '
-                  << boundarys[i].cond       << ' '
-                  << boundarys[i].type       << ' ' << '\n';
-    PRINTLINE ENDLINE
-    #undef PRINTLINE
-    #undef ENDLINE
-}
-
-void FEM::printSparse() const {
-    #define PRINTLINE \
-        for (size_t i = 0; i < 20; std::cout << '-', i++); \
-        std::cout << '\n';
-    PRINTLINE
-    std::cout << "ig: "; print(ig);
-    std::cout << "jg: "; print(jg);
-    std::cout << "di: "; print(di);
-    std::cout << "gg: "; print(gg);
-    PRINTLINE
-    #undef PRINTLINE
-}
-
 bool FEM::readFile(const std::filesystem::path& path) {
     using namespace ::Log;
     bool isError { true };
@@ -459,12 +371,6 @@ bool FEM::readFile(const std::filesystem::path& path) {
     isError &= is_open(fin, getLog("Error - nodes.txt"));
     for (size_t i = 0; i < _size.nodes; i++)
 		fin >> nodes[i].x >> nodes[i].y;
-    fin.close();
-
-    fin.open(path / "nodes_area.txt");
-    isError &= is_open(fin, getLog("Error - nodes_area.txt"));
-    for (size_t i = 0; i < _size.nodes; i++)
-        fin >> nodes[i].area;
     fin.close();
 
     fin.open(path / "elems.txt");
@@ -507,32 +413,6 @@ bool FEM::readFile(const std::filesystem::path& path) {
     return isError;
 }
 
-void FEM::writeFile(
-        const std::filesystem::path& _path,
-        const double _eps,
-        const size_t _max_iter) const {
-
-    std::filesystem::create_directories(_path);
-    bool is_dir = std::filesystem::is_directory(_path);
-
-    using namespace ::Log;
-    if (not is_dir) assert(
-        Logger::append(getLog("Error - create directory"))
-    );
-
-    std::ofstream fout(_path / "kuslau.txt");
-    fout << _size.nodes             << '\n';
-    fout << std::scientific << _eps << '\n';
-    fout << _max_iter;
-    fout.close();
-
-    Output::write(_path / "gg.txt", gg, { 14, ' ' });
-    Output::write(_path / "di.txt", di, { 14, ' ' });
-    Output::write(_path / "jg.txt", jg);
-    Output::write(_path / "ig.txt", ig);
-    Output::write(_path / "gb.txt", gb);
-}
-
 void FEM::resize() {
     nodes.    resize(  _size.nodes  );
     elems.    resize(  _size.elems  );
@@ -543,7 +423,4 @@ void FEM::resize() {
     di.resize(  _size.nodes  );
     ig.resize(_size.nodes + 1);
 }
-#undef FIRST_BOUNDARY_COND
-#undef SECOND_BOUNDARY_COND
-#undef THIRD_BOUNDARY_COND
 #endif /// _FEM_HPP_

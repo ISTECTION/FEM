@@ -1,7 +1,6 @@
 #ifndef _LOS_HPP_
 #define _LOS_HPP_
 #include "Data.hpp"
-
 #include "LOS_Function.hpp"
 
 using namespace Symmetric;

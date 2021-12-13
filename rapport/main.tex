@@ -15,6 +15,8 @@
 \usemintedstyle{vs}                                     % Стиль кода пакета minted
 \usepackage{amsmath}
 \usepackage{mathtools}              % Для математических формул
+\usepackage{setspace}               % Для междустрочного интервала
+
 
 \usepackage[dvipsnames]{xcolor}
 \setmainfont[Scale=1.0]{Noto Sans}  % Connect font
@@ -27,6 +29,7 @@
 \newcommand{\romannumeralcaps}[1]{\MakeUppercase{\romannumeral #1}} % Римские цифры
 
 \usepackage{multicol}           % Мультиколонки
+\usepackage{hyperref}           % Для работы с ссылками
 
 % Property for C++ code
 \newmintedfile[cppcode]{cpp}{
@@ -82,9 +85,9 @@
 \subsection*{Постановка задачи}
 
 Эллиптическая краевая задача для функции \textit{u}
-определяется дифференциальным уравнением
+определяется дифференциальным уравнением:
 
-\[ -div( \lambda grad u) + \gamma u = f \]
+\[ -div( \lambda \ grad u) + \gamma u = f \]
 
 \noindent заданным в некоторой области $\Omega$ с границей
 $S=S_1 \cup S_2 \cup S_3$ и краевыми условиями:
@@ -102,6 +105,147 @@ $S=S_1 \cup S_2 \cup S_3$ и краевыми условиями:
     -\frac{\partial}{\partial y}
     \left( \lambda \frac{\partial u}{\partial y} \right)
     + \gamma u = f \]
+
+\noindent Исходное уравнение можно переписать
+в виде: $Lu = f$, где $Lu = -div( \lambda grad u) + \gamma u$.
+
+\noindent Тогда чтобы решить исзодную задачу
+следует левую и праую части уравнения домножить
+на функцию $v$ из пространства пробных функций
+и проинтегрировать по $\Omega$. Фактически это
+соответсвует скалярному умножению $Lu$ и $f$
+на $v$ в пространтсве $L_2(\Omega)$:
+
+\[ (Lu, v) = (f, v) \]
+\[ (Lu - f, v) = 0 \]
+
+\noindent Это уравнение Галеркина в слабой форме. \\
+В пространстве $L_2(\Omega)$ скалярное произведение
+вычисляется по формуле:
+
+\[ (u, v) = \int \limits_{\Omega} uv d\Omega \]
+
+\noindent Перепишем уравнение Галеркина в явном виде:
+
+\[
+    -\int \limits_{\Omega} div(\lambda \ grad u) v \ d\Omega
+    +\int \limits_{\Omega} \gamma u v \ d\Omega
+    -\int \limits_{\Omega} fv \ d\Omega
+    = 0
+\]
+
+\noindent Воспользуемся формулой Грина:
+
+\[
+    \int \limits_{\Omega} (\lambda \ grad u \ grad v) \ d\Omega
+    = -\int \limits_{\Omega} div (\lambda \ grad u) v \ d\Omega
+    + \int \limits_S \lambda \frac{\partial u}{\partial n} v \ dS
+\]
+
+\noindent Сделав соответствующую подстановку,
+получим уравнение вида:
+
+\[
+    \int \limits_{\Omega} (\lambda \ grad u \ grad v) d\Omega
+    - \int \limits_S \lambda \frac{\partial u}{\partial n} v dS
+    + \int \limits_{\Omega} \gamma u v \ d\Omega
+    \int \limits_{\Omega} f v \ d\Omega
+    = 0
+\]
+
+\noindent Учитывая краевые условия  $S=S_1 \cup S_2 \cup S_3$, получим:
+
+\[
+    \int \limits_{\Omega} (\lambda \ grad u \ grad v) d\Omega
+    - \int \limits_{S_1} \lambda \frac{\partial u}{\partial n} v dS
+    - \int \limits_{S_2} \theta v dS
+    - \int \limits_{S_3} \beta(u \vert_{\beta} - u) v dS
+    + \int \limits_{\Omega} \gamma u v \ d\Omega
+    - \int \limits_{\Omega} f v \ d\Omega
+    = 0
+\]
+
+\noindent Так как $v \vert_{S_1} = 0$, то
+\[
+    \int \limits_{S_1} \lambda \frac{\partial u}{\partial n} v \ dS = 0
+\]
+\noindent Уравнение примет вид:
+
+\[
+    \int \limits_{\Omega} (\lambda grad u \text{ } grad v) d\Omega
+    + \int \limits_{S_3} \beta u v dS
+    + \int \limits_{\Omega} \gamma u v d\Omega
+    =
+    \int \limits_{S_2} \theta v dS
+    + \int \limits_{S_3} \beta u \vert_{\beta} v dS
+    + \int \limits_{\Omega} f v d\Omega
+    = 0
+\]
+
+\noindent Будем искать решение в виде:
+
+\[
+    u = \sum \limits_{i=1}^n q_i \psi_i
+\]
+
+\noindent где $\psi_i$ - базисные функции. Функция $v$ может
+быть представлена в таком же виде. Подставив, получим СЛАУ
+для компонент $q_i$:
+
+\begin{eqnarray*}
+    \sum \limits_{i=1}^n q_i \left(
+        \int \limits_{\Omega} (\lambda \ grad \psi_i \ grad \psi_j) d\Omega
+        + \int \limits_{S_3} \beta \psi_i \psi_j \ dS
+        + \int \limits_{\Omega} \gamma \psi_i \psi_j \ d\Omega
+    \right)
+    = \\
+    =
+    \int \limits_{S_2} \theta \psi_j \ dS
+    + \int \limits_{S_3} \beta u_{\beta} \psi_j \ dS
+    + \int \limits_{\Omega} f \psi_j \ d\Omega
+\end{eqnarray*}
+
+
+\begin{spacing}{1.25}
+    \noindent Поскольку исходная задача рассматривается в
+    декартовой системе координат, то
+    $grad u = \left( \frac{\partial u}{\partial x}, \frac{\partial u}{\partial y} \right)$
+    и, соответсвенно:
+    $
+    grad u \text{ } grad v =
+    \frac{\partial u}{\partial x}
+    \frac{\partial u}{\partial x}
+    +
+    \frac{\partial u}{\partial y}
+    \frac{\partial u}{\partial y}
+    $.
+    Отсюда получаем уравнение в виде:
+\end{spacing}
+
+
+\begin{eqnarray*}
+    \sum \limits_{j=1}^n q_j \int \limits_{\Omega}
+    \lambda \left(
+        \frac{\partial \psi_j}{\partial x} \frac{\partial \psi_i}{\partial x}
+        +
+        \frac{\partial \psi_j}{\partial y} \frac{\partial \psi_i}{\partial y}
+    \right)
+    dxdy
+    +
+    \sum \limits_{j=1}^n q_j \int \limits_{\Omega}
+    \gamma \psi_j \psi_i \ dxdy
+    +
+    \sum \limits_{j=1}^n q_j \int \limits_{\Omega}
+    \beta \psi_j \psi_i \ dxdy
+    = \\
+    =
+    \int \limits_{\Omega} f \psi_i \ dxdy
+    +
+    \int \limits_{S_2} \theta \psi_i \ dxdy
+    +
+    \int \limits_{S_3} \beta u_{\beta} \psi_i \ dxdy
+\end{eqnarray*}
+
 
 \subsection*{Конечноэлементная дискретизация}
 
@@ -122,7 +266,6 @@ $L_1(x,y), L_2(x,y), L_3(x,y)$, такими, что $L_1(x,y)$
 \[ \psi_1 = L_1(x,y) \]
 \[ \psi_2 = L_2(x,y) \]
 \[ \psi_3 = L_3(x,y) \]
-\newpage
 
 \noindent Учитывая построение \textit{L-функций},
 получаем следующие соотношения:
@@ -448,7 +591,12 @@ $$
 получаем учет третьих краевых условий.
 
 
+\newpage
 \section{Текст программы}
+
+Весь проект:
+\href{https://github.com/ISTECTION/FEM}{https://github.com/ISTECTION/FEM}
+
 \begin{myquote}
     \begin{center}
         \textbf{main.cpp}

@@ -4,15 +4,11 @@
 \PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}vector\PYGZgt{}}
 \PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}array\PYGZgt{}}
 
-\PYG{c+cp}{\PYGZsh{}define \PYGZus{}UNION\PYGZus{}BEGIN namespace Union \PYGZob{}}
-\PYG{c+cp}{\PYGZsh{}define \PYGZus{}UNION\PYGZus{}END                   \PYGZcb{}}
-
 \PYG{n}{\PYGZus{}UNION\PYGZus{}BEGIN}
 
 \PYG{k}{struct} \PYG{n+nc}{XY}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
 \PYG{+w}{    }\PYG{k+kt}{double}\PYG{+w}{ }\PYG{n}{x}\PYG{p}{;}
 \PYG{+w}{    }\PYG{k+kt}{double}\PYG{+w}{ }\PYG{n}{y}\PYG{p}{;}
-\PYG{+w}{    }\PYG{k+kt}{size\PYGZus{}t}\PYG{+w}{ }\PYG{n}{area}\PYG{p}{;}
 \PYG{p}{\PYGZcb{};}
 
 \PYG{k}{struct} \PYG{n+nc}{Material}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
@@ -40,7 +36,5 @@
 \PYG{p}{\PYGZcb{};}
 
 \PYG{n}{\PYGZus{}UNION\PYGZus{}END}
-\PYG{c+cp}{\PYGZsh{}undef \PYGZus{}UNION\PYGZus{}BEGIN}
-\PYG{c+cp}{\PYGZsh{}undef \PYGZus{}UNION\PYGZus{}END}
 \PYG{c+cp}{\PYGZsh{}endif }\PYG{c+c1}{/// \PYGZus{}UNION\PYGZus{}HPP\PYGZus{}}
 \end{Verbatim}

@@ -2,7 +2,6 @@
 \PYG{c+cp}{\PYGZsh{}ifndef \PYGZus{}LOS\PYGZus{}HPP\PYGZus{}}
 \PYG{c+cp}{\PYGZsh{}define \PYGZus{}LOS\PYGZus{}HPP\PYGZus{}}
 \PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZdq{}Data.hpp\PYGZdq{}}
-
 \PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZdq{}LOS\PYGZus{}Function.hpp\PYGZdq{}}
 
 \PYG{k}{using}\PYG{+w}{ }\PYG{k}{namespace}\PYG{+w}{ }\PYG{n+nn}{Symmetric}\PYG{p}{;}

@@ -4,15 +4,11 @@
 #include "../Logger.hpp"
 
 #include <filesystem>
-#include <iostream>
 #include <cassert>
 #include <fstream>
 #include <sstream>
 #include <vector>
 #include <cmath>
-
-#define _SYMMETRIC_BEG namespace Symmetric {
-#define _SYMMETRIC_END                     }
 
 _SYMMETRIC_BEG
 
@@ -65,7 +61,6 @@ public:
 
     std::vector<T>& getX() const { return x;    }
     size_t  getIteration() const { return iter; }
-    void printX(std::streamsize count = 0) const;
 
     void convertToLU();
     std::vector<T> normal (std::vector<T> b);
@@ -144,21 +139,6 @@ std::vector<T> Data<T>::mult(const std::vector<T>& _vec) {
     return pr;
 }
 
-template <class T>
-void Data<T>::printX(std::streamsize count) const {
-    std::ostringstream ostream;
-    ostream << '\n';
-    if (count) {
-        ostream.setf(std::ios::fixed);
-        ostream.precision(count);
-    }
-    ostream << "[ ";
-    for (size_t i = 0; i < x.size(); i++)
-        ostream << x[i] << " ";
-    ostream << "]\n";
-    std::cout << ostream.str();
-}
-
 template <typename T>
 bool read(std::filesystem::path _path, std::vector<T>& _vec) {
     using namespace ::Log;
@@ -201,6 +181,4 @@ bool Data<T>::loadData(std::filesystem::path _path) {
     return is_cor;
 }
 _SYMMETRIC_END
-#undef _SYMMETRIC_DEGIN
-#undef _SYMMETRIC_END
 #endif /// _DATA_HPP_

@@ -3,15 +3,11 @@
 #include <vector>
 #include <array>
 
-#define _UNION_BEGIN namespace Union {
-#define _UNION_END                   }
-
 _UNION_BEGIN
 
 struct XY {
     double x;
     double y;
-    size_t area;
 };
 
 struct Material {
@@ -39,6 +35,4 @@ struct Param {
 };
 
 _UNION_END
-#undef _UNION_BEGIN
-#undef _UNION_END
 #endif /// _UNION_HPP_

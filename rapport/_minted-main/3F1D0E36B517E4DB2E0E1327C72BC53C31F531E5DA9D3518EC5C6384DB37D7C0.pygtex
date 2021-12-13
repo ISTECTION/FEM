@@ -5,15 +5,11 @@
 \PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZdq{}../Logger.hpp\PYGZdq{}}
 
 \PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}filesystem\PYGZgt{}}
-\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}iostream\PYGZgt{}}
 \PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}cassert\PYGZgt{}}
 \PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}fstream\PYGZgt{}}
 \PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}sstream\PYGZgt{}}
 \PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}vector\PYGZgt{}}
 \PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}cmath\PYGZgt{}}
-
-\PYG{c+cp}{\PYGZsh{}define \PYGZus{}SYMMETRIC\PYGZus{}BEG namespace Symmetric \PYGZob{}}
-\PYG{c+cp}{\PYGZsh{}define \PYGZus{}SYMMETRIC\PYGZus{}END                     \PYGZcb{}}
 
 \PYG{n}{\PYGZus{}SYMMETRIC\PYGZus{}BEG}
 
@@ -66,9 +62,8 @@
 
 \PYG{+w}{    }\PYG{n}{std}\PYG{o}{::}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}\PYGZam{}}\PYG{+w}{ }\PYG{n}{getX}\PYG{p}{()}\PYG{+w}{ }\PYG{k}{const}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{+w}{ }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{x}\PYG{p}{;}\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
 \PYG{+w}{    }\PYG{k+kt}{size\PYGZus{}t}\PYG{+w}{  }\PYG{n}{getIteration}\PYG{p}{()}\PYG{+w}{ }\PYG{k}{const}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{+w}{ }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{iter}\PYG{p}{;}\PYG{+w}{ }\PYG{p}{\PYGZcb{}}
-\PYG{+w}{    }\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n}{printX}\PYG{p}{(}\PYG{n}{std}\PYG{o}{::}\PYG{n}{streamsize}\PYG{+w}{ }\PYG{n}{count}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{const}\PYG{p}{;}
 
-\PYG{+w}{    }\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n+nf}{convertToLU}\PYG{p}{();}
+\PYG{+w}{    }\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n}{convertToLU}\PYG{p}{();}
 \PYG{+w}{    }\PYG{n}{std}\PYG{o}{::}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{normal}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{std}\PYG{o}{::}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{);}
 \PYG{+w}{    }\PYG{n}{std}\PYG{o}{::}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{reverse}\PYG{p}{(}\PYG{n}{std}\PYG{o}{::}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{y}\PYG{p}{);}
 \PYG{+w}{    }\PYG{n}{std}\PYG{o}{::}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{mult}\PYG{p}{(}\PYG{k}{const}\PYG{+w}{ }\PYG{n}{std}\PYG{o}{::}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}\PYGZam{}}\PYG{+w}{ }\PYG{n}{\PYGZus{}vec}\PYG{p}{);}
@@ -145,21 +140,6 @@
 \PYG{+w}{    }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{pr}\PYG{p}{;}
 \PYG{p}{\PYGZcb{}}
 
-\PYG{k}{template}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{k}{class} \PYG{n+nc}{T}\PYG{o}{\PYGZgt{}}
-\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n}{Data}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}::}\PYG{n}{printX}\PYG{p}{(}\PYG{n}{std}\PYG{o}{::}\PYG{n}{streamsize}\PYG{+w}{ }\PYG{n}{count}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{const}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
-\PYG{+w}{    }\PYG{n}{std}\PYG{o}{::}\PYG{n}{ostringstream}\PYG{+w}{ }\PYG{n}{ostream}\PYG{p}{;}
-\PYG{+w}{    }\PYG{n}{ostream}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}\PYGZbs{}n\PYGZsq{}}\PYG{p}{;}
-\PYG{+w}{    }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{count}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
-\PYG{+w}{        }\PYG{n}{ostream}\PYG{p}{.}\PYG{n}{setf}\PYG{p}{(}\PYG{n}{std}\PYG{o}{::}\PYG{n}{ios}\PYG{o}{::}\PYG{n}{fixed}\PYG{p}{);}
-\PYG{+w}{        }\PYG{n}{ostream}\PYG{p}{.}\PYG{n}{precision}\PYG{p}{(}\PYG{n}{count}\PYG{p}{);}
-\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
-\PYG{+w}{    }\PYG{n}{ostream}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}[ \PYGZdq{}}\PYG{p}{;}
-\PYG{+w}{    }\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{size\PYGZus{}t}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{x}\PYG{p}{.}\PYG{n}{size}\PYG{p}{();}\PYG{+w}{ }\PYG{n}{i}\PYG{o}{++}\PYG{p}{)}
-\PYG{+w}{        }\PYG{n}{ostream}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{n}{x}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{} \PYGZdq{}}\PYG{p}{;}
-\PYG{+w}{    }\PYG{n}{ostream}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}]}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{;}
-\PYG{+w}{    }\PYG{n}{std}\PYG{o}{::}\PYG{n}{cout}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{n}{ostream}\PYG{p}{.}\PYG{n}{str}\PYG{p}{();}
-\PYG{p}{\PYGZcb{}}
-
 \PYG{k}{template}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{k}{typename} \PYG{n+nc}{T}\PYG{o}{\PYGZgt{}}
 \PYG{k+kt}{bool}\PYG{+w}{ }\PYG{n}{read}\PYG{p}{(}\PYG{n}{std}\PYG{o}{::}\PYG{n}{filesystem}\PYG{o}{::}\PYG{n}{path}\PYG{+w}{ }\PYG{n}{\PYGZus{}path}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{std}\PYG{o}{::}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}\PYGZam{}}\PYG{+w}{ }\PYG{n}{\PYGZus{}vec}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
 \PYG{+w}{    }\PYG{k}{using}\PYG{+w}{ }\PYG{k}{namespace}\PYG{+w}{ }\PYG{o}{::}\PYG{n+nn}{Log}\PYG{p}{;}
@@ -202,7 +182,5 @@
 \PYG{+w}{    }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{is\PYGZus{}cor}\PYG{p}{;}
 \PYG{p}{\PYGZcb{}}
 \PYG{n}{\PYGZus{}SYMMETRIC\PYGZus{}END}
-\PYG{c+cp}{\PYGZsh{}undef \PYGZus{}SYMMETRIC\PYGZus{}DEGIN}
-\PYG{c+cp}{\PYGZsh{}undef \PYGZus{}SYMMETRIC\PYGZus{}END}
 \PYG{c+cp}{\PYGZsh{}endif }\PYG{c+c1}{/// \PYGZus{}DATA\PYGZus{}HPP\PYGZus{}}
 \end{Verbatim}
