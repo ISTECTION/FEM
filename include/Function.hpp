@@ -160,6 +160,7 @@ double Function::analitics(const Union::XY coord, size_t area){
 
         case 100:
                     SWITCH
+                    case 0: return 10 * coord.x + 10 * coord.y;
                     default: std::exit(1);
                     BREAK
         case 101:

@@ -26,7 +26,7 @@
 class FEM
 {
 private:
-    Union::Param _size;
+    Union::Param _size;                                                         /// Параметры задачи
 
     std::vector<Union::XY>       nodes;                                         /// Вектор узлов
     std::vector<Union::Element>  elems;                                         /// Вектор конечных элементов
@@ -34,11 +34,10 @@ private:
     std::vector<Union::Material> materials;                                     /// Вектор материалов
 
     std::vector<double> gb;                                                     /// Глобальная матрица b
-    std::vector<double> gg;
-    std::vector<double> di;
-    std::vector<size_t> ig;
-    std::vector<size_t> jg;
-
+    std::vector<double> gg;                                                     /// Значения нижнего треугольника
+    std::vector<double> di;                                                     /// Диагональные значения
+    std::vector<size_t> ig;                                                     /// Указатели начала строк
+    std::vector<size_t> jg;                                                     /// Указатели столбцов значений
 public:
     FEM(std::filesystem::path _path) {
         assert(readFile(_path));                                                /// Читаем входные данные
@@ -46,109 +45,81 @@ public:
         global();                                                               /// Создание глобальной матрицы
         boundaryCondition();                                                    /// Учёт краевых условий
     }
-    ~FEM() { }
 
-    void printAll()    const;
-    void printSparse() const;
+    void printAll()    const;                                                   /// Распечатать все вхожные данные
+    void printSparse() const;                                                   /// Распечатать в разреженном формате
+    void printAnalitics();                                                      /// Функция вычисления аналитического решения
 
-    void writeFile(
-        const std::filesystem::path&,
-        const double,
-        const size_t
+    void writeFile(                                                             /// Запись файлов
+        const std::filesystem::path&,                                           /// 1. Путь
+        const double,                                                           /// 2. Epsilon для вычислений LOS
+        const size_t                                                            /// 3. Максимальное количество итераций
     ) const;
 
-    void printAnalitics() {
-        std::vector<size_t> ax;                                                 /// Вектор с аналитическим решением
-        ax.resize(_size.nodes);
-
-        for (const auto& _elem : elems) {
-            for (size_t i = 0; i < 3; i++)
-                ax[_elem.nodeIdx[i]] =
-                    Function::analitics(
-                        nodes[_elem.nodeIdx[i]],
-                        _elem.area
-                    );
-        }
-        std::cout << "ANALITIC: "; print(ax, 14);
-    }
-
-    size_t    getNodes() { return _size.nodes; }
-    Friendly* takeDate() {
-        Friendly* _friend =
-            new Friendly {
-                gb,
-                gg,
-                di,
-                ig,
-                jg
-            };
-        return _friend;
-    }
-
-    Sparse getSparse() {
-        return Sparse {
-                gg,
-                di,
-                ig,
-                jg
-        };
-    }
+    size_t    getNodes() { return _size.nodes; }                                /// Получить количество узлов
+    Friendly* takeDate();                                                       /// Получить указатели векторов
+    Sparse    getSparse();                                                      /// Получить матрицу в разреженном формате
 private:
-    void global();                                                              /// Функция построения глобальной матрицы и вектора
-    void resize();
+    void global();                                                              /// Функция построения глобальных данных
+    void resize();                                                              /// Функция выделения памяти
 
-    template<size_t N, typename _Struct>                                        /// Шаблон занесения локальной
-    void loc_A_to_global(                                                       /// матрицы в глобальную
-        const std::array<std::array<double, N>, N>&,
-        const _Struct&
-    );
+    array::xxx localA(const std::array<Union::XY, 3>&, size_t) const;           /// Вычисление локальной матрицы
+    array::x   buildF(const std::array<Union::XY, 3>&, size_t) const;           /// Построение локального вектора
 
-    template<size_t N, typename _Struct>                                        /// Шаблон занемения локального
-    void loc_b_to_global(const std::array<double, N>&, const _Struct& );        /// вектора в глобыльный
+    array::xxx G(const std::array<Union::XY, 3>&, size_t) const;                /// Вычисление матрицы жесткости
+    array::xxx M(const std::array<Union::XY, 3>&, size_t) const;                /// Вычисление матрицы масс
 
-    array::xxx localA(const std::array<Union::XY, 3>&, size_t) const;
-    array::x   buildF(const std::array<Union::XY, 3>&, size_t) const;
+    bool readFile(const std::filesystem::path&  );                              /// Считывание файлов
+    void portrait(const bool isWriteList = false);                              /// Создание портрета матрицы
 
-    array::xxx G(const std::array<Union::XY, 3>&, size_t) const;                /// Построение матрицы жесткости
-    array::xxx M(const std::array<Union::XY, 3>&, size_t) const;                /// Построение матрицы масс
-
-    bool readFile(const std::filesystem::path&  );
-    void portrait(const bool isWriteList = false);
-
-    void boundaryCondition();
+    void boundaryCondition();                                                   /// Головная подпрограмма краевых условий
     void first (const Union::Boundary& bound);                                  /// Первое краевое условие
     void second(const Union::Boundary& bound);                                  /// Второе краевое условие
     void third (const Union::Boundary& bound);                                  /// Третье краевое условие
+
+    template<size_t N,                                                          /// Шаблон занесения локальной
+        typename _Struct>                                                       /// матрицы в глобальную
+        void loc_A_to_global(
+            const std::array<std::array<double, N>, N>&,                        /// Массив значений  (3x3 & 2x2)
+            const _Struct&                                                      /// Структура данных (B)
+        );
+
+    template<size_t N,                                                          /// Шаблон занесения локального
+        typename _Struct>                                                       /// вектора в глобальный
+        void loc_b_to_global(
+            const std::array<double, N>&,
+            const _Struct&
+        );
 };
 
 void FEM::global() {
 
-    std::array<Union::XY, 3> coords;
-
+    std::array<Union::XY, 3> coords;                                            /// Массив координат элемента
     for (size_t i = 0; i < _size.elems; i++) {
         for (size_t j = 0; j < 3; j++) {
-            size_t point = elems[i].nodeIdx[j];
-            coords[j].x = nodes[point].x;
-            coords[j].y = nodes[point].y;
+            size_t point = elems[i].nodeIdx[j];                                 /// point - номер узла
+            coords[j].x = nodes[point].x;                                       /// Координата узла по X
+            coords[j].y = nodes[point].y;                                       /// Координата узла по Y
         }
-        array::x   local_b = buildF(coords, elems[i].area);
-        array::xxx local_A = localA(coords, elems[i].area);
+        array::x   local_b = buildF(coords, elems[i].area);                     /// Вычисление локального вектора
+        array::xxx local_A = localA(coords, elems[i].area);                     /// Вычисления локальной матрицы
 
         #if DEBUG != 0
-        std::cout << "Element: "
-                    << elems[i].nodeIdx[0] << ' '
-                    << elems[i].nodeIdx[1] << ' '
+        std::cout << "Element: "                                                /// Вывод на экран конечного элемента
+                    << elems[i].nodeIdx[0] << ' '                               /// который мы будем добавлять
+                    << elems[i].nodeIdx[1] << ' '                               /// в глобальную матрицу
                     << elems[i].nodeIdx[2] << '\n';
-        pretty(local_A);
-        pretty(local_b);
+
+        pretty(local_b);                                                        /// Вывод на экран локального вектора
+        pretty(local_A);                                                        /// Вывод на экран локальной матрицы
         #endif
 
-        loc_A_to_global<3>(local_A, elems[i]);
-        loc_b_to_global<3>(local_b, elems[i]);
+        loc_A_to_global<3>(local_A, elems[i]);                                  /// Занесение локальной матрицы в глобальную
+        loc_b_to_global<3>(local_b, elems[i]);                                  /// Занесение локального вектора в глобальный
 
         #if DEBUG != 0
-        prettyG(getSparse());
-        pretty(gb);
+        prettyG(getSparse());                                                   /// Вывод на экран глобальной матрицы
+        pretty(gb);                                                             /// Вывод на экран глобального вектора
         #endif
     }
 }
@@ -159,13 +130,13 @@ void FEM::boundaryCondition() {
     for (size_t _count = 0; _count < _size.conds; _count++) {
         switch (boundarys[_count].cond)
         {
-            case FIRST_BOUNDARY_COND:
+            case FIRST_BOUNDARY_COND:                                           /// Кейс первого краевого условия
                 first(boundarys[_count]);
                 break;
-            case SECOND_BOUNDARY_COND:
+            case SECOND_BOUNDARY_COND:                                          /// Кейс второго краевого условия
                 second(boundarys[_count]);
                 break;
-            case THIRD_BOUNDARY_COND:
+            case THIRD_BOUNDARY_COND:                                           /// Кейс третьего краевого условия
                 third(boundarys[_count]);
                 break;
             default:
@@ -175,7 +146,7 @@ void FEM::boundaryCondition() {
 }
 
 void FEM::first(const Union::Boundary& bound) {
-    di[bound.nodeIdx[0]] = { 1 };                                               /// Ставим всесто диагональных
+    di[bound.nodeIdx[0]] = { 1 };                                               /// Ставим вместо диагональных
     di[bound.nodeIdx[1]] = { 1 };                                               /// элементов единицу
 
     for (size_t i = 0; i < 2; i++)                                              /// В вектор правой части записываем
@@ -244,7 +215,7 @@ void FEM::third(const Union::Boundary& bound) {
         materials[bound.area].betta *
         edgeLength(coord_borders) / 6;
 
-    std::array<std::array<double, 2>, 2> corr_a;
+    std::array<std::array<double, 2>, 2> corr_a;                                /// Корректирующая матрица
 
     std::array<double, 2> corr_b;                                               /// Корректирующий вектор
     for (size_t i = 0; i < 2; i++) {
@@ -269,6 +240,7 @@ void FEM::third(const Union::Boundary& bound) {
     loc_b_to_global<2>(corr_b, bound);
     loc_A_to_global<2>(corr_a, bound);
 }
+
 template<size_t N, typename _Struct>
 void FEM::loc_A_to_global(
         const std::array<std::array<double, N>, N>& locA,
@@ -278,20 +250,20 @@ void FEM::loc_A_to_global(
     using iterator = ::std::vector<size_t>::iterator;
 
     for (size_t i = 0; i < N; i++) {
-        di[elem.nodeIdx[i]] += locA[i][i];
+        di[elem.nodeIdx[i]] += locA[i][i];                                      /// Занесение диагональных елементов
 
         for (size_t j = 0; j < i; j++) {
-            size_t a = elem.nodeIdx[i];
-            size_t b = elem.nodeIdx[j];
-            if (a < b) std::swap(a, b);
+            size_t a = elem.nodeIdx[i];                                         /// max
+            size_t b = elem.nodeIdx[j];                                         /// min
+            if (a < b) std::swap(a, b);                                         /// swap
 
             if (ig[a + 1] > ig[a]) {
-                iterator _beg = jg.begin() + ig[a];
-                iterator _end = jg.begin() + ig[a + 1] - ig[0];
+                iterator _beg = jg.begin() + ig[a];                             /// Указатель начала строки
+                iterator _end = jg.begin() + ig[a + 1];                         /// Указатель конца строки
 
-                auto _itr = std::lower_bound(_beg, _end, b);
-                auto _idx = _itr - jg.begin();
-                gg[_idx] += locA[i][j];
+                auto _itr = std::lower_bound(_beg, _end, b);                    /// Индекс + jg.begin() елемента b
+                auto _idx = _itr - jg.begin();                                  /// Индекс элемента b из вектора jg
+                gg[_idx] += locA[i][j];                                         /// Занесения локальной матрицы
             }
         }
     }
@@ -302,11 +274,12 @@ void FEM::loc_b_to_global(
         const std::array<double, N>& loc_b,
         const _Struct& elem) {
 
-    for (size_t i = 0; i < N; i++)
+    for (size_t i = 0; i < N; i++)                                              /// Занесение локального вектора
         gb[elem.nodeIdx[i]] += loc_b[i];
 }
 
-array::x FEM::buildF(const std::array<Union::XY, 3>& elem, size_t area) const {
+array::x
+FEM::buildF(const std::array<Union::XY, 3>& elem, size_t area) const {
     std::array<double, 3> function {
         Function::f(elem[0], area),
         Function::f(elem[1], area),
@@ -314,21 +287,23 @@ array::x FEM::buildF(const std::array<Union::XY, 3>& elem, size_t area) const {
     };
 
     double det_D = fabs(determinant(elem)) / 24;
-    return {                                                                    /// Локальный вектор b
+    return {                                                                    /// Возвращаем вычисленный локальный вектор
         det_D * (2 * function[0] + function[1] + function[2]),
         det_D * (2 * function[1] + function[0] + function[2]),
         det_D * (2 * function[2] + function[0] + function[1]),
     };
 }
 
-array::xxx FEM::localA(const std::array<Union::XY, 3>& elem, size_t area) const {
+array::xxx
+FEM::localA(const std::array<Union::XY, 3>& elem, size_t area) const {
     std::array<std::array<double, 3>, 3> G = FEM::G(elem, area);
     std::array<std::array<double, 3>, 3> M = FEM::M(elem, area);
     std::array<std::array<double, 3>, 3> A = G + M;                             /// Локальная матрица A
     return A;
 }
 
-array::xxx FEM::G(const std::array<Union::XY, 3>& elem, size_t area) const {
+array::xxx
+FEM::G(const std::array<Union::XY, 3>& elem, size_t area) const {
     double det   = fabs(determinant(elem));
     double _koef = Function::lambda(area) / (2 * det);
 
@@ -355,7 +330,8 @@ array::xxx FEM::G(const std::array<Union::XY, 3>& elem, size_t area) const {
     return G;
 }
 
-array::xxx FEM::M(const std::array<Union::XY, 3>& elem, size_t area) const {
+array::xxx
+FEM::M(const std::array<Union::XY, 3>& elem, size_t area) const {
     double det = fabs(determinant(elem));
     double gammaKoef = materials[area].gamma * det / 24;
     std::array<std::array<double, 3>, 3> M;
@@ -374,7 +350,7 @@ void FEM::portrait(const bool isWriteList) {
     std::vector<std::set<size_t>> list(N);
 
     for (size_t el = 0; el < _size.elems; el++)
-    for (size_t point = 0; point < 3; point++) {
+    for (size_t point = 0; point < 3; point++) {                                /// Можно изменить на point < 2
         for (size_t i = point + 1; i < 3; i++) {
             size_t idx1 = { elems[el].nodeIdx[point] };
             size_t idx2 = { elems[el].nodeIdx[  i  ] };
@@ -387,8 +363,8 @@ void FEM::portrait(const bool isWriteList) {
     for (size_t i = 2; i < ig.size(); i++)
         ig[i] = ig[i - 1] + list[i - 1].size();
 
-    jg.resize(ig[N] - ig[0]);                                                   /// Выделение памяти происходит в данном методе, т.к. размер
-    gg.resize(ig[N] - ig[0]);                                                   /// векторов jd и gg равен последнему элементу вектора ig
+    jg.resize(ig[N]);                                                           /// Выделение памяти происходит в данном методе, т.к. размер
+    gg.resize(ig[N]);                                                           /// векторов jd и gg равен последнему элементу вектора ig
 
     for (size_t index = 0, i = 1; i < list.size(); i++)
     for (size_t value : list[i])
@@ -545,9 +521,9 @@ void FEM::writeFile(
 
     Output::write(_path / "gg.txt", gg, { 14, ' ' });
     Output::write(_path / "di.txt", di, { 14, ' ' });
+    Output::write(_path / "gb.txt", gb, { 14, ' ' });
     Output::write(_path / "jg.txt", jg);
     Output::write(_path / "ig.txt", ig);
-    Output::write(_path / "gb.txt", gb);
 }
 
 void FEM::resize() {
@@ -561,6 +537,43 @@ void FEM::resize() {
     ig.resize(_size.nodes + 1);
 }
 
+
+Friendly* FEM::takeDate() {
+    Friendly* _friend =
+        new Friendly {
+            gb,
+            gg,
+            di,
+            ig,
+            jg
+        };
+    return _friend;
+}
+
+Sparse FEM::getSparse() {
+    return Sparse {
+            gg,
+            di,
+            ig,
+            jg
+    };
+}
+
+void FEM::printAnalitics() {
+    std::vector<size_t> ax;
+    ax.resize(_size.nodes);
+
+    for (const auto& _elem : elems) {
+        for (size_t i = 0; i < 3; i++)
+            ax[_elem.nodeIdx[i]] =
+                Function::analitics(
+                    nodes[_elem.nodeIdx[i]],
+                    _elem.area
+                );
+    }
+    std::cout << "ANALITIC: ";
+    print(ax, 14);
+}
 #undef FIRST_BOUNDARY_COND
 #undef SECOND_BOUNDARY_COND
 #undef THIRD_BOUNDARY_COND

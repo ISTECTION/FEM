@@ -3,41 +3,25 @@
 #include <vector>
 #include <array>
 
-#define _UNION_BEGIN namespace Union {
-#define _UNION_END                   }
+namespace Union {
+    struct XY       { double x, y;         };   /// node coordinates
+    struct Material { double betta, gamma; };   /// coefficient
 
-_UNION_BEGIN
+    struct Element {
+        size_t area;                            /// area element
+        std::array<size_t, 3> nodeIdx;          /// node element
+    };
 
-struct XY {
-    double x;                                                                   /// Координаты узла по X
-    double y;                                                                   /// Координаты узла по Y
-};
+    struct Boundary {                           /// 1. boundary condition
+        size_t cond, type, area;                /// 2. type
+        std::array<size_t, 2> nodeIdx;          /// 3. area
+    };                                          /// 4. border nodes
 
-struct Material {
-    double betta;                                                               /// Коэффициент betta
-    double gamma;                                                               /// Коэффициент gamma
-};
-
-struct Element {
-    size_t area;                                                                /// Область конечного элемента
-    std::array<size_t, 3> nodeIdx;                                              /// Узлы конечного элемента
-};
-
-struct Boundary {
-    size_t cond;                                                                /// Краевое условие
-    size_t type;                                                                /// Тип краевого условия
-    size_t area;                                                                /// Область границы
-    std::array<size_t, 2> nodeIdx;                                              /// Узлы границы
-};
-
-struct Param {
-    size_t nodes;                                                               /// Количество узлов
-    size_t elems;                                                               /// Количество елементов
-    size_t areas;                                                               /// Количество областей
-    size_t conds;                                                               /// Количество краевых условий
-};
-
-_UNION_END
-#undef _UNION_BEGIN
-#undef _UNION_END
+    struct Param {
+        size_t nodes;                           /// count nodes
+        size_t elems;                           /// count elements
+        size_t areas;                           /// count areas
+        size_t conds;                           /// count boundary condition
+    };
+}
 #endif /// _UNION_HPP_
