@@ -92,8 +92,45 @@ private:
         );
 };
 
-void FEM::global() {
+void FEM::portrait(const bool isWriteList) {
 
+    const size_t N {    _size.nodes     };
+    std::vector<std::set<size_t>> list(N);
+
+    for (size_t el = 0; el < _size.elems; el++)
+    for (size_t point = 0; point < 3; point++) {                                /// Можно изменить на point < 2
+        for (size_t i = point + 1; i < 3; i++) {
+            size_t idx1 = { elems[el].nodeIdx[point] };
+            size_t idx2 = { elems[el].nodeIdx[  i  ] };
+            idx1 > idx2 ?
+                list[idx1].insert(idx2) :
+                list[idx2].insert(idx1) ;
+        }
+    }
+    for (size_t i = 2; i < ig.size(); i++)
+        ig[i] = ig[i - 1] + list[i - 1].size();
+
+    jg.resize(ig[N]);                                                           /// Выделение памяти происходит в данном методе, т.к. размер
+    gg.resize(ig[N]);                                                           /// векторов jd и gg равен последнему элементу вектора ig
+
+    for (size_t index = 0, i = 1; i < list.size(); i++)
+    for (size_t value : list[i])
+        jg[index++] = value;
+
+    #if DEBUG != 0
+    if (isWriteList) {                                                          /// Вывод списка связности если isWriteList = true
+        std::cout << "list: " << '\n';
+        for (size_t i = 0; i < list.size(); i++) {
+            std::cout << i << ':' << ' ';
+            for (size_t j : list[i])
+                std::cout << j << ' ';
+            std::cout << std::endl;
+        }
+    }
+    #endif
+}
+
+void FEM::global() {
     std::array<Union::XY, 3> coords;                                            /// Массив координат элемента
     for (size_t i = 0; i < _size.elems; i++) {
         for (size_t j = 0; j < 3; j++) {
@@ -109,7 +146,6 @@ void FEM::global() {
                     << elems[i].nodeIdx[0] << ' '                               /// который мы будем добавлять
                     << elems[i].nodeIdx[1] << ' '                               /// в глобальную матрицу
                     << elems[i].nodeIdx[2] << '\n';
-
         pretty(local_b);                                                        /// Вывод на экран локального вектора
         pretty(local_A);                                                        /// Вывод на экран локальной матрицы
         #endif
@@ -122,6 +158,109 @@ void FEM::global() {
         pretty(gb);                                                             /// Вывод на экран глобального вектора
         #endif
     }
+}
+
+template<size_t N, typename _Struct>
+void FEM::loc_A_to_global(
+        const std::array<std::array<double, N>, N>& locA,
+        const _Struct& elem) {
+
+    using            ::std::vector;
+    using iterator = ::std::vector<size_t>::iterator;
+
+    for (size_t i = 0; i < N; i++) {
+        di[elem.nodeIdx[i]] += locA[i][i];                                      /// Занесение диагональных елементов
+
+        for (size_t j = 0; j < i; j++) {
+            size_t a = elem.nodeIdx[i];                                         /// max
+            size_t b = elem.nodeIdx[j];                                         /// min
+            if (a < b) std::swap(a, b);                                         /// swap
+
+            if (ig[a + 1] > ig[a]) {
+                iterator _beg = jg.begin() + ig[a];                             /// Указатель начала строки
+                iterator _end = jg.begin() + ig[a + 1];                         /// Указатель конца строки
+
+                auto _itr = std::lower_bound(_beg, _end, b);                    /// Индекс + jg.begin() елемента b
+                auto _idx = _itr - jg.begin();                                  /// Индекс элемента b из вектора jg
+                gg[_idx] += locA[i][j];                                         /// Занесения локальной матрицы
+            }
+        }
+    }
+}
+
+template<size_t N, typename _Struct>
+void FEM::loc_b_to_global(
+        const std::array<double, N>& loc_b,
+        const _Struct& elem) {
+
+    for (size_t i = 0; i < N; i++)                                              /// Занесение локального вектора
+        gb[elem.nodeIdx[i]] += loc_b[i];
+}
+
+array::x
+FEM::buildF(const std::array<Union::XY, 3>& elem, size_t area) const {
+    std::array<double, 3> function {
+        Function::f(elem[0], area),
+        Function::f(elem[1], area),
+        Function::f(elem[2], area)
+    };
+
+    double det_D = fabs(determinant(elem)) / 24;
+    return {                                                                    /// Возвращаем вычисленный локальный вектор
+        det_D * (2 * function[0] + function[1] + function[2]),
+        det_D * (2 * function[1] + function[0] + function[2]),
+        det_D * (2 * function[2] + function[0] + function[1]),
+    };
+}
+
+array::xxx
+FEM::localA(const std::array<Union::XY, 3>& elem, size_t area) const {
+    std::array<std::array<double, 3>, 3> G = FEM::G(elem, area);
+    std::array<std::array<double, 3>, 3> M = FEM::M(elem, area);
+    std::array<std::array<double, 3>, 3> A = G + M;                             /// Локальная матрица A
+    return A;
+}
+
+array::xxx
+FEM::G(const std::array<Union::XY, 3>& elem, size_t area) const {
+    double det   = fabs(determinant(elem));
+    double _koef = Function::lambda(area) / (2 * det);
+
+    std::array<std::array<double, 3>, 3> G;
+    std::array<std::array<double, 2>, 3> a {
+
+            elem[1].y - elem[2].y,
+            elem[2].x - elem[1].x,
+
+            elem[2].y - elem[0].y,
+            elem[0].x - elem[2].x,
+
+            elem[0].y - elem[1].y,
+            elem[1].x - elem[0].x
+    };
+
+    for (int i = 0; i < 3; i++)
+    for (int j = 0; j < 3; j++)
+        G[i][j] = _koef * (
+            a[i][0] * a[j][0] +
+            a[i][1] * a[j][1]
+        );
+
+    return G;
+}
+
+array::xxx
+FEM::M(const std::array<Union::XY, 3>& elem, size_t area) const {
+    double det = fabs(determinant(elem));
+    double gammaKoef = materials[area].gamma * det / 24;
+    std::array<std::array<double, 3>, 3> M;
+    for (size_t i = 0; i < 3; i++)
+    for (size_t j = 0; j < 3; j++) {
+        M[i][j] =
+            (i == j) ? (2 * gammaKoef) :
+                       (    gammaKoef) ;
+    }
+    return  M;
 }
 
 void FEM::boundaryCondition() {
@@ -241,146 +380,57 @@ void FEM::third(const Union::Boundary& bound) {
     loc_A_to_global<2>(corr_a, bound);
 }
 
-template<size_t N, typename _Struct>
-void FEM::loc_A_to_global(
-        const std::array<std::array<double, N>, N>& locA,
-        const _Struct& elem) {
+bool FEM::readFile(const std::filesystem::path& path) {
+    using namespace ::Log;
+    bool isError { true };
+    std::ifstream fin(path / "params.txt");
+    isError &= is_open(fin, getLog("Error - params.txt"));
+    fin >> _size.nodes
+        >> _size.elems
+        >> _size.areas
+        >> _size.conds;
+    fin.close();
+    resize();                                                                   /// Выделение памяти под вектора
+    std::fill_n(ig.begin(), 2, 0);                                              /// Заполнение первых 2 ячеек веткора ig нулями
+    fin.open(path / "nodes.txt");
+    isError &= is_open(fin, getLog("Error - nodes.txt"));
+    for (size_t i = 0; i < _size.nodes; i++)
+		fin >> nodes[i].x >> nodes[i].y;
+    fin.close();
+    fin.open(path / "elems.txt");
+    isError &= is_open(fin, getLog("Error - elems.txt"));
+	for (size_t i = 0; i < _size.elems; i++) {
+		fin >> elems[i].nodeIdx[0]
+            >> elems[i].nodeIdx[1]
+            >> elems[i].nodeIdx[2];
+    }
+    fin.close();
+    fin.open(path / "areas.txt");
+    isError &= is_open(fin, getLog("Error - areas.txt"));
+    for (size_t i = 0; i < _size.areas; i++)
+        fin >> materials[i].gamma
+            >> materials[i].betta;
 
-    using            ::std::vector;
-    using iterator = ::std::vector<size_t>::iterator;
-
-    for (size_t i = 0; i < N; i++) {
-        di[elem.nodeIdx[i]] += locA[i][i];                                      /// Занесение диагональных елементов
-
-        for (size_t j = 0; j < i; j++) {
-            size_t a = elem.nodeIdx[i];                                         /// max
-            size_t b = elem.nodeIdx[j];                                         /// min
-            if (a < b) std::swap(a, b);                                         /// swap
-
-            if (ig[a + 1] > ig[a]) {
-                iterator _beg = jg.begin() + ig[a];                             /// Указатель начала строки
-                iterator _end = jg.begin() + ig[a + 1];                         /// Указатель конца строки
-
-                auto _itr = std::lower_bound(_beg, _end, b);                    /// Индекс + jg.begin() елемента b
-                auto _idx = _itr - jg.begin();                                  /// Индекс элемента b из вектора jg
-                gg[_idx] += locA[i][j];                                         /// Занесения локальной матрицы
-            }
+    for (size_t i = 0; i < _size.elems; i++)
+        fin >> elems[i].area;
+    fin.close();
+    fin.open(path / "bords.txt");
+    isError &= is_open(fin, getLog("Error - bords.txt"));
+    for (size_t i = 0; i < _size.conds; i++)
+        fin >> boundarys[i].area
+            >> boundarys[i].nodeIdx[0]
+            >> boundarys[i].nodeIdx[1]
+            >> boundarys[i].cond
+            >> boundarys[i].type;
+    fin.close();
+    std::sort(                                                                  /// Сортировка по роду краевого условия
+        boundarys.begin(),                                                      /// Первое краевое условие,
+        boundarys.end(),                                                        /// должно быть последним
+        [](Union::Boundary& _left, Union::Boundary& _right){
+            return _left.cond > _right.cond;
         }
-    }
-}
-
-template<size_t N, typename _Struct>
-void FEM::loc_b_to_global(
-        const std::array<double, N>& loc_b,
-        const _Struct& elem) {
-
-    for (size_t i = 0; i < N; i++)                                              /// Занесение локального вектора
-        gb[elem.nodeIdx[i]] += loc_b[i];
-}
-
-array::x
-FEM::buildF(const std::array<Union::XY, 3>& elem, size_t area) const {
-    std::array<double, 3> function {
-        Function::f(elem[0], area),
-        Function::f(elem[1], area),
-        Function::f(elem[2], area)
-    };
-
-    double det_D = fabs(determinant(elem)) / 24;
-    return {                                                                    /// Возвращаем вычисленный локальный вектор
-        det_D * (2 * function[0] + function[1] + function[2]),
-        det_D * (2 * function[1] + function[0] + function[2]),
-        det_D * (2 * function[2] + function[0] + function[1]),
-    };
-}
-
-array::xxx
-FEM::localA(const std::array<Union::XY, 3>& elem, size_t area) const {
-    std::array<std::array<double, 3>, 3> G = FEM::G(elem, area);
-    std::array<std::array<double, 3>, 3> M = FEM::M(elem, area);
-    std::array<std::array<double, 3>, 3> A = G + M;                             /// Локальная матрица A
-    return A;
-}
-
-array::xxx
-FEM::G(const std::array<Union::XY, 3>& elem, size_t area) const {
-    double det   = fabs(determinant(elem));
-    double _koef = Function::lambda(area) / (2 * det);
-
-    std::array<std::array<double, 3>, 3> G;
-    std::array<std::array<double, 2>, 3> a {
-
-            elem[1].y - elem[2].y,
-            elem[2].x - elem[1].x,
-
-            elem[2].y - elem[0].y,
-            elem[0].x - elem[2].x,
-
-            elem[0].y - elem[1].y,
-            elem[1].x - elem[0].x
-    };
-
-    for (int i = 0; i < 3; i++)
-    for (int j = 0; j < 3; j++)
-        G[i][j] = _koef * (
-            a[i][0] * a[j][0] +
-            a[i][1] * a[j][1]
-        );
-
-    return G;
-}
-
-array::xxx
-FEM::M(const std::array<Union::XY, 3>& elem, size_t area) const {
-    double det = fabs(determinant(elem));
-    double gammaKoef = materials[area].gamma * det / 24;
-    std::array<std::array<double, 3>, 3> M;
-    for (size_t i = 0; i < 3; i++)
-    for (size_t j = 0; j < 3; j++) {
-        M[i][j] =
-            (i == j) ? (2 * gammaKoef) :
-                       (    gammaKoef) ;
-    }
-    return  M;
-}
-
-void FEM::portrait(const bool isWriteList) {
-
-    const size_t N {    _size.nodes     };
-    std::vector<std::set<size_t>> list(N);
-
-    for (size_t el = 0; el < _size.elems; el++)
-    for (size_t point = 0; point < 3; point++) {                                /// Можно изменить на point < 2
-        for (size_t i = point + 1; i < 3; i++) {
-            size_t idx1 = { elems[el].nodeIdx[point] };
-            size_t idx2 = { elems[el].nodeIdx[  i  ] };
-            idx1 > idx2 ?
-                list[idx1].insert(idx2) :
-                list[idx2].insert(idx1) ;
-        }
-    }
-
-    for (size_t i = 2; i < ig.size(); i++)
-        ig[i] = ig[i - 1] + list[i - 1].size();
-
-    jg.resize(ig[N]);                                                           /// Выделение памяти происходит в данном методе, т.к. размер
-    gg.resize(ig[N]);                                                           /// векторов jd и gg равен последнему элементу вектора ig
-
-    for (size_t index = 0, i = 1; i < list.size(); i++)
-    for (size_t value : list[i])
-        jg[index++] = value;
-
-    #if DEBUG != 0
-    if (isWriteList) {                                                          /// Вывод списка связности если isWriteList = true
-        std::cout << "list: " << '\n';
-        for (size_t i = 0; i < list.size(); i++) {
-            std::cout << i << ':' << ' ';
-            for (size_t j : list[i])
-                std::cout << j << ' ';
-            std::cout << std::endl;
-        }
-    }
-    #endif
+    );
+    return isError;
 }
 
 void FEM::printAll() const {
@@ -439,67 +489,6 @@ void FEM::printSparse() const {
     #undef PRINTLINE
 }
 
-bool FEM::readFile(const std::filesystem::path& path) {
-    using namespace ::Log;
-    bool isError { true };
-
-    std::ifstream fin(path / "params.txt");
-    isError &= is_open(fin, getLog("Error - params.txt"));
-    fin >> _size.nodes
-        >> _size.elems
-        >> _size.areas
-        >> _size.conds;
-    fin.close();
-
-    resize();                                                                   /// Выделение памяти под вектора
-    std::fill_n(ig.begin(), 2, 0);                                              /// Заполнение первых 2 ячеек веткора ig нулями
-
-    fin.open(path / "nodes.txt");
-    isError &= is_open(fin, getLog("Error - nodes.txt"));
-    for (size_t i = 0; i < _size.nodes; i++)
-		fin >> nodes[i].x >> nodes[i].y;
-    fin.close();
-
-    fin.open(path / "elems.txt");
-    isError &= is_open(fin, getLog("Error - elems.txt"));
-	for (size_t i = 0; i < _size.elems; i++) {
-		fin >> elems[i].nodeIdx[0]
-            >> elems[i].nodeIdx[1]
-            >> elems[i].nodeIdx[2];
-    }
-    fin.close();
-
-    fin.open(path / "areas.txt");
-    isError &= is_open(fin, getLog("Error - areas.txt"));
-    for (size_t i = 0; i < _size.areas; i++)
-        fin >> materials[i].gamma
-            >> materials[i].betta;
-
-    for (size_t i = 0; i < _size.elems; i++)
-        fin >> elems[i].area;
-    fin.close();
-
-    fin.open(path / "bords.txt");
-    isError &= is_open(fin, getLog("Error - bords.txt"));
-    for (size_t i = 0; i < _size.conds; i++)
-        fin >> boundarys[i].area
-            >> boundarys[i].nodeIdx[0]
-            >> boundarys[i].nodeIdx[1]
-            >> boundarys[i].cond
-            >> boundarys[i].type;
-    fin.close();
-
-    std::sort(                                                                  /// Сортировка по роду краевого условия
-        boundarys.begin(),                                                      /// Первое краевое условие,
-        boundarys.end(),                                                        /// должно быть последним
-        [](Union::Boundary& _left, Union::Boundary& _right){
-            return _left.cond > _right.cond;
-        }
-    );
-
-    return isError;
-}
-
 void FEM::writeFile(
         const std::filesystem::path& _path,
         const double _eps,
@@ -527,16 +516,15 @@ void FEM::writeFile(
 }
 
 void FEM::resize() {
-    nodes.    resize(  _size.nodes  );                                          /// Выделение памяти для координат узлов
-    elems.    resize(  _size.elems  );                                          /// Выделение памяти для хранение количества елементов
-    boundarys.resize(  _size.conds  );                                          /// Выделение памяти для хранения краевых условий
-    materials.resize(  _size.areas  );                                          /// Выделение памяти для хранения материалов
+    nodes.    resize(  _size.nodes  );
+    elems.    resize(  _size.elems  );
+    boundarys.resize(  _size.conds  );
+    materials.resize(  _size.areas  );
 
-    gb.resize(  _size.nodes  );                                                 /// Выделение памяти для глобального вектора
+    gb.resize(  _size.nodes  );
     di.resize(  _size.nodes  );
     ig.resize(_size.nodes + 1);
 }
-
 
 Friendly* FEM::takeDate() {
     Friendly* _friend =
