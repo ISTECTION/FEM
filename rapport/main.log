@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  15 DEC 2021 22:42
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  16 DEC 2021 01:29
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1466,7 +1466,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 767--773
 > Step: calculate cell and line sizes.
 > Step: build the whole table.
 
-Underfull \hbox (badness 10000) in paragraph at lines 881--887
+Underfull \hbox (badness 10000) in paragraph at lines 882--888
  
  []
 
@@ -1488,12 +1488,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 881--887
 > Step: calculate cell and line sizes.
 > Step: build the whole table.
 
-Underfull \hbox (badness 10000) in paragraph at lines 978--984
+Underfull \hbox (badness 10000) in paragraph at lines 979--985
  
  []
 
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 1016.
+(Font)              scaled to size 10.0pt on input line 1017.
 > Step: init table outer spec.
 > Step: parse table options.
 > Step: split table.
@@ -1511,7 +1511,7 @@ LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/n' will be
 > Step: calculate cell and line sizes.
 > Step: build the whole table.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1100--1106
+Underfull \hbox (badness 10000) in paragraph at lines 1101--1107
  
  []
 
@@ -1546,12 +1546,12 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: A6268DE9D373BD04A15FF4F00CDF8553;548.
  ) 
 Here is how much of TeX's memory you used:
- 46357 strings out of 476919
- 1118809 string characters out of 5821391
- 1856090 words of memory out of 5000000
- 65534 multiletter control sequences out of 15000+600000
+ 46376 strings out of 476919
+ 1119488 string characters out of 5821391
+ 1840833 words of memory out of 5000000
+ 65553 multiletter control sequences out of 15000+600000
  422190 words of font info for 97 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 113i,10n,116p,785b,2163s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 113i,10n,116p,785b,2319s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 Output written on main.pdf (31 pages).
