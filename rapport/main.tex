@@ -707,7 +707,7 @@ $$
 \begin{multicols}{2}
     \setlength{\leftskip}{2.5cm}
     \noindent   \vspace{5mm} \\
-    $\romannumeralcaps{1}_0 = 1$
+    $S_1 = 1$
 
     \columnbreak
     \setlength{\leftskip}{1cm}
@@ -716,11 +716,11 @@ $$
             \addplot3[
                 surf,
                 domain=1:3,
-                samples=10,
+                domain y=1:3,
+                samples=5,
                 fill opacity=0.75,
-                shader=interp
-            ]
-            {1};
+            ]{1};
+
         \end{axis}
     \end{tikzpicture}
 \end{multicols}
@@ -728,6 +728,7 @@ $$
 \setlength{\columnsep}{-2.0cm}
 \begin{multicols}{2}
     \begin{tblr}{vline{1-5}={0mm,solid},
+        colspec={cccc},
         row{odd}={bg=azure9},
         row{1}={bg=azure3,fg=white,font=\sffamily}}
         \hline[1.25pt]
@@ -742,13 +743,15 @@ $$
     \columnbreak
     \setlength{\leftskip}{1cm}
     \begin{tblr}{vline{1-5} = {0mm,solid},
+        colspec={rrrr},
+        rowspec={c},
         row{odd}={bg=azure9},
         row{1}={bg=azure3,fg=white,font=\sffamily}}
         \hline[1.25pt]
-        $x$ & $x^*$ & $x^*-x$ & $\|x^*-x\|$ \\
-        1.000 & 1.000 & 0.00E+00 &          \\
-        1.000 & 1.000 & 0.00E+00 & 0.00E+00 \\
-        1.000 & 1.000 & 0.00E+00 &          \\
+        $x$ & $x^*$ & $x^*-x$ & $\|x^*-x\|$     \\
+        1,000 & 1,000 & 0,0e+00 &            \\
+        1,000 & 1,000 & 0,0e+00 & 0,0e+00 \\
+        1,000 & 1,000 & 0,0e+00 &            \\
         \hline[1.25pt]
     \end{tblr}
 \end{multicols}
@@ -811,16 +814,14 @@ $$
     \end{tikzpicture}
 \end{multicols}
 
-
-
 \setlength{\columnsep}{-2.0cm}
 \begin{multicols}{2}
     \setlength{\leftskip}{2.5cm}
     \noindent   \vspace{5mm} \\
-    $\romannumeralcaps{1}_0 = 5x + 2$ \\
-    $\romannumeralcaps{2}_0 = -10$    \\
-    $\romannumeralcaps{2}_1 = 10$     \\
-    $\romannumeralcaps{3}_0 = 5x + 8,8$
+    $S_1 = 5x + 2$ \vspace{2mm} \\
+    $S_2^1 = -10$  \vspace{2mm} \\
+    $S_2^2 = 10$   \vspace{2mm} \\
+    $S_3 = 5x + 8,8$
 
     \columnbreak
     \setlength{\leftskip}{1cm}
@@ -832,7 +833,6 @@ $$
                 domain y=1:4,
                 samples=10,
                 fill opacity=0.75,
-                shader=interp
             ]
             {5*x+2*y};
         \end{axis}
@@ -842,6 +842,7 @@ $$
 \setlength{\columnsep}{-2.0cm}
 \begin{multicols}{2}
     \begin{tblr}{vline{1-5}={0mm,solid},
+        colspec={cccc},
         row{odd}={bg=azure9},
         row{1}={bg=azure3,fg=white,font=\sffamily}}
         \hline[1.25pt]
@@ -857,22 +858,387 @@ $$
     \columnbreak
     \setlength{\leftskip}{1cm}
     \begin{tblr}{vline{1-5} = {0mm,solid},
+        colspec={rrrr},
+        rowspec={c},
         row{odd}={bg=azure9},
         row{1}={bg=azure3,fg=white,font=\sffamily}}
         \hline[1.25pt]
-        $x$ & $x^*$ & $x^*-x$ & $\|x^*-x\|$    \\
-         7.000 &  7.000 &  0.00E+00 &          \\
-        13.000 & 13.000 & -9.61E-08 & 3.04E-07 \\
-        33.000 & 32.999 &  2.88E-07 &          \\
-        27.000 & 27.000 &  0.00E+00 &          \\
+        $x$ & $x^*$ & $x^*-x$ & $\|x^*-x\|$      \\
+         7,000 &  7,000 &    0,0e+00 &           \\
+        13,000 & 13,000 &    1,8e--13 & 3,6e--13 \\
+        33,000 & 32,000 &  --3,2e--13 &          \\
+        27,000 & 27,000 &    0,0e+00 &           \\
         \hline[1.25pt]
     \end{tblr}
 \end{multicols}
 
 \subsubsection*{Количество елементов - 4}
+
+\setlength{\columnsep}{-4.5cm}
+\begin{multicols}{2}
+
+    \setlength{\leftskip}{2.5cm}
+    \noindent   \vspace{5mm} \\
+    $u(x,y)=5x+2y$  \vspace{2mm} \\
+    $f(x,y)=10x+4y$ \vspace{2mm} \\
+    $\lambda=2$ \vspace{2mm} \\
+    $\gamma=2$  \vspace{2mm} \\
+    $\beta=5$   \vspace{2mm} \\
+
+    \columnbreak
+    \setlength{\leftskip}{2.25cm}
+    \begin{tikzpicture}[scale=1.0]
+        \draw[step=1cm,lightgray,very thin] (-0.9,-0.9) grid (5.9,4.9);
+
+        \draw[thick,->] (-0.5,0) -- (5.5,0) node[anchor=north west] {x};
+        \draw[thick,->] (0,-0.5) -- (0,4.5) node[anchor=south east] {y};
+
+        % Красные пунктирные линии
+        \draw[thick, dashed, red] (1,0) -- (1,1);
+        \draw[thick, dashed, red] (5,0) -- (5,1);
+        \draw[thick, dashed, red] (0,1) -- (1,1);
+        \draw[thick, dashed, red] (0,4) -- (1,4);
+
+        % Узлы
+        \node[fill=blue, circle, inner sep=1pt, minimum size=1pt] (A) at (1,1){};
+        \node[fill=blue, circle, inner sep=1pt, minimum size=1pt] (B) at (5,1){};
+        \node[fill=blue, circle, inner sep=1pt, minimum size=1pt] (C) at (5,4){};
+        \node[fill=blue, circle, inner sep=1pt, minimum size=1pt] (D) at (1,4){};
+
+        % Подписи узлов
+        \node[below left]  at (1,1)   {\color{blue}$0$};
+        \node[above left]  at (1,4)   {\color{blue}$1$};
+        \node[above right] at (5,4)   {\color{blue}$2$};
+        \node[below right] at (5,1)   {\color{blue}$3$};
+        \node[above]       at (3,2.5) {\color{blue}$4$};
+
+        % Линии с подписями
+        \draw[blue] (A) -- (B) node [midway, below, black] {$S_1$};
+        \draw[blue] (A) -- (D) node [midway, left , black] {$S_2^1$};
+        \draw[blue] (B) -- (C) node [midway, right, black] {$S_2^2$};
+        \draw[blue] (D) -- (C) node [midway, above, black] {$S_3$};
+        \draw[very thick, blue] (1,1) -- (5,4);
+        \draw[very thick, blue] (1,4) -- (5,1);
+
+        % Области
+        \node at (1.5,2.5) {$\Omega_1$};
+        \node at (3,3.5)   {$\Omega_2$};
+        \node at (4.5,2.5) {$\Omega_3$};
+        \node at (3,1.5)   {$\Omega_4$};
+
+        % Координаты осей
+        \foreach \x in {1,2,3,4,5} \draw (\x cm,1pt) -- (\x cm,-1pt) node[anchor=north] {$\x$};
+        \foreach \y in {1,2,3,4} \draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east] {$\y$};
+    \end{tikzpicture}
+\end{multicols}
+
+
+\setlength{\columnsep}{-2.0cm}
+\begin{multicols}{2}
+    \begin{tblr}{vline{1-5}={0mm,solid},
+        colspec={cccc},
+        row{odd}={bg=azure9},
+        row{1}={bg=azure3,fg=white,font=\sffamily}}
+        \hline[1.25pt]
+        nodes & elems & area & bords     \\
+        \hline
+        1 1   & 0 1 4 & 0    & 0 0 3 1 0 \\
+        1 4   & 1 2 4 & 0    & 0 0 1 2 0 \\
+        5 4   & 2 3 4 & 0    & 0 3 2 2 1 \\
+        5 1   & 0 3 4 & 0    & 0 1 2 3 0 \\
+        3 2,5 &       &      &           \\
+        \hline[1.25pt]
+    \end{tblr}
+
+
+    \columnbreak
+    \setlength{\leftskip}{1cm}
+    \begin{tblr}{vline{1-5} = {0mm,solid},
+        colspec={rrrr},
+        rowspec={c},
+        row{odd}={bg=azure9},
+        row{1}={bg=azure3,fg=white,font=\sffamily}}
+        \hline[1.25pt]
+        $x$ & $x^*$ & $x^*-x$ & $\|x^*-x\|$       \\
+        7,000 &  7,000  &    0,0e+00   &          \\
+        13,000 & 13,000 &   --2,5e--13 &          \\
+        33,000 & 33,000 &   --2,6e--13 & 3,7e--13 \\
+        27,000 & 27,000 &    0,0e+00   &          \\
+        20,000 & 20,000 &    8,8e--14  &          \\
+        \hline[1.25pt]
+    \end{tblr}
+\end{multicols}
+
 \subsubsection*{Количество елементов - 8}
+
+\setlength{\columnsep}{-4.5cm}
+\begin{multicols}{2}
+
+    \setlength{\leftskip}{2.5cm}
+    \noindent   \vspace{5mm} \\
+    $u(x,y)=5x+2y$  \vspace{2mm} \\
+    $f(x,y)=10x+4y$ \vspace{2mm} \\
+    $\lambda=2$ \vspace{2mm} \\
+    $\gamma=2$  \vspace{2mm} \\
+    $\beta=5$   \vspace{2mm} \\
+
+    \columnbreak
+    \setlength{\leftskip}{2.25cm}
+    \begin{tikzpicture}[scale=1.0]
+        \draw[step=1cm,lightgray,very thin] (-0.9,-0.9) grid (5.9,4.9);
+
+        \draw[thick,->] (-0.5,0) -- (5.5,0) node[anchor=north west] {x};
+        \draw[thick,->] (0,-0.5) -- (0,4.5) node[anchor=south east] {y};
+
+        % Красные пунктирные линии
+        \draw[thick, dashed, red] (1,0) -- (1,1);
+        \draw[thick, dashed, red] (5,0) -- (5,1);
+        \draw[thick, dashed, red] (0,1) -- (1,1);
+        \draw[thick, dashed, red] (0,4) -- (1,4);
+
+        % Узлы
+        \node[fill=blue, circle, inner sep=1pt, minimum size=1pt] (A) at (1,1){};
+        \node[fill=blue, circle, inner sep=1pt, minimum size=1pt] (B) at (5,1){};
+        \node[fill=blue, circle, inner sep=1pt, minimum size=1pt] (C) at (5,4){};
+        \node[fill=blue, circle, inner sep=1pt, minimum size=1pt] (D) at (1,4){};
+
+        % Подписи узлов
+        \node[below left]  at (1,1)    {\color{blue}$0$};
+        \node[above left]  at (1,4)    {\color{blue}$1$};
+        \node[above right] at (5,4)    {\color{blue}$2$};
+        \node[below right] at (5,1)    {\color{blue}$3$};
+        \node[above right] at (3,2.65) {\color{blue}$4$};
+        \node[left]        at (1,2.5)  {\color{blue}$5$};
+        \node[above]       at (3,4)    {\color{blue}$6$};
+        \node[right]       at (5,2.5)  {\color{blue}$7$};
+        \node[below]       at (3,1)    {\color{blue}$8$};
+
+        \footnotesize
+        % Линии с подписями
+        \draw[blue] (A) -- (3,1) node [midway, below, black] {$S_1$};
+        \draw[blue] (3,1) -- (B) node [midway, below, black] {$S_1$};
+        \draw[blue] (A) -- (1,2.5) node [midway, left , black] {$S_2^1$};
+        \draw[blue] (1,2.5) -- (D) node [midway, left , black] {$S_2^1$};
+        \draw[blue] (B) -- (5,2.5) node [midway, right, black] {$S_2^2$};
+        \draw[blue] (5,2.5) -- (C) node [midway, right, black] {$S_2^2$};
+        \draw[blue] (D) -- (3,4) node [midway, above, black] {$S_3$};
+        \draw[blue] (3,4) -- (C) node [midway, above, black] {$S_3$};
+        \draw[very thick, blue] (1,1)   -- (5,4);
+        \draw[very thick, blue] (1,4)   -- (5,1);
+        \draw[very thick, blue] (1,2.5) -- (5,2.5);
+        \draw[very thick, blue] (3,1)   -- (3,4);
+
+        % Области
+        \node at (1.5,2)   {$\Omega_1$};
+        \node at (2.5,1.5) {$\Omega_2$};
+        \node at (3.5,1.5) {$\Omega_3$};
+        \node at (4.5,2)   {$\Omega_4$};
+        \node at (1.5,3)   {$\Omega_5$};
+        \node at (2.5,3.5) {$\Omega_6$};
+        \node at (3.5,3.5) {$\Omega_7$};
+        \node at (4.5,3)   {$\Omega_8$};
+
+        \normalsize
+        % Координаты осей
+        \foreach \x in {1,2,3,4,5} \draw (\x cm,1pt) -- (\x cm,-1pt) node[anchor=north] {$\x$};
+        \foreach \y in {1,2,3,4} \draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east] {$\y$};
+    \end{tikzpicture}
+\end{multicols}
+
+
+\setlength{\columnsep}{-2.0cm}
+\begin{multicols}{2}
+    \begin{tblr}{vline{1-5}={0mm,solid},
+        colspec={cccc},
+        row{odd}={bg=azure9},
+        row{1}={bg=azure3,fg=white,font=\sffamily}}
+        \hline[1.25pt]
+        nodes & elems & area & bords     \\
+        \hline
+        1 1   & 0 4 5 & 0    & 0 0 8 1 0 \\
+        1 4   & 0 4 8 & 0    & 0 8 3 1 0 \\
+        5 4   & 3 4 8 & 0    & 0 0 5 2 0 \\
+        5 1   & 3 4 7 & 0    & 0 5 1 2 0 \\
+        3 2,5 & 1 4 5 & 0    & 0 3 7 2 1 \\
+        1 2,5 & 1 4 6 & 0    & 0 7 2 2 1 \\
+        3 4   & 2 4 6 & 0    & 0 1 6 3 0 \\
+        5 2,5 & 2 4 7 & 0    & 0 6 2 3 0 \\
+        3 1   &       &      &           \\
+        \hline[1.25pt]
+    \end{tblr}
+
+
+    \columnbreak
+    \setlength{\leftskip}{1cm}
+    \begin{tblr}{vline{1-5} = {0mm,solid},
+        colspec={rrrr},
+        rowspec={c},
+        row{odd}={bg=azure9},
+        row{1}={bg=azure3,fg=white,font=\sffamily}}
+        \hline[1.25pt]
+        $x$ & $x^*$ & $x^*-x$ & $\|x^*-x\|$       \\
+         7,000 &  7,000 &     0,0e+00  &          \\
+        13,000 & 13,000 &     9,1e--14 &          \\
+        33,000 & 33,000 &   --1,2e--12 &          \\
+        27,000 & 27,000 &     0,0e+00  &          \\
+        20,000 & 20,000 &     4,6e--13 & 1,7e--12 \\
+        10,000 & 10,000 &   --1,1e--13 &          \\
+        23,000 & 23,000 &     7,8e--13 &          \\
+        30,000 & 30,000 &   --5,8e--13 &          \\
+        17,000 & 17,000 &      0,0e+00 &          \\
+        \hline[1.25pt]
+    \end{tblr}
+\end{multicols}
+
+
 \subsubsection*{Количество елементов - 16}
 
+\setlength{\columnsep}{-4.5cm}
+\begin{multicols}{2}
+
+    \setlength{\leftskip}{2.5cm}
+    \noindent   \vspace{5mm} \\
+    $u(x,y)=5x+2y$  \vspace{2mm} \\
+    $f(x,y)=10x+4y$ \vspace{2mm} \\
+    $\lambda=2$ \vspace{2mm} \\
+    $\gamma=2$  \vspace{2mm} \\
+    $\beta=5$   \vspace{2mm} \\
+
+    \columnbreak
+    \setlength{\leftskip}{2.25cm}
+    \begin{tikzpicture}[scale=1.0]
+        \draw[step=1cm,lightgray,very thin] (-0.9,-0.9) grid (5.9,4.9);
+
+        \draw[thick,->] (-0.5,0) -- (5.5,0) node[anchor=north west] {x};
+        \draw[thick,->] (0,-0.5) -- (0,4.5) node[anchor=south east] {y};
+
+        % Красные пунктирные линии
+        \draw[thick, dashed, red] (1,0) -- (1,1);
+        \draw[thick, dashed, red] (5,0) -- (5,1);
+        \draw[thick, dashed, red] (0,1) -- (1,1);
+        \draw[thick, dashed, red] (0,4) -- (1,4);
+
+        % Узлы
+        \node[fill=blue, circle, inner sep=1pt, minimum size=1pt] (A) at (1,1){};
+        \node[fill=blue, circle, inner sep=1pt, minimum size=1pt] (B) at (5,1){};
+        \node[fill=blue, circle, inner sep=1pt, minimum size=1pt] (C) at (5,4){};
+        \node[fill=blue, circle, inner sep=1pt, minimum size=1pt] (D) at (1,4){};
+
+        \scriptsize
+        % Подписи узлов
+        \node[below left]  at (1,1)    {\color{blue}$0$};
+        \node[above left]  at (1,4)    {\color{blue}$1$};
+        \node[above right] at (5,4)    {\color{blue}$2$};
+        \node[below right] at (5,1)    {\color{blue}$3$};
+        \node[above right] at (3,2.65) {\color{blue}$4$};
+        \node[left]        at (1,2.5)  {\color{blue}$5$};
+        \node[above]       at (3,4)    {\color{blue}$6$};
+        \node[right]       at (5,2.5)  {\color{blue}$7$};
+        \node[below]       at (3,1)    {\color{blue}$8$};
+        \node[above]       at (2,3.25) {\color{blue}$9$};
+        \node[above]       at (4,3.25) {\color{blue}$10$};
+        \node[above]       at (2,1.75) {\color{blue}$11$};
+        \node[above]       at (4,1.75) {\color{blue}$12$};
+
+        % Линии с подписями
+        \draw[blue] (A) -- (3,1) node [midway, below, black] {$S_1$};
+        \draw[blue] (3,1) -- (B) node [midway, below, black] {$S_1$};
+        \draw[blue] (A) -- (1,2.5) node [midway, left , black] {$S_2^1$};
+        \draw[blue] (1,2.5) -- (D) node [midway, left , black] {$S_2^1$};
+        \draw[blue] (B) -- (5,2.5) node [midway, right, black] {$S_2^2$};
+        \draw[blue] (5,2.5) -- (C) node [midway, right, black] {$S_2^2$};
+        \draw[blue] (D) -- (3,4) node [midway, above, black] {$S_3$};
+        \draw[blue] (3,4) -- (C) node [midway, above, black] {$S_3$};
+
+        \draw[very thick, blue] (1,1)   -- (5,4);
+        \draw[very thick, blue] (1,4)   -- (5,1);
+        \draw[very thick, blue] (1,2.5) -- (5,2.5);
+        \draw[very thick, blue] (3,1)   -- (3,4);
+        \draw[very thick, blue] (1,2.5) -- (3,4);
+        \draw[very thick, blue] (3,4)   -- (5,2.5);
+        \draw[very thick, blue] (5,2.5) -- (3,1);
+        \draw[very thick, blue] (3,1)   -- (1,2.5);
+
+        % Области
+        \node at (2,1.25)     {$\Omega_1$};
+        \node at (4,1.25)     {$\Omega_2$};
+        \node at (4.625,1.75) {$\Omega_3$};
+        \node at (4.625,3.25) {$\Omega_4$};
+        \node at (4,3.75)     {$\Omega_5$};
+        \node at (2,3.75)     {$\Omega_6$};
+        \node at (1.375,3.25) {$\Omega_7$};
+        \node at (1.375,1.75) {$\Omega_8$};
+        \node at (2.625,1.75) {$\Omega_9$};
+        \node at (3.375,1.75) {$\Omega_{10}$};
+        \node at (4,2.25)     {$\Omega_{11}$};
+        \node at (4,2.75)     {$\Omega_{12}$};
+        \node at (3.375,3.25) {$\Omega_{13}$};
+        \node at (2.625,3.25) {$\Omega_{14}$};
+        \node at (2,2.75)     {$\Omega_{15}$};
+        \node at (2,2.25)     {$\Omega_{16}$};
+
+        \normalsize
+        % Координаты осей
+        \foreach \x in {1,2,3,4,5} \draw (\x cm,1pt) -- (\x cm,-1pt) node[anchor=north] {$\x$};
+        \foreach \y in {1,2,3,4} \draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east] {$\y$};
+    \end{tikzpicture}
+\end{multicols}
+
+
+\setlength{\columnsep}{-2.0cm}
+\begin{multicols}{2}
+    \begin{tblr}{vline{1-5}={0mm,solid},
+        colspec={cccc},
+        row{odd}={bg=azure9},
+        row{1}={bg=azure3,fg=white,font=\sffamily}}
+        \hline[1.25pt]
+        nodes & elems & area & bords     \\
+        \hline
+        1 1    & 0 8 11 & 0    & 0 0 8 1 0 \\
+        1 4    & 3 8 12 & 0    & 0 8 3 1 0 \\
+        5 4    & 3 7 12 & 0    & 0 0 5 2 0 \\
+        5 1    & 2 7 10 & 0    & 0 5 1 2 0 \\
+        3 2,5  & 2 6 10 & 0    & 0 3 7 2 1 \\
+        1 2,5  & 1 6 9  & 0    & 0 7 2 2 1 \\
+        3 4    & 1 5 9  & 0    & 0 1 6 3 0 \\
+        5 2,5  & 0 5 11 & 0    & 0 6 2 3 0 \\
+        3 1    & 4 8 11 & 0    &           \\
+        2 3,25 & 4 8 12 & 0    &           \\
+        4 3,25 & 4 7 12 & 0    &           \\
+        2 1,75 & 4 7 10 & 0    &           \\
+        4 1,75 & 4 6 10 & 0    &           \\
+               & 4 6 9  & 0    &           \\
+               & 4 5 9  & 0    &           \\
+               & 4 5 11 & 0    &           \\
+        \hline[1.25pt]
+    \end{tblr}
+
+
+    \columnbreak
+    \setlength{\leftskip}{1cm}
+    \begin{tblr}{vline{1-5} = {0mm,solid},
+        colspec={rrrr},
+        rowspec={c},
+        row{odd}={bg=azure9},
+        row{1}={bg=azure3,fg=white,font=\sffamily}}
+        \hline[1.25pt]
+        $x$ & $x^*$ & $x^*-x$ & $\|x^*-x\|$       \\
+        7,000 &  7,000 &      0,0e+00  &          \\
+        13,000 & 13,000 &  --2,8e--13  &          \\
+        33,000 & 33,000 &  --1,2e--12  &          \\
+        27,000 & 27,000 &     0,0e+00  &          \\
+        20,000 & 20,000 &    5,1e--13  &          \\
+        10,000 & 10,000 &  --2,7e--13  &          \\
+        23,000 & 23,000 &    8,9e--13  & 1,8e--12 \\
+        30,000 & 30,000 &  --6,4e--13  &          \\
+        17,000 & 17,000 &     0,0e+00  &          \\
+        16,500 & 16,500 &  --5,0e--14  &          \\
+        26,500 & 26,500 &  --4,1e--13  &          \\
+        13,500 & 13,500 &  --2,0e--14  &          \\
+        23,500 & 23,500 &    2,2e--13  &          \\
+        \hline[1.25pt]
+    \end{tblr}
+\end{multicols}
 
 
 

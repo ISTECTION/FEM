@@ -13,7 +13,7 @@ debug:   remove_log compile_debug   running
 release: remove_log compile_release running
 
 running:
-	$(OUTPUT)/FEM.exe --input file/split-1/elements-2
+	$(OUTPUT)/FEM.exe --input file/split-2/elements-8
 
 compile_debug:
 	$(CXX) $(CXXFLAGS) $(CXXFLAGS_DEBUG) $(SRC)/main.cpp -o $(OUTPUT)/FEM.exe -I$(INCLUDE)
