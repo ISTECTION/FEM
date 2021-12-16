@@ -83,3 +83,7 @@ los.solve(Cond::HOLLESKY, true);
 
 ## TODO
 - Пробелы в формулах
+
+
+## Источники
+- http://hijos.ru/2011/04/27/baricentricheskie-koordinaty/ - Барицентрические координаты

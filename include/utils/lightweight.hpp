@@ -32,6 +32,56 @@ edgeLength(const std::array<Union::XY, 2>& elem) {                              
         )
     );
 }
+
+bool
+inTriangle(                                                                     /// Функция возвращает true
+        const double x,                                                         /// если точка принадлежит треугольнику
+        const double y,
+        const std::array<Union::XY, 3>& elem) {
+
+    double _a = (elem[1].x - x) * (elem[2].y - elem[1].y) - (elem[2].x - elem[1].x) * (elem[1].y - y);
+    double _b = (elem[2].x - x) * (elem[3].y - elem[2].y) - (elem[3].x - elem[2].x) * (elem[2].y - y);
+    double _c = (elem[3].x - x) * (elem[1].y - elem[3].y) - (elem[1].x - elem[3].x) * (elem[3].y - y);
+
+    return
+        (_a >= 0 && _b >= 0 && _c >= 0) or
+        (_a <= 0 && _b <= 0 && _c <= 0) ?
+            true :
+            false;
+}
+
+namespace Relativ_METHOD {
+    // Вычисляет положение точки D(xd,yd) относительно прямой AB
+    double g(Union::XY a, Union::XY b, Union::XY d)  {
+        return (d.x - a.x) * (b.y - a.y) - (d.y - a.y) * (b.x - a.x);
+    }
+
+    // Лежат ли точки C и D с одной стороны прямой (AB)?
+    bool f(Union::XY a, Union::XY b, Union::XY c, Union::XY d) {
+        return g(a, b, c) * g(a, b, d) >= 0;
+    }
+
+    bool
+    inTriangle(                                                                 /// Функция возвращает true
+            const double x,                                                     /// если точка принадлежит треугольнику
+            const double y,
+            const std::array<Union::XY, 3>& elem) {
+
+        Union::XY a = { elem[0].x, elem[0].y };
+        Union::XY b = { elem[1].x, elem[1].y  };
+        Union::XY c = { elem[2].x, elem[2].y};
+        Union::XY d = { x, y };
+
+        return (
+            f(a, b, c, d) and
+            f(b, c, a, d) and
+            f(c, a, b ,d)
+        );
+    }
+}
+
+
+
 /// ~~~~~~~~~~~~~~~~~~ Linear algebra ~~~~~~~~~~~~~~~~~~ ///
 
 template<size_t _Size, typename T>                                              /// Вывод array<_Size, _Size> для матриц M, G

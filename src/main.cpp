@@ -46,13 +46,19 @@ int main(int argc, char* argv[]) {
 
         std::cout << "SOLUTION: ";
         print(_LOS.getX(), 14);                 /// print solution vector
-
         std::cout << "Milliseconds: " << _timer.count<milliseconds>();
+
+
+
+
+        std::cout << std::endl << _FEM.getValue(1.125, 1.125, _LOS.getX()) << std::endl;
+
     } catch(const std::runtime_error& err) {
         Logger::append(getLog("argc != 2 (FEM --input ./input)"));
         std::cerr << err.what();
         std::cerr << _program;
         std::exit(1);                           /// program error
     }
+
     return 0;
 }

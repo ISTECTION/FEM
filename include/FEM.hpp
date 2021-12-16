@@ -59,6 +59,8 @@ public:
     size_t    getNodes() { return _size.nodes; }                                /// Получить количество узлов
     Friendly* takeDate();                                                       /// Получить указатели векторов
     Sparse    getSparse();                                                      /// Получить матрицу в разреженном формате
+
+    double    getValue(double, double, const std::vector<double>&) const;       /// Получить значение в любой точке
 private:
     void global();                                                              /// Функция построения глобальных данных
     void resize();                                                              /// Функция выделения памяти
@@ -516,14 +518,63 @@ void FEM::writeFile(
 }
 
 void FEM::resize() {
-    nodes.    resize(  _size.nodes  );
-    elems.    resize(  _size.elems  );
-    boundarys.resize(  _size.conds  );
-    materials.resize(  _size.areas  );
+    nodes.    resize(_size.nodes);
+    elems.    resize(_size.elems);
+    boundarys.resize(_size.conds);
+    materials.resize(_size.areas);
 
     gb.resize(  _size.nodes  );
     di.resize(  _size.nodes  );
     ig.resize(_size.nodes + 1);
+}
+
+double FEM::getValue(double x, double y, const std::vector<double>& _z) const {
+
+    std::array<Union::XY, 3> _coord;                                            /// Массив координат элемента
+    for (size_t _elem = 0; _elem < _size.nodes; _elem++) {
+
+        Union::Element elem = elems[_elem];
+         for (size_t j = 0; j < 3; j++) {
+            size_t point = elems[_elem].nodeIdx[j];                             /// point - номер узла
+            _coord[j].x = nodes[point].x;                                       /// Координата узла по X
+            _coord[j].y = nodes[point].y;                                       /// Координата узла по Y
+        }
+
+        if (Relativ_METHOD::inTriangle(x, y, _coord)) {
+
+            struct Barycentric {
+                double m1;
+                double m2;
+                double m3;
+            };
+
+            struct Barycentric _Bar_mas;
+            _Bar_mas.m1 = ((          y - _coord[0].y) * (_coord[1].x - _coord[0].x)  -
+                           (          x - _coord[0].x) * (_coord[1].y - _coord[0].y)) /
+                          ((_coord[2].y - _coord[0].y) * (_coord[1].x - _coord[0].x)  -
+                           (_coord[2].x - _coord[0].x) * (_coord[1].y - _coord[0].y)) ;
+
+            _Bar_mas.m2 = ((          y - _coord[0].y) * (_coord[2].x - _coord[0].x)  -
+                           (          x - _coord[0].x) * (_coord[2].y - _coord[0].y)) /
+                          ((_coord[1].y - _coord[0].y) * (_coord[2].x - _coord[0].x)  -
+                           (_coord[1].x - _coord[0].x) * (_coord[2].y - _coord[0].y)) ;
+
+            _Bar_mas.m3 = ((          y - _coord[2].y) * (_coord[1].x - _coord[2].x)  -
+                           (          x - _coord[2].x) * (_coord[1].y - _coord[2].y)) /
+                          ((_coord[0].y - _coord[2].y) * (_coord[1].x - _coord[2].x)  -
+                           (_coord[0].x - _coord[2].x) * (_coord[1].y - _coord[2].y)) ;
+
+            std::cout << _Bar_mas.m1 << " " << _Bar_mas.m2 << " " << _Bar_mas.m3 << std::endl;
+
+            return (
+                _Bar_mas.m1 * _z[elem.nodeIdx[2]] +
+                _Bar_mas.m2 * _z[elem.nodeIdx[1]] +
+                _Bar_mas.m3 * _z[elem.nodeIdx[0]]
+            );
+        }
+    }
+
+    std::exit(1);
 }
 
 Friendly* FEM::takeDate() {
