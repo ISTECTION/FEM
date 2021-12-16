@@ -61,10 +61,8 @@ public:
         x.resize(_n);
         delete _friend;
     }
-    ~Data() { }
-
-    const std::vector<T>& getX() const { return x;    }                         /// Получить вектор решений
-    size_t getIteration()        const { return iter; }                         /// Получить количество итераций
+    std::vector<T>& getX()       { return x;    }                               /// Получить вектор решений
+    size_t getIteration () const { return iter; }                               /// Получить количество итераций
 
     void convertToLU();                                                         /// LL^T-разложение
     std::vector<T> normal (std::vector<T> b);                                   /// Прямой   ход

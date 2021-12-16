@@ -17,8 +17,6 @@ public:
     LOS(Friendly* _friend, size_t _n,  T _eps, size_t _max_iter)
         : Data<T>(_friend, _n, _eps, _max_iter) { }
 
-    ~LOS() { }
-
     void solve(Cond _cond, bool isLog = true);
 private:
     void none    (bool);

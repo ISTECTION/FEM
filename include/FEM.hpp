@@ -12,6 +12,7 @@
 #include "utils/overload.hpp"
 #include "utils/friendly.hpp"
 #include "Function.hpp"
+#include "LOS/LOS.hpp"
 #include "Logger.hpp"
 #include "Union.hpp"
 
@@ -38,6 +39,8 @@ private:
     std::vector<double> di;                                                     /// Диагональные значения
     std::vector<size_t> ig;                                                     /// Указатели начала строк
     std::vector<size_t> jg;                                                     /// Указатели столбцов значений
+
+    std::vector<double> _z;                                                     /// Вектор решений
 public:
     FEM(std::filesystem::path _path) {
         assert(readFile(_path));                                                /// Читаем входные данные
@@ -46,9 +49,23 @@ public:
         boundaryCondition();                                                    /// Учёт краевых условий
     }
 
-    void printAll()    const;                                                   /// Распечатать все вхожные данные
-    void printSparse() const;                                                   /// Распечатать в разреженном формате
-    void printAnalitics();                                                      /// Функция вычисления аналитического решения
+    void startLOS(const std::filesystem::path& _out) {
+        using ::Cond::HOLLESKY;
+        using ::Cond::DIAGONAL;
+        using ::Cond::NONE;
+        writeFile(
+            _out ,
+            1E-20,
+            10000);
+        LOS<double> _LOS(_out);
+        _LOS.solve(DIAGONAL, true);
+        _z = std::move(_LOS.getX());
+    }
+
+    void printX()         const;                                                /// Функция печатает вектор решений
+    void printAll()       const;                                                /// Распечатать все вхожные данные
+    void printSparse()    const;                                                /// Распечатать в разреженном формате
+    void printAnalitics();                                                      // Функция вычисления аналитического решения
 
     void writeFile(                                                             /// Запись файлов
         const std::filesystem::path&,                                           /// 1. Путь
@@ -60,7 +77,7 @@ public:
     Friendly* takeDate();                                                       /// Получить указатели векторов
     Sparse    getSparse();                                                      /// Получить матрицу в разреженном формате
 
-    double    getValue(double, double, const std::vector<double>&) const;       /// Получить значение в любой точке
+    double    getValue(double, double) const;                                   /// Получить значение в любой точке
 private:
     void global();                                                              /// Функция построения глобальных данных
     void resize();                                                              /// Функция выделения памяти
@@ -529,7 +546,8 @@ void FEM::resize() {
     ig.resize(_size.nodes + 1);
 }
 
-double FEM::getValue(double x, double y, const std::vector<double>& _z) const {
+double FEM::getValue(double x, double y) const {
+    #define POINT_OUTSIDE_AREA 3
 
     std::array<Union::XY, 3> _coord;                                            /// Массив координат элемента
     for (size_t _elem = 0; _elem < _size.nodes; _elem++) {
@@ -565,15 +583,16 @@ double FEM::getValue(double x, double y, const std::vector<double>& _z) const {
                           ((_coord[0].y - _coord[2].y) * (_coord[1].x - _coord[2].x)  -
                            (_coord[0].x - _coord[2].x) * (_coord[1].y - _coord[2].y)) ;
 
-            return (
-                _Bar_mas.m1 * _z[elem.nodeIdx[2]] +
-                _Bar_mas.m2 * _z[elem.nodeIdx[1]] +
-                _Bar_mas.m3 * _z[elem.nodeIdx[0]]
-            );
+            double _value = _Bar_mas.m1 * _z[elem.nodeIdx[2]] +
+                            _Bar_mas.m2 * _z[elem.nodeIdx[1]] +
+                            _Bar_mas.m3 * _z[elem.nodeIdx[0]] ;
+
+            std::cout << "X: " << x << " Y: " << y << " - " << _value << '\n';
+            return _value;
         }
     }
-
-    std::exit(1);
+    std::exit(POINT_OUTSIDE_AREA);
+    #undef    POINT_OUTSIDE_AREA
 }
 
 Friendly* FEM::takeDate() {
@@ -612,6 +631,8 @@ void FEM::printAnalitics() {
     std::cout << "ANALITIC: ";
     print(ax, 14);
 }
+
+void FEM::printX() const { print(_z, 14); }
 #undef FIRST_BOUNDARY_COND
 #undef SECOND_BOUNDARY_COND
 #undef THIRD_BOUNDARY_COND

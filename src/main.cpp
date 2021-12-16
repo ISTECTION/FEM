@@ -1,6 +1,5 @@
 #include "argparse/argparse.hpp"
 #include "timer/cxxtimer.hpp"
-#include "LOS/LOS.hpp"
 #include "FEM.hpp"
 
 #include <iostream>
@@ -33,26 +32,21 @@ int main(int argc, char* argv[]) {
 
         cxxtimer::Timer _timer(true);               /// start timer
         FEM _FEM(_inp);                             /// start FEM
-        _FEM.writeFile(_out, 1E-20, 10000);         /// overwriting files
-        LOS<double> _LOS(_out);                     /// here is reading
-        _LOS.solve(Cond::DIAGONAL, true);           /// solving method
+        _FEM.startLOS(_out);
         _timer.stop();                              /// stop timer
 
         #if DEBUG != 0                              /// printing
         _FEM.printAll();                            /// print input FEM data
         _FEM.printSparse();                         /// print sparse format
         _FEM.printAnalitics();                      /// print analicals solve
+        _FEM.printX();
         #endif
 
-        std::vector<double> x {  _LOS.getX()  };    /// solutions vector
-        std::cout << "SOLUTION: "; print(x, 14);    /// print solution vector
-
-        std::cout << _FEM.getValue(1.125, 1.125, x) << std::endl;
-        std::cout << _FEM.getValue(1.5,   2,     x) << std::endl;
-        std::cout << _FEM.getValue(3,     4,     x) << std::endl;
+        _FEM.getValue(1.125, 1.125);
+        _FEM.getValue(1.5,   2);
+        _FEM.getValue(3,     4);
 
         std::cout << _timer;                        /// print time
-
     } catch(const std::runtime_error& err) {
         #define ARGUMENTS_NO_RECEIVED 2
         Logger::append(getLog(
