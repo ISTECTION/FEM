@@ -6,3 +6,4 @@ $env:path += ";D:\Programs\texlive\2021\bin\win32"                              
 $env:path += ";C:\Users\Владислав\AppData\Local\Programs\Python\Python310\Scripts\"                                     # pip3
 $env:path += ";C:\Users\Владислав\AppData\Local\Programs\Python\Python310\"                                             # python 3.10
 $env:path += ";C:\Users\Владислав\AppData\Local\Programs\Python\Python310\Lib\site-packages\pygments"                   # pygmentize
+$env:path += ";D:\MEGA\NSTU\5 СЕМЕСТР\Численные методы\Курсовой проект\Project\OpenGL\source\freeglut\bin"              # freeglut
