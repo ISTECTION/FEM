@@ -564,8 +564,6 @@ double FEM::getValue(double x, double y, const std::vector<double>& _z) const {
                           ((_coord[0].y - _coord[2].y) * (_coord[1].x - _coord[2].x)  -
                            (_coord[0].x - _coord[2].x) * (_coord[1].y - _coord[2].y)) ;
 
-            std::cout << _Bar_mas.m1 << " " << _Bar_mas.m2 << " " << _Bar_mas.m3 << std::endl;
-
             return (
                 _Bar_mas.m1 * _z[elem.nodeIdx[2]] +
                 _Bar_mas.m2 * _z[elem.nodeIdx[1]] +

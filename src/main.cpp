@@ -49,8 +49,6 @@ int main(int argc, char* argv[]) {
         std::cout << "Milliseconds: " << _timer.count<milliseconds>();
 
 
-
-
         std::cout << std::endl << _FEM.getValue(1.125, 1.125, _LOS.getX()) << std::endl;
 
     } catch(const std::runtime_error& err) {
