@@ -50,9 +50,9 @@ public:
     }
 
     void startLOS(const std::filesystem::path& _out) {
-        using ::Cond::HOLLESKY;
-        using ::Cond::DIAGONAL;
-        using ::Cond::NONE;
+        using ::Cond::HOLLESKY;                                                 /// Неполное ращложение Холецкого
+        using ::Cond::DIAGONAL;                                                 /// Диагональная предобусловленность
+        using ::Cond::NONE;                                                     /// Без предобусловленности
         writeFile(
             _out ,
             1E-20,
@@ -635,10 +635,15 @@ void FEM::printAnalitics() {
 void FEM::operator() (double x, double y) {
     double _z = getValue(x, y);
 
-    std::cout << "X: "  <<  x
-              << " Y: " <<  y
-              << " - "  << _z
+    std::streamsize p = std::cout.precision();
+    std::cout.precision(3);
+    std::cout.setf(std::ios::fixed);
+    std::cout << "x: "   <<  x
+              << "\ty: " <<  y
+              << "\tu: " << _z
               << '\n';
+    std::cout.unsetf(std::ios::fixed);
+    std::cout.precision(p);
 }
 
 void FEM::printX() const { print(_z, 14); }
