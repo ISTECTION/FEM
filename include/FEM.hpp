@@ -77,7 +77,8 @@ public:
     Friendly* takeDate();                                                       /// Получить указатели векторов
     Sparse    getSparse();                                                      /// Получить матрицу в разреженном формате
 
-    double    getValue(double, double) const;                                   /// Получить значение в любой точке
+    double getValue   (double, double) const;                                   /// Получить значение в любой точке
+    void   operator() (double, double);                                         /// Перегрузка получения значения в любой точке
 private:
     void global();                                                              /// Функция построения глобальных данных
     void resize();                                                              /// Функция выделения памяти
@@ -583,12 +584,11 @@ double FEM::getValue(double x, double y) const {
                           ((_coord[0].y - _coord[2].y) * (_coord[1].x - _coord[2].x)  -
                            (_coord[0].x - _coord[2].x) * (_coord[1].y - _coord[2].y)) ;
 
-            double _value = _Bar_mas.m1 * _z[elem.nodeIdx[2]] +
-                            _Bar_mas.m2 * _z[elem.nodeIdx[1]] +
-                            _Bar_mas.m3 * _z[elem.nodeIdx[0]] ;
-
-            std::cout << "X: " << x << " Y: " << y << " - " << _value << '\n';
-            return _value;
+            return {
+                _Bar_mas.m1 * _z[elem.nodeIdx[2]] +
+                _Bar_mas.m2 * _z[elem.nodeIdx[1]] +
+                _Bar_mas.m3 * _z[elem.nodeIdx[0]]
+            };
         }
     }
     std::exit(POINT_OUTSIDE_AREA);
@@ -630,6 +630,15 @@ void FEM::printAnalitics() {
     }
     std::cout << "ANALITIC: ";
     print(ax, 14);
+}
+
+void FEM::operator() (double x, double y) {
+    double _z = getValue(x, y);
+
+    std::cout << "X: "  <<  x
+              << " Y: " <<  y
+              << " - "  << _z
+              << '\n';
 }
 
 void FEM::printX() const { print(_z, 14); }
