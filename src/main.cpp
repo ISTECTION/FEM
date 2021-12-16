@@ -11,52 +11,56 @@ int main(int argc, char* argv[]) {
     using namespace    ::Log;
     using ::std::chrono::milliseconds;
 
-    argparse::ArgumentParser _program("FEM", "1.0.0");
-    _program.add_argument("-i", "--input")
-        .help("path to input files" )
+    argparse::ArgumentParser _prs("FEM", "1.0.0");
+    _prs.add_argument("-i", "--input")
+        .help( "path to input files" )
         .required();
 
-    _program.add_argument("-o", "--output")
-        .help("path to output files");
+    _prs.add_argument("-o", "--output")
+        .help( "path to output files" );
 
     try {
-        _program.parse_args(argc, argv);
+        using std::string;
 
-        std::optional _opt            = _program.present("-o");
-        std::filesystem::path _input  = _program.get<std::string>("-i");
-        std::filesystem::path _output =
-            _opt.has_value() ?
-                _program.get<std::string>("-o") :
-                _input / "sparse";
+        _prs.parse_args(argc, argv);
+        std::optional         _opt = _prs.present    ("-o");
+        std::filesystem::path _inp = _prs.get<string>("-i");
+        std::filesystem::path _out = _opt.has_value()
+                                        ? _prs.get<string>("-o")
+                                        : _inp / "sparse";
 
-        Function::setFunction(_input.string());
+        Function::setFunction(_inp.string());       /// set function
 
-        cxxtimer::Timer _timer(true);           /// start timer
-        FEM _FEM(_input);                       /// start FEM
-        _FEM.writeFile(_output, 1E-20, 10000);  /// overwriting files
-        LOS<double> _LOS(_output);              /// here is reading
-        _LOS.solve(Cond::NONE, true);
-        _timer.stop();                          /// stop timer
+        cxxtimer::Timer _timer(true);               /// start timer
+        FEM _FEM(_inp);                             /// start FEM
+        _FEM.writeFile(_out, 1E-20, 10000);         /// overwriting files
+        LOS<double> _LOS(_out);                     /// here is reading
+        _LOS.solve(Cond::DIAGONAL, true);           /// solving method
+        _timer.stop();                              /// stop timer
 
-        #if DEBUG != 0
-        _FEM.printAll();                        /// print input FEM data
-        _FEM.printSparse();                     /// print sparse format
-        _FEM.printAnalitics();                  /// print analicals solve
+        #if DEBUG != 0                              /// printing
+        _FEM.printAll();                            /// print input FEM data
+        _FEM.printSparse();                         /// print sparse format
+        _FEM.printAnalitics();                      /// print analicals solve
         #endif
 
-        std::cout << "SOLUTION: ";
-        print(_LOS.getX(), 14);                 /// print solution vector
-        std::cout << "Milliseconds: " << _timer.count<milliseconds>();
+        std::vector<double> x {  _LOS.getX()  };    /// solutions vector
+        std::cout << "SOLUTION: "; print(x, 14);    /// print solution vector
 
+        std::cout << _FEM.getValue(1.125, 1.125, x) << std::endl;
+        std::cout << _FEM.getValue(1.5,   2,     x) << std::endl;
+        std::cout << _FEM.getValue(3,     4,     x) << std::endl;
 
-        std::cout << std::endl << _FEM.getValue(1.125, 1.125, _LOS.getX()) << std::endl;
+        std::cout << _timer;                        /// print time
 
     } catch(const std::runtime_error& err) {
-        Logger::append(getLog("argc != 2 (FEM --input ./input)"));
-        std::cerr << err.what();
-        std::cerr << _program;
-        std::exit(1);                           /// program error
+        #define ARGUMENTS_NO_RECEIVED 2
+        Logger::append(getLog(
+            "argc != 2 (FEM --input ./input)"
+        ));
+        std::cerr << err.what() << std::endl;
+        std::cerr <<    _prs    << std::endl;
+        std::exit(  ARGUMENTS_NO_RECEIVED  );
     }
-
     return 0;
 }

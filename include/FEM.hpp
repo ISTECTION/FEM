@@ -109,6 +109,7 @@ void FEM::portrait(const bool isWriteList) {
                 list[idx2].insert(idx1) ;
         }
     }
+
     for (size_t i = 2; i < ig.size(); i++)
         ig[i] = ig[i - 1] + list[i - 1].size();
 

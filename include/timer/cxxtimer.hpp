@@ -114,8 +114,14 @@ public:
     template <class duration_t = std::chrono::milliseconds>
     typename duration_t::rep count() const;
 
-private:
+    friend std::ostream& operator<< (std::ostream& out, Timer& _timer) {
+        using ::std::chrono::milliseconds;
+        return out << "milliseconds: "
+            << _timer.count<milliseconds>()
+            << '\n';
+    }
 
+private:
     bool started_;
     bool paused_;
     std::chrono::steady_clock::time_point reference_;

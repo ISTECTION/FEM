@@ -63,27 +63,34 @@ los.solve(Cond::DIAGONAL, true);
 
 ```c++
 LOS<double> los (
-    fem.takeDate(),     /// data
-    fem.getNodes(),     /// count nodes
-    1E-16, 1000 );      /// epsilon and max iteration
+    fem.takeDate(),             /// data
+    fem.getNodes(),             /// count nodes
+    1E-16, 1000 );              /// epsilon and max iteration
 los.solve(Cond::HOLLESKY, true);
 ```
 
 В данном способе все данные будут отданы классу `LOS`, это сделано для быстродействия программы
+
+## Получить значени в любой точке
+
+```c++
+_FEM.getValue(1.125, 1.125, x)  /// x - solutions vector
+```
 
 
 ## Про скрипты
 
 - **`Скрипт set-path`** - устанавливает все пути во временные переменные среды оболочки PowerShell
 
-- **`Скрипт tex-compilt`** - имеет функции:
+- **`Скрипт tex-compile`** - имеет функции:
 
     + _`Set-Compile`_ - которая принимает единственный аргумент - имя файла с расширением ***.tex*** - желаемый скомпилировать при помощи утилиты xelatex
 
 
 ## TODO
 - Пробелы в формулах
-
+- Синтаксические ошибки в отчете
 
 ## Источники
 - http://hijos.ru/2011/04/27/baricentricheskie-koordinaty/ - Барицентрические координаты
+- https://people.math.sc.edu/Burkardt/cpp_src/cpp_src.html - OpenGL и другое
