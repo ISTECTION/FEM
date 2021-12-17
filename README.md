@@ -52,9 +52,9 @@ std::cout << "Milliseconds: " << timer.count<milliseconds>();
 `Способ №1`
 
 ```c++
-fem.writeFile(_output, 1E-14, 10000); /// overwriting files
-LOS<double> los(_output);             /// here is reading
-los.solve(Cond::DIAGONAL, true);
+fem.writeFile(_output, 1E-14, 10000);       /// overwriting files
+LOS<double> _los(_output);                  /// here is reading
+_los.solve(Cond::DIAGONAL, true);
 ```
 
 В данном способе происходит запись глобальной матрицы в разреженном виде в файлы, после чего считывание этих файлов и решение методом LOS
@@ -62,21 +62,27 @@ los.solve(Cond::DIAGONAL, true);
 `Способ №2`
 
 ```c++
-LOS<double> los (
-    fem.takeDate(),             /// data
-    fem.getNodes(),             /// count nodes
-    1E-16, 1000 );              /// epsilon and max iteration
-los.solve(Cond::HOLLESKY, true);
+LOS<double> _los (
+    fem.takeDate(),                         /// data
+    fem.getNodes(),                         /// count nodes
+    1E-16, 1000 );                          /// epsilon and max iteration
+_los.solve(Cond::HOLLESKY, true);
 ```
 
 В данном способе все данные будут отданы классу `LOS`, это сделано для быстродействия программы
 
 ## Получить значени в любой точке
 
+`Получить значение`
 ```c++
-_FEM.getValue(1.125, 1.125, x)  /// x - solutions vector
+double _u1 = _FEM.getValue(1.125, 1.125);   /// x - solutions vector
 ```
 
+`Распечатать на экран`
+```c++
+_fem(1.5, 2);
+_fem(3,   4);
+```
 
 ## Про скрипты
 
