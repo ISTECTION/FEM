@@ -53,19 +53,29 @@ public:
         using ::Cond::HOLLESKY;                                                 /// Неполное ращложение Холецкого
         using ::Cond::DIAGONAL;                                                 /// Диагональная предобусловленность
         using ::Cond::NONE;                                                     /// Без предобусловленности
-        writeFile(
-            _out ,
-            1E-20,
-            10000);
-        LOS<double> _LOS(_out);
-        _LOS.solve(DIAGONAL, true);
+
+        const double _eps = 1E-20;
+        const double _itr = 10000;
+
+        #if DEBUG != 0
+            writeFile(_out, _eps, _itr);
+            LOS<double> _LOS(_out);
+        #else
+            LOS<double> _LOS (
+                getDate(),
+                getNodes(),
+                _eps, _itr);
+        #endif
+
+        _LOS.solve(DIAGONAL, false);
         _z = std::move(_LOS.getX());
     }
 
-    void printX()         const;                                                /// Функция печатает вектор решений
+    void printZ()         const;                                                /// Функция печатает вектор решений
     void printAll()       const;                                                /// Распечатать все вхожные данные
     void printSparse()    const;                                                /// Распечатать в разреженном формате
-    void printAnalitics();                                                      // Функция вычисления аналитического решения
+    void printAnalitics();                                                      /// Функция вычисления аналитического решения
+    void createTable();
 
     void writeFile(                                                             /// Запись файлов
         const std::filesystem::path&,                                           /// 1. Путь
@@ -74,9 +84,10 @@ public:
     ) const;
 
     size_t    getNodes() { return _size.nodes; }                                /// Получить количество узлов
-    Friendly* takeDate();                                                       /// Получить указатели векторов
+    Friendly* getDate();                                                        /// Получить указатели векторов
     Sparse    getSparse();                                                      /// Получить матрицу в разреженном формате
 
+    std::vector<double> getAnalitics();
     double getValue   (double, double) const;                                   /// Получить значение в любой точке
     void   operator() (double, double);                                         /// Перегрузка получения значения в любой точке
 private:
@@ -595,7 +606,7 @@ double FEM::getValue(double x, double y) const {
     #undef    POINT_OUTSIDE_AREA
 }
 
-Friendly* FEM::takeDate() {
+Friendly* FEM::getDate() {
     Friendly* _friend =
         new Friendly {
             gb,
@@ -616,8 +627,8 @@ Sparse FEM::getSparse() {
     };
 }
 
-void FEM::printAnalitics() {
-    std::vector<size_t> ax;
+std::vector<double> FEM::getAnalitics() {
+    std::vector<double> ax;
     ax.resize(_size.nodes);
 
     for (const auto& _elem : elems) {
@@ -628,8 +639,12 @@ void FEM::printAnalitics() {
                     _elem.area
                 );
     }
+    return ax;
+}
+
+void FEM::printAnalitics() {
     std::cout << "ANALITIC: ";
-    print(ax, 14);
+    print(getAnalitics(), 14);
 }
 
 void FEM::operator() (double x, double y) {
@@ -646,7 +661,38 @@ void FEM::operator() (double x, double y) {
     std::cout.precision(p);
 }
 
-void FEM::printX() const { print(_z, 14); }
+void FEM::createTable() {
+    #define PRINTLINE for(size_t i = 0; i < 58; i++) \
+                                    _ostream << '-';
+    #define ENDLINE _ostream << '\n';
+
+    std::vector<double> _ax = getAnalitics();
+    std::ostringstream _ostream;
+    PRINTLINE ENDLINE
+    _ostream
+        << std::setw(22) << std::fixed      << 'x'
+        << std::setw(22) << std::fixed      << "x*"
+        << std::setw(14) << std::scientific << "x* - x";
+    ENDLINE
+    PRINTLINE ENDLINE
+    for (size_t i = 0; i < _ax.size(); i++) {
+        _ostream.precision(14);
+        _ostream
+            << std::setw(22) << std::fixed << _ax[i]
+            << std::setw(22) << std::fixed << _z [i];
+
+        _ostream.precision(2);
+        _ostream
+            << std::setw(14) << std::scientific << _z[i] - _ax[i];
+        ENDLINE
+    }
+    PRINTLINE ENDLINE
+    std::cout << _ostream.str();
+    #undef PRINTLINE
+    #undef ENDLINE
+}
+
+void FEM::printZ() const { print(_z, 14); }
 #undef FIRST_BOUNDARY_COND
 #undef SECOND_BOUNDARY_COND
 #undef THIRD_BOUNDARY_COND

@@ -7,6 +7,8 @@
 #include <fstream>
 
 int main(int argc, char* argv[]) {
+    std::ios_base::sync_with_stdio(false);
+
     using namespace    ::Log;
     using ::std::chrono::milliseconds;
 
@@ -38,13 +40,12 @@ int main(int argc, char* argv[]) {
         #if DEBUG != 0                              /// printing
         _FEM.printAll();                            /// print input FEM data
         _FEM.printSparse();                         /// print sparse format
-        _FEM.printAnalitics();                      /// print analicals solve
-        _FEM.printX();
+        _FEM.createTable();
         #endif
 
-        _FEM(1.125, 1.125);
-        _FEM(1.5, 2);
-        _FEM(3,   4);
+        // _FEM(1.125, 1.125);
+        // _FEM(1.5, 2);
+        // _FEM(3,   4);
 
         std::cout << _timer;                        /// print time
     } catch(const std::runtime_error& err) {
