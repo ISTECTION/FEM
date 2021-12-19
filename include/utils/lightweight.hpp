@@ -79,9 +79,6 @@ namespace Relativ_METHOD {
         );
     }
 }
-
-
-
 /// ~~~~~~~~~~~~~~~~~~ Linear algebra ~~~~~~~~~~~~~~~~~~ ///
 
 template<size_t _Size, typename T>                                              /// Вывод array<_Size, _Size> для матриц M, G

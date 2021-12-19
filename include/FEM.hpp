@@ -241,7 +241,7 @@ FEM::buildF(const std::array<Union::XY, 3>& elem, size_t area) const {
     return {                                                                    /// Возвращаем вычисленный локальный вектор
         det_D * (2 * function[0] + function[1] + function[2]),
         det_D * (2 * function[1] + function[0] + function[2]),
-        det_D * (2 * function[2] + function[0] + function[1]),
+        det_D * (2 * function[2] + function[0] + function[1])
     };
 }
 
@@ -602,6 +602,9 @@ double FEM::getValue(double x, double y) const {
             };
         }
     }
+    Logger::append(getLog("coord (" + std::to_string(x)
+        + ", " + std::to_string(y) + ") not in area"));
+
     std::exit(POINT_OUTSIDE_AREA);
     #undef    POINT_OUTSIDE_AREA
 }

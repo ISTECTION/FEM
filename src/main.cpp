@@ -30,16 +30,15 @@ int main(int argc, char* argv[]) {
                                         ? _prs.get<string>("-o")
                                         : _inp / "sparse";
 
-        Function::setFunction(_inp.string());       /// set function
-
-        cxxtimer::Timer _timer(true);               /// start timer
-        FEM _FEM(_inp);                             /// start FEM
+        Function::setFunction(_inp.string());                                   /// set function
+        cxxtimer::Timer _timer(true);                                           /// start timer
+        FEM _FEM(_inp);                                                         /// start FEM
         _FEM.startLOS(_out);
-        _timer.stop();                              /// stop timer
+        _timer.stop();                                                          /// stop timer
 
-        #if DEBUG != 0                              /// printing
-        _FEM.printAll();                            /// print input FEM data
-        _FEM.printSparse();                         /// print sparse format
+        #if DEBUG != 0                                                          /// printing
+        _FEM.printAll();                                                        /// print input FEM data
+        _FEM.printSparse();                                                     /// print sparse format
         _FEM.createTable();
         #endif
 
@@ -47,7 +46,7 @@ int main(int argc, char* argv[]) {
         _FEM(1.5, 2);
         _FEM(3,   4);
 
-        std::cout << _timer;                        /// print time
+        std::cout << _timer;                                                    /// print time
     } catch(const std::runtime_error& err) {
         #define ARGUMENTS_NO_RECEIVED 2
         Logger::append(getLog(

@@ -9,7 +9,6 @@ struct Sparse {
     std::vector<size_t> jg;
 };
 
-
 struct Friendly {
     std::vector<double>& gb;
     std::vector<double>& gg;
@@ -17,5 +16,4 @@ struct Friendly {
     std::vector<size_t>& ig;
     std::vector<size_t>& jg;
 };
-
 #endif /// _FRIENDLY_HPP_
