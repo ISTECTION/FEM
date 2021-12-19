@@ -11,6 +11,7 @@
 #include "utils/lightweight.hpp"
 #include "utils/overload.hpp"
 #include "utils/friendly.hpp"
+#include "nlohmann/json.hpp"
 #include "Function.hpp"
 #include "LOS/LOS.hpp"
 #include "Logger.hpp"
@@ -43,7 +44,7 @@ private:
     std::vector<double> _z;                                                     /// Вектор решений
 public:
     FEM(std::filesystem::path _path) {
-        assert(readFile(_path));                                                /// Читаем входные данные
+        assert(readJson(_path));                                                /// Читаем входные данные
         portrait(true);                                                         /// Создаём портрет
         global();                                                               /// Создание глобальной матрицы
         boundaryCondition();                                                    /// Учёт краевых условий
@@ -67,7 +68,7 @@ public:
                 _eps, _itr);
         #endif
 
-        _LOS.solve(DIAGONAL, false);
+        _LOS.solve(DIAGONAL, true);
         _z = std::move(_LOS.getX());
     }
 
@@ -101,6 +102,7 @@ private:
     array::xxx M(const std::array<Union::XY, 3>&, size_t) const;                /// Вычисление матрицы масс
 
     bool readFile(const std::filesystem::path&  );                              /// Считывание файлов
+    bool readJson(const std::filesystem::path&  );                              /// Считывание файлов c файла JSON
     void portrait(const bool isWriteList = false);                              /// Создание портрета матрицы
 
     void boundaryCondition();                                                   /// Головная подпрограмма краевых условий
@@ -298,6 +300,14 @@ FEM::M(const std::array<Union::XY, 3>& elem, size_t area) const {
 void FEM::boundaryCondition() {
     using namespace ::Log;
 
+    std::sort(                                                                  /// Сортировка по роду краевого условия
+        boundarys.begin(),                                                      /// Первое краевое условие,
+        boundarys.end(),                                                        /// должно быть последним
+        [](Union::Boundary& _left, Union::Boundary& _right){
+            return _left.cond > _right.cond;
+        }
+    );
+
     for (size_t _count = 0; _count < _size.conds; _count++) {
         switch (boundarys[_count].cond)
         {
@@ -421,16 +431,15 @@ bool FEM::readFile(const std::filesystem::path& path) {
         >> _size.conds;
     fin.close();
     resize();                                                                   /// Выделение памяти под вектора
-    std::fill_n(ig.begin(), 2, 0);                                              /// Заполнение первых 2 ячеек веткора ig нулями
     fin.open(path / "nodes.txt");
     isError &= is_open(fin, getLog("Error - nodes.txt"));
     for (size_t i = 0; i < _size.nodes; i++)
-		fin >> nodes[i].x >> nodes[i].y;
+        fin >> nodes[i].x >> nodes[i].y;
     fin.close();
     fin.open(path / "elems.txt");
     isError &= is_open(fin, getLog("Error - elems.txt"));
-	for (size_t i = 0; i < _size.elems; i++) {
-		fin >> elems[i].nodeIdx[0]
+    for (size_t i = 0; i < _size.elems; i++) {
+        fin >> elems[i].nodeIdx[0]
             >> elems[i].nodeIdx[1]
             >> elems[i].nodeIdx[2];
     }
@@ -453,14 +462,76 @@ bool FEM::readFile(const std::filesystem::path& path) {
             >> boundarys[i].cond
             >> boundarys[i].type;
     fin.close();
-    std::sort(                                                                  /// Сортировка по роду краевого условия
-        boundarys.begin(),                                                      /// Первое краевое условие,
-        boundarys.end(),                                                        /// должно быть последним
-        [](Union::Boundary& _left, Union::Boundary& _right){
-            return _left.cond > _right.cond;
-        }
-    );
     return isError;
+}
+
+bool FEM::readJson(const std::filesystem::path& path) {
+
+    std::string _data;
+    std::ifstream fin(path / "data.json");
+    if (fin.is_open()) {
+        using namespace ::nlohmann;
+        using namespace ::std;
+
+        fin.seekg(0, ios::end);
+        size_t _size_all_file = fin.tellg();
+        fin.seekg(0);
+
+        _data.resize(_size_all_file);
+        fin.read(_data.data(), _size_all_file);
+        fin.close();
+
+        json responseJson = json::parse(_data);
+        json object = responseJson["params"];
+
+        _size.nodes = object["nodes"];
+        _size.elems = object["elems"];
+        _size.areas = object["areas"];
+        _size.conds = object["bords"];
+
+        resize();
+
+        json x = responseJson["nodes"]["x"];
+        json y = responseJson["nodes"]["y"];
+
+        for (size_t i = 0; i < _size.nodes; i++) {
+            nodes[i].x = x[i];
+            nodes[i].y = y[i];
+        }
+
+        json elems_object = responseJson["elems"];
+        for (size_t i = 0; i < _size.elems; i++) {
+            json object_index = elems_object[i]["index"];
+
+            elems[i].nodeIdx[0] = object_index[0];
+            elems[i].nodeIdx[1] = object_index[1];
+            elems[i].nodeIdx[2] = object_index[2];
+
+            elems[i].area = elems_object[i]["area"];
+        }
+
+        json betta = responseJson["areas"]["beta" ];
+        json gamma = responseJson["areas"]["gamma"];
+        for (size_t i = 0; i < _size.areas; i++) {
+
+            materials[i].betta = betta[i];
+            materials[i].gamma = gamma[i];
+        }
+
+        json bords_object = responseJson["bords"];
+        for (size_t i = 0; i < _size.conds; i++) {
+
+            boundarys[i].area = bords_object[i]["area"];
+            json object_index = bords_object[i]["index"];
+            for (size_t j = 0; j < 2; j++)
+                boundarys[i].nodeIdx[j] = object_index[j];
+
+            boundarys[i].cond = bords_object[i]["cond"];
+            boundarys[i].type = bords_object[i]["type"];
+        }
+        return true;
+    } else
+        return false;
 }
 
 void FEM::printAll() const {
@@ -501,7 +572,6 @@ void FEM::printAll() const {
                   << boundarys[i].nodeIdx[1] << ' '
                   << boundarys[i].cond       << ' '
                   << boundarys[i].type       << ' ' << '\n';
-    PRINTLINE ENDLINE
     #undef PRINTLINE
     #undef ENDLINE
 }
@@ -515,7 +585,6 @@ void FEM::printSparse() const {
     std::cout << "jg: "; print(jg);
     std::cout << "di: "; print(di);
     std::cout << "gg: "; print(gg);
-    PRINTLINE
     #undef PRINTLINE
 }
 
@@ -546,14 +615,15 @@ void FEM::writeFile(
 }
 
 void FEM::resize() {
+    gb.resize(  _size.nodes  );
+    di.resize(  _size.nodes  );
+    ig.resize(_size.nodes + 1);
+
     nodes.    resize(_size.nodes);
     elems.    resize(_size.elems);
     boundarys.resize(_size.conds);
     materials.resize(_size.areas);
-
-    gb.resize(  _size.nodes  );
-    di.resize(  _size.nodes  );
-    ig.resize(_size.nodes + 1);
+    std::fill_n(ig.begin(), 2, 0);
 }
 
 double FEM::getValue(double x, double y) const {
@@ -672,9 +742,9 @@ void FEM::createTable() {
     std::ostringstream _ostream;
     PRINTLINE ENDLINE
     _ostream
-        << std::setw(22) << std::fixed      << 'x'
-        << std::setw(22) << std::fixed      << "x*"
-        << std::setw(14) << std::scientific << "x* - x";
+        << std::setw(22) << 'x'
+        << std::setw(22) << "x*"
+        << std::setw(14) << "x* - x";
     ENDLINE
     PRINTLINE ENDLINE
     for (size_t i = 0; i < _ax.size(); i++) {
@@ -695,7 +765,9 @@ void FEM::createTable() {
 }
 
 void FEM::printZ() const { print(_z, 14); }
+
 #undef FIRST_BOUNDARY_COND
 #undef SECOND_BOUNDARY_COND
 #undef THIRD_BOUNDARY_COND
+
 #endif /// _FEM_HPP_
