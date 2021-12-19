@@ -94,8 +94,8 @@ private:
     void global();                                                              /// Функция построения глобальных данных
     void resize();                                                              /// Функция выделения памяти
 
+    array::x   localB(const std::array<Union::XY, 3>&, size_t) const;           /// Построение локального вектора
     array::xxx localA(const std::array<Union::XY, 3>&, size_t) const;           /// Вычисление локальной матрицы
-    array::x   buildF(const std::array<Union::XY, 3>&, size_t) const;           /// Построение локального вектора
 
     array::xxx G(const std::array<Union::XY, 3>&, size_t) const;                /// Вычисление матрицы жесткости
     array::xxx M(const std::array<Union::XY, 3>&, size_t) const;                /// Вычисление матрицы масс
@@ -170,7 +170,7 @@ void FEM::global() {
             coords[j].x = nodes[point].x;                                       /// Координата узла по X
             coords[j].y = nodes[point].y;                                       /// Координата узла по Y
         }
-        array::x   local_b = buildF(coords, elems[i].area);                     /// Вычисление локального вектора
+        array::x   local_b = localB(coords, elems[i].area);                     /// Вычисление локального вектора
         array::xxx local_A = localA(coords, elems[i].area);                     /// Вычисления локальной матрицы
 
         #if DEBUG != 0
@@ -230,7 +230,7 @@ void FEM::loc_b_to_global(
 }
 
 array::x
-FEM::buildF(const std::array<Union::XY, 3>& elem, size_t area) const {
+FEM::localB(const std::array<Union::XY, 3>& elem, size_t area) const {
     std::array<double, 3> function {
         Function::f(elem[0], area),
         Function::f(elem[1], area),
@@ -350,14 +350,14 @@ void FEM::first(const Union::Boundary& bound) {
 }
 
 void FEM::second(const Union::Boundary& bound) {
-
     std::array<Union::XY, 2>
         coord_borders = {
             nodes[bound.nodeIdx[0]],
             nodes[bound.nodeIdx[1]]
         };
 
-    double _koef = edgeLength(coord_borders) / 6;                               /// Коэффициент для корректирующего вектора
+    double _koef =
+        edgeLength(coord_borders) / 6;                                          /// Коэффициент для корректирующего вектора
 
     std::array<double, 2> corr_b;                                               /// Корректирующий вектор
     for (size_t i = 0; i < 2; i++)
@@ -370,13 +370,12 @@ void FEM::second(const Union::Boundary& bound) {
                     nodes[bound.nodeIdx[1 - i]].x,
                     nodes[bound.nodeIdx[1 - i]].y
                 }, bound.type)
-            );
+        );
 
     loc_b_to_global<2>(corr_b, bound);
 }
 
 void FEM::third(const Union::Boundary& bound) {
-
     std::array<Union::XY, 2> coord_borders = {
         nodes[bound.nodeIdx[0]],
         nodes[bound.nodeIdx[1]]
@@ -386,11 +385,10 @@ void FEM::third(const Union::Boundary& bound) {
         materials[bound.area].betta *
         edgeLength(coord_borders) / 6;
 
+    std::array<double, 2>                corr_b;                                /// Корректирующий вектор
     std::array<std::array<double, 2>, 2> corr_a;                                /// Корректирующая матрица
 
-    std::array<double, 2> corr_b;                                               /// Корректирующий вектор
     for (size_t i = 0; i < 2; i++) {
-
         corr_b[i] = _koef * (
             2 * Function::thirdBound({
                     nodes[bound.nodeIdx[i]].x,
@@ -467,7 +465,7 @@ bool FEM::readFile(const std::filesystem::path& path) {
 
 void FEM::printAll() const {
     #define PRINTLINE \
-        for (size_t i = 0; i < 20; std::cout << '-', i++);
+        for (size_t i = 0; i < 58; std::cout << '-', i++);
     #define ENDLINE std::cout << '\n';
     SetConsoleOutputCP(65001);
     PRINTLINE ENDLINE
@@ -477,10 +475,10 @@ void FEM::printAll() const {
     std::cout << "Size areas:     " << _size.areas  << '\n';
     std::cout << "Size condition: " << _size.conds  << '\n';
     PRINTLINE ENDLINE
-    std::cout << std::setw(4) << "X" << std::setw(4) << "Y" << '\n';
+    std::cout << std::setw(8) << "X" << std::setw(8) << "Y" << '\n';
     for (size_t i = 0; i < _size.nodes; i++)
-        std::cout << std::setw(4) << nodes[i].x
-                  << std::setw(4) << nodes[i].y << '\n';
+        std::cout << std::setw(8) << nodes[i].x
+                  << std::setw(8) << nodes[i].y << '\n';
     PRINTLINE ENDLINE
     std::cout << "Elements: " << '\n';
     for (size_t i = 0; i < _size.elems; i++)
@@ -510,7 +508,7 @@ void FEM::printAll() const {
 
 void FEM::printSparse() const {
     #define PRINTLINE \
-        for (size_t i = 0; i < 20; std::cout << '-', i++); \
+        for (size_t i = 0; i < 58; std::cout << '-', i++); \
         std::cout << '\n';
     PRINTLINE
     std::cout << "ig: "; print(ig);
@@ -524,15 +522,15 @@ void FEM::printSparse() const {
 void FEM::writeFile(
         const std::filesystem::path& _path,
         const double _eps,
-        const size_t _max_iter) const {
+        const size_t _max_iter) const { {
 
     std::filesystem::create_directories(_path);
     bool is_dir = std::filesystem::is_directory(_path);
 
     using namespace ::Log;
-    if (not is_dir) assert(
+    if (not is_dir) assert (
         Logger::append(getLog("Error - create directory"))
-    );
+    ); }
 
     std::ofstream fout(_path / "kuslau.txt");
     fout << _size.nodes             << '\n';
@@ -572,7 +570,6 @@ double FEM::getValue(double x, double y) const {
         }
 
         if (Relativ_METHOD::inTriangle(x, y, _coord)) {
-
             struct Barycentric {
                 double m1;
                 double m2;
@@ -651,14 +648,16 @@ void FEM::printAnalitics() {
 }
 
 void FEM::operator() (double x, double y) {
-    double _z = getValue(x, y);
+    const std::streamsize CN = 5; /// Количество выводимых знаков числа
+
+    double z = getValue(x, y);
 
     std::streamsize p = std::cout.precision();
     std::cout.precision(3);
-    std::cout.setf(std::ios::fixed);
-    std::cout << "x: "   <<  x
-              << "\ty: " <<  y
-              << "\tu: " << _z
+    std::cout.setf(std::ios::fixed | std::ios::left);
+    std::cout << std::setw(8 + CN) << "x: " + std::to_string(x).substr(0, CN)
+              << std::setw(8 + CN) << "y: " + std::to_string(y).substr(0, CN)
+              << std::setw(8 + CN) << "u: " + std::to_string(z).substr(0, CN)
               << '\n';
     std::cout.unsetf(std::ios::fixed);
     std::cout.precision(p);
