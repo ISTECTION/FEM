@@ -36,6 +36,10 @@ static std::unordered_map<std::string, size_t> functions = {
         {"file/split-2/elements-16",    101},
 
 
+        /// my test (lambda - function)  ///
+        {"file/l-func",                 200},
+
+
         ///      tests from textbook     ///
         {"file/study-nodes-5",          11 },
 
@@ -50,10 +54,10 @@ private:
 
 public:
     static void setFunction(const std::string& _path);
-
-    static double lambda(size_t area);
     static double f(const Union::XY coord, const size_t area);
-    static double analitics(const Union::XY coord, size_t area);
+
+    static double lambda   (const Union::XY coord, const size_t area);
+    static double analitics(const Union::XY coord, const size_t area);
 
     static double firstBound (const Union::XY coord, const size_t type);
     static double secondBound(const Union::XY coord, const size_t type);
@@ -69,7 +73,7 @@ void Function::setFunction(const std::string& _path) {
         Function::_func = functions["error"];
 }
 
-double Function::f(const Union::XY coord, const size_t area){
+double Function::f(const Union::XY coord, const size_t area) {
 
     #define SWITCH switch (area) {
     #define BREAK  } break;
@@ -115,6 +119,11 @@ double Function::f(const Union::XY coord, const size_t area){
                     case 0:  return 10 * coord.x + 4 * coord.y; break;
                     default: std::exit(1);
                     BREAK
+        case 200:
+                    SWITCH
+                    case 0:  return 4 * coord.x; break;
+                    default: std::exit(1);
+                    BREAK
         default:
                     Logger::append(
                         getLog("the number func do not exist (f)")
@@ -125,7 +134,7 @@ double Function::f(const Union::XY coord, const size_t area){
 }
 
 
-double Function::analitics(const Union::XY coord, size_t area){
+double Function::analitics(const Union::XY coord, const size_t area){
 
     #define SWITCH switch (area) {
     #define BREAK  } break;
@@ -169,6 +178,11 @@ double Function::analitics(const Union::XY coord, size_t area){
                     case 0: return 5 * coord.x + 2 * coord.y;
                     default: std::exit(1);
                     BREAK
+        case 200:
+                    SWITCH
+                    case 0: return 2 * coord.x;
+                    default: std::exit(1);
+                    BREAK
         default:
                     Logger::append(
                         getLog("the number func do not exist (analitics)")
@@ -178,7 +192,7 @@ double Function::analitics(const Union::XY coord, size_t area){
     #undef BREAK
 }
 
-double Function::lambda(size_t area) {
+double Function::lambda(const Union::XY coord, const size_t area) {
 
     #define SWITCH switch (area) {
     #define BREAK  } break;
@@ -222,6 +236,11 @@ double Function::lambda(size_t area) {
         case 101:
                     SWITCH
                     case 0:  return 2; break;
+                    default: std::exit(1);
+                    BREAK
+        case 200:
+                    SWITCH
+                    case 0:  return coord.x; break;
                     default: std::exit(1);
                     BREAK
         default:
@@ -276,6 +295,11 @@ double Function::firstBound(const Union::XY coord, const size_t type) {
         case 101:
                     SWITCH
                     case 0:  return 5 * coord.x + 2; break;
+                    default: std::exit(1);
+                    BREAK
+        case 200:
+                    SWITCH
+                    case 0:  return 2 * coord.x; break;
                     default: std::exit(1);
                     BREAK
         default:
@@ -336,6 +360,12 @@ double Function::secondBound(const Union::XY coord, const size_t type) {
                     case 1:  return  10; break;
                     default: std::exit(1);
                     BREAK
+        case 200    :
+                    SWITCH
+                    case 0:  return -2 * coord.x; break;
+                    case 1:  return  2 * coord.x; break;
+                    default: std::exit(1);
+                    BREAK
         default:
                     Logger::append(
                         getLog("the number func do not exist (secondBound)")
@@ -386,6 +416,11 @@ double Function::thirdBound(const Union::XY coord, const size_t type) {
         case 101:
                     SWITCH
                     case 0:  return 5 * coord.x + 8.8; break;
+                    default: std::exit(1);
+                    BREAK
+        case 200:
+                    SWITCH
+                    case 0:  return 2 * coord.x; break;
                     default: std::exit(1);
                     BREAK
         default:

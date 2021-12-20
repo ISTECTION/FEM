@@ -42,9 +42,9 @@ int main(int argc, char* argv[]) {
         _FEM.createTable();
         #endif
 
-        _FEM(1.125, 1.125);
-        _FEM(1.5, 2);
-        _FEM(3,   4);
+        // _FEM(1.125, 1.125);
+        // _FEM(1.5, 2);
+        // _FEM(3,   4);
 
         std::cout << _timer;                                                    /// print time
     } catch(const std::runtime_error& err) {

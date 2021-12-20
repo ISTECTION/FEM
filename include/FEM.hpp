@@ -258,11 +258,14 @@ FEM::localA(const std::array<Union::XY, 3>& elem, size_t area) const {
 array::xxx
 FEM::G(const std::array<Union::XY, 3>& elem, size_t area) const {
     double det   = fabs(determinant(elem));
-    double _koef = Function::lambda(area) / (2 * det);
+    double _koef = (
+            Function::lambda(elem[0], area) +
+            Function::lambda(elem[1], area) +
+            Function::lambda(elem[2], area)
+        ) * det / 6;
 
     std::array<std::array<double, 3>, 3> G;
     std::array<std::array<double, 2>, 3> a {
-
             elem[1].y - elem[2].y,
             elem[2].x - elem[1].x,
 
@@ -282,6 +285,15 @@ FEM::G(const std::array<Union::XY, 3>& elem, size_t area) const {
 
     return G;
 }
+    // double _koef = Function::lambda(elem[0], area) / (det * 2);
+
+
+    // for (int i = 0; i < 3; i++)
+    // for (int j = 0; j < 3; j++)
+    //     G[i][j] = _koef * (
+    //         a[i][0] * a[j][0] +
+    //         a[i][1] * a[j][1]
+    //     );
 
 array::xxx
 FEM::M(const std::array<Union::XY, 3>& elem, size_t area) const {
