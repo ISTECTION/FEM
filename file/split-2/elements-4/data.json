@@ -1,0 +1,80 @@
+{
+    "params": {
+        "nodes": 5,
+        "elems": 4,
+        "areas": 1,
+        "bords": 4
+    },
+
+    "nodes": {
+        "x": [
+            1,
+            1,
+            5,
+            5,
+            3
+        ],
+        "y": [
+            1,
+            4,
+            4,
+            1,
+            2.5
+        ]
+    },
+
+    "elems": [
+        {
+            "index": [0, 1, 4],
+            "area": 0
+        },
+        {
+            "index": [1, 2, 4],
+            "area": 0
+        },
+        {
+            "index": [2, 3, 4],
+            "area": 0
+        },
+        {
+            "index": [0, 3, 4],
+            "area": 0
+        }
+    ],
+
+    "areas": {
+        "beta": [
+            5
+        ],
+        "gamma": [
+            2
+        ]
+    },
+
+    "bords": [
+        {
+            "area": 0,
+            "index": [0, 3],
+            "cond": 1,
+            "type": 0
+        },
+        {
+            "area": 0,
+            "index": [0, 1],
+            "cond": 2,
+            "type": 0
+        },
+        {
+            "area": 0,
+            "index": [3, 2],
+            "cond": 2,
+            "type": 1
+        },
+        {
+            "area": 0,
+            "index": [1, 2],
+            "cond": 3,
+            "type": 0
+        }
+    ]
+}
