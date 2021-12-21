@@ -8,6 +8,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #ifndef _FEM_HPP_
 #define _FEM_HPP_
+#include "indicators/indicators.hpp"
 #include "utils/lightweight.hpp"
 #include "utils/overload.hpp"
 #include "utils/friendly.hpp"
@@ -18,6 +19,8 @@
 #include "Union.hpp"
 
 #include <algorithm>
+#include <chrono>
+#include <thread>
 #include <cmath>
 #include <set>
 
@@ -165,6 +168,25 @@ void FEM::portrait(const bool isWriteList) {
 }
 
 void FEM::global() {
+    #if DEBUG == 0
+    SetConsoleOutputCP(65001);
+    using namespace indicators;
+    show_console_cursor(false);                                                 /// Hide cursor
+    ProgressBar bar {
+        option::BarWidth  { 50  },
+        option::Start     { "[" },
+        option::Fill      { "■" },
+        option::Lead      { "■" },
+        option::Remainder { "-" },
+        option::End       { "]" },
+        option::PostfixText {
+            "Processed elements 0/" + std::to_string(_size.elems)
+        },
+        option::ForegroundColor { Color::magenta },
+        option::FontStyles { std::vector<FontStyle> { FontStyle::bold } }
+    };
+    #endif
+
     std::array<Union::XY, 3> coords;                                            /// Массив координат элемента
     for (size_t i = 0; i < _size.elems; i++) {
         for (size_t j = 0; j < 3; j++) {
@@ -191,7 +213,23 @@ void FEM::global() {
         prettyG(getSparse());                                                   /// Вывод на экран глобальной матрицы
         pretty(gb);                                                             /// Вывод на экран глобального вектора
         #endif
+
+        #if DEBUG == 0
+        bar.set_option(
+            option::PostfixText {
+                "Processed elements " + std::to_string(i + 1)     +
+                                  '/' + std::to_string(_size.elems)
+            }
+        );
+        bar.set_progress(
+            static_cast<size_t>(double(i + 1) / _size.elems * 100)
+        );
+        #endif
     }
+
+    #if DEBUG == 0
+    show_console_cursor(true);                                                  /// Show cursor
+    #endif
 }
 
 template<size_t N, typename _Struct>
