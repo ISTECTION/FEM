@@ -210,14 +210,12 @@ void FEM::loc_A_to_global(
             size_t b = elem.nodeIdx[j];                                         /// min
             if (a < b) std::swap(a, b);                                         /// swap
 
-            if (ig[a + 1] > ig[a]) {
-                iterator _beg = jg.begin() + ig[a];                             /// Указатель начала строки
-                iterator _end = jg.begin() + ig[a + 1];                         /// Указатель конца строки
+            iterator _beg = jg.begin() + ig[a];                             /// Указатель начала строки
+            iterator _end = jg.begin() + ig[a + 1];                         /// Указатель конца строки
 
-                auto _itr = std::lower_bound(_beg, _end, b);                    /// Индекс + jg.begin() елемента b
-                auto _idx = _itr - jg.begin();                                  /// Индекс элемента b из вектора jg
-                gg[_idx] += locA[i][j];                                         /// Занесения локальной матрицы
-            }
+            auto _itr = std::lower_bound(_beg, _end, b);                    /// Индекс + jg.begin() елемента b
+            auto _idx = _itr - jg.begin();                                  /// Индекс элемента b из вектора jg
+            gg[_idx] += locA[i][j];                                         /// Занесения локальной матрицы
         }
     }
 }
@@ -239,11 +237,13 @@ FEM::localB(const std::array<Union::XY, 3>& elem, size_t area) const {
         Function::f(elem[2], area)
     };
 
-    double det_D = fabs(determinant(elem)) / 24;
+    double det_D = fabs(determinant(elem));
+    double _koef = det_D / 24;
+
     return {                                                                    /// Возвращаем вычисленный локальный вектор
-        det_D * (2 * function[0] + function[1] + function[2]),
-        det_D * (2 * function[1] + function[0] + function[2]),
-        det_D * (2 * function[2] + function[0] + function[1])
+        _koef * (2 * function[0] + function[1] + function[2]),
+        _koef * (2 * function[1] + function[0] + function[2]),
+        _koef * (2 * function[2] + function[0] + function[1])
     };
 }
 
@@ -262,7 +262,7 @@ FEM::G(const std::array<Union::XY, 3>& elem, size_t area) const {
             Function::lambda(elem[0], area) +
             Function::lambda(elem[1], area) +
             Function::lambda(elem[2], area)
-        ) * det / 6;
+        ) / (det * 6);
 
     std::array<std::array<double, 3>, 3> G;
     std::array<std::array<double, 2>, 3> a {

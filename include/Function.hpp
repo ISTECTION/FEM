@@ -39,6 +39,9 @@ static std::unordered_map<std::string, size_t> functions = {
         /// my test (lambda - function)  ///
         {"file/l-func",                 200},
 
+        ///        test Poleleyka        ///
+        {"file/poleleyka",              666},
+
 
         ///      tests from textbook     ///
         {"file/study-nodes-5",          11 },
@@ -124,6 +127,11 @@ double Function::f(const Union::XY coord, const size_t area) {
                     case 0:  return 4 * coord.x; break;
                     default: std::exit(1);
                     BREAK
+        case 666:
+                    SWITCH
+                    case 0:  return 8 * coord.x + 12 * coord.y; break;
+                    default: std::exit(1);
+                    BREAK
         default:
                     Logger::append(
                         getLog("the number func do not exist (f)")
@@ -181,6 +189,11 @@ double Function::analitics(const Union::XY coord, const size_t area){
         case 200:
                     SWITCH
                     case 0: return 2 * coord.x;
+                    default: std::exit(1);
+                    BREAK
+        case 666:
+                    SWITCH
+                    case 0: return 2 * coord.x + 3 * coord.y;
                     default: std::exit(1);
                     BREAK
         default:
@@ -243,6 +256,11 @@ double Function::lambda(const Union::XY coord, const size_t area) {
                     case 0:  return coord.x; break;
                     default: std::exit(1);
                     BREAK
+        case 666:
+                    SWITCH
+                    case 0:  return 1; break;
+                    default: std::exit(1);
+                    BREAK
         default:
                     Logger::append(
                         getLog("the number func do not exist (lambda)")
@@ -300,6 +318,11 @@ double Function::firstBound(const Union::XY coord, const size_t type) {
         case 200:
                     SWITCH
                     case 0:  return 2 * coord.x; break;
+                    default: std::exit(1);
+                    BREAK
+        case 666:
+                    SWITCH
+                    case 0:  return 0; break;
                     default: std::exit(1);
                     BREAK
         default:
@@ -360,10 +383,16 @@ double Function::secondBound(const Union::XY coord, const size_t type) {
                     case 1:  return  10; break;
                     default: std::exit(1);
                     BREAK
-        case 200    :
+        case 200:
                     SWITCH
                     case 0:  return -2 * coord.x; break;
                     case 1:  return  2 * coord.x; break;
+                    default: std::exit(1);
+                    BREAK
+        case 666:
+                    SWITCH
+                    case 0:  return 0; break;
+                    case 1:  return 0; break;
                     default: std::exit(1);
                     BREAK
         default:
@@ -421,6 +450,11 @@ double Function::thirdBound(const Union::XY coord, const size_t type) {
         case 200:
                     SWITCH
                     case 0:  return 2 * coord.x; break;
+                    default: std::exit(1);
+                    BREAK
+        case 666:
+                    SWITCH
+                    case 0:  return 0; break;
                     default: std::exit(1);
                     BREAK
         default:
