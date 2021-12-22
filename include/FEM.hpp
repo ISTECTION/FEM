@@ -46,10 +46,10 @@ private:
 
     std::vector<double> _z;                                                     /// Вектор решений
 
-    bool _debbuging;                                                            /// Отладочная информация
+    bool _debugging;                                                            /// Отладочная информация
 public:
-    FEM(std::filesystem::path _path, bool debbuging)
-            : _debbuging(debbuging) {
+    FEM(std::filesystem::path _path, bool debugging)
+            : _debugging(debugging) {
 
         assert(readJson(_path));                                                /// Читаем входные данные
         portrait(true);                                                         /// Создаём портрет
@@ -64,9 +64,9 @@ public:
 
         const double _eps = 1E-20;
         const double _itr = 10000;
-        Cond _cond = HOLLESKY;
+        Cond _cond = DIAGONAL;
 
-        if (_debbuging) {
+        if (_debugging) {
             writeFile(_out, _eps, _itr);
             LOS<double> _LOS(_out);
 
@@ -161,7 +161,7 @@ void FEM::portrait(const bool isWriteList) {
     for (size_t value : list[i])
         jg[index++] = value;
 
-    if (_debbuging) {
+    if (_debugging) {
         if (isWriteList) {                                                      /// Вывод списка связности если isWriteList = true
             std::cout << "list: " << '\n';
             for (size_t i = 0; i < list.size(); i++) {
@@ -206,7 +206,7 @@ void FEM::global() {
         array::x   local_b = localB(coords, elems[i].area);                     /// Вычисление локального вектора
         array::xxx local_A = localA(coords, elems[i].area);                     /// Вычисления локальной матрицы
 
-        if (_debbuging) {
+        if (_debugging) {
             std::cout << "Element: "                                            /// Вывод на экран конечного элемента
                         << elems[i].nodeIdx[0] << ' '                           /// который мы будем добавлять
                         << elems[i].nodeIdx[1] << ' '                           /// в глобальную матрицу
@@ -218,7 +218,7 @@ void FEM::global() {
         loc_A_to_global<3>(local_A, elems[i]);                                  /// Занесение локальной матрицы в глобальную
         loc_b_to_global<3>(local_b, elems[i]);                                  /// Занесение локального вектора в глобальный
 
-        if (_debbuging) {
+        if (_debugging) {
             prettyG(getSparse());                                               /// Вывод на экран глобальной матрицы
             pretty(gb);                                                         /// Вывод на экран глобального вектора
         }
