@@ -124,7 +124,7 @@ double Function::f(const Union::XY coord, const size_t area) {
                     BREAK
         case 200:
                     SWITCH
-                    case 0:  return 4 * coord.x; break;
+                    case 0:  return 4 * coord.x - 2; break;
                     default: std::exit(1);
                     BREAK
         case 666:

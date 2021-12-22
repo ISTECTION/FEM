@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  16 DEC 2021 01:29
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  23 DEC 2021 03:23
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1268,164 +1268,160 @@ LaTeX Font Info:    Font shape `TU/NotoSans(0)/b/n' will be
 (Font)              scaled to size 14.4pt on input line 74.
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/it' will be
 (Font)              scaled to size 12.0pt on input line 85.
- [2]
-LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/n' will be
-(Font)              scaled to size 8.0pt on input line 173.
-LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/n' will be
-(Font)              scaled to size 6.0pt on input line 173.
- [3] [4] [5]
-Missing character: There is no г ("433) in font cmmi12!
-
-Underfull \hbox (badness 10000) in paragraph at lines 500--505
-
- []
-
-[6]
-Underfull \hbox (badness 10000) in paragraph at lines 516--520
+ [2] [3] [4] [5] [6]
+Underfull \hbox (badness 10000) in paragraph at lines 544--549
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 521--525
+Underfull \hbox (badness 10000) in paragraph at lines 560--564
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 526--528
+Underfull \hbox (badness 10000) in paragraph at lines 565--569
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 570--572
 
  []
 
 Missing character: There is no Г ("413) in font cmmi8!
-[7]
+[7] [8]
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/b/n' will be
-(Font)              scaled to size 12.0pt on input line 600.
- (./_minted-main/default-pyg-prefix.pygstyle) (./_minted-main/vs.pygstyle) (./_minted-main/1FC30ECA74E56EC9C42FC2611C924C1256BF1A09C8F559D9906C82508026A994.pygtex) [8] (./_minted-main/2665A1C894C69D6BB0B53F6764337A8038EAA7AE166122FC5A6D7255FAF69EBF.pygtex)
-Overfull \vbox (3.33801pt too high) detected at line 610
+(Font)              scaled to size 12.0pt on input line 644.
+ (./_minted-main/default-pyg-prefix.pygstyle) (./_minted-main/vs.pygstyle) (./_minted-main/1FC30ECA74E56EC9C42FC2611C924C1256BF1A09C8F559D9906C82508026A994.pygtex
+LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/n' will be
+(Font)              scaled to size 6.0pt on input line 2.
+) [9] (./_minted-main/2665A1C894C69D6BB0B53F6764337A8038EAA7AE166122FC5A6D7255FAF69EBF.pygtex)
+Overfull \vbox (3.33801pt too high) detected at line 654
  []
 
-[9] (./_minted-main/B6E1A8C0EAB0B6E255D1EED6701E092FFA57E529A413609C5A688EAC7C3E5227.pygtex)
-Overfull \vbox (3.25401pt too high) detected at line 617
- []
-
-[10]
-Underfull \vbox (badness 10000) detected at line 617
- []
-
-
-Underfull \vbox (badness 10000) detected at line 617
+[10] (./_minted-main/B6E1A8C0EAB0B6E255D1EED6701E092FFA57E529A413609C5A688EAC7C3E5227.pygtex)
+Overfull \vbox (3.25401pt too high) detected at line 661
  []
 
 [11]
-Underfull \vbox (badness 10000) detected at line 617
+Underfull \vbox (badness 10000) detected at line 661
  []
 
 
-Underfull \vbox (badness 10000) detected at line 617
+Underfull \vbox (badness 10000) detected at line 661
  []
 
 [12]
-Underfull \vbox (badness 10000) detected at line 617
+Underfull \vbox (badness 10000) detected at line 661
  []
 
 
-Underfull \vbox (badness 10000) detected at line 617
+Underfull \vbox (badness 10000) detected at line 661
  []
 
 [13]
-Underfull \vbox (badness 10000) detected at line 617
+Underfull \vbox (badness 10000) detected at line 661
  []
 
 
-Underfull \vbox (badness 10000) detected at line 617
+Underfull \vbox (badness 10000) detected at line 661
  []
 
 [14]
-Underfull \vbox (badness 10000) detected at line 617
+Underfull \vbox (badness 10000) detected at line 661
  []
 
 
-Underfull \vbox (badness 10000) detected at line 617
+Underfull \vbox (badness 10000) detected at line 661
  []
 
 [15]
-Underfull \vbox (badness 10000) detected at line 617
+Underfull \vbox (badness 10000) detected at line 661
  []
 
 
-Underfull \vbox (badness 10000) detected at line 617
+Underfull \vbox (badness 10000) detected at line 661
  []
 
 [16]
-Underfull \vbox (badness 10000) detected at line 617
+Underfull \vbox (badness 10000) detected at line 661
  []
 
 
-Underfull \vbox (badness 10000) detected at line 617
+Underfull \vbox (badness 10000) detected at line 661
  []
 
-[17] [18] (./_minted-main/3F1D0E36B517E4DB2E0E1327C72BC53C31F531E5DA9D3518EC5C6384DB37D7C0.pygtex)
-Overfull \vbox (4.25394pt too high) detected at line 624
- []
-
-[19]
-Underfull \vbox (badness 10000) detected at line 624
+[17]
+Underfull \vbox (badness 10000) detected at line 661
  []
 
 
-Underfull \vbox (badness 10000) detected at line 624
+Underfull \vbox (badness 10000) detected at line 661
+ []
+
+[18] [19] (./_minted-main/3F1D0E36B517E4DB2E0E1327C72BC53C31F531E5DA9D3518EC5C6384DB37D7C0.pygtex)
+Overfull \vbox (4.25394pt too high) detected at line 668
  []
 
 [20]
-Underfull \vbox (badness 10000) detected at line 624
+Underfull \vbox (badness 10000) detected at line 668
  []
 
 
-Underfull \vbox (badness 10000) detected at line 624
+Underfull \vbox (badness 10000) detected at line 668
  []
 
-[21] (./_minted-main/536BC50812BB911F5DF8465A29D83C37C5BBD61B19955BE1808CE2B81B32653A.pygtex)
-Overfull \vbox (3.25401pt too high) detected at line 631
- []
-
-[22]
-Underfull \vbox (badness 10000) detected at line 631
+[21]
+Underfull \vbox (badness 10000) detected at line 668
  []
 
 
-Underfull \vbox (badness 10000) detected at line 631
+Underfull \vbox (badness 10000) detected at line 668
+ []
+
+[22] (./_minted-main/536BC50812BB911F5DF8465A29D83C37C5BBD61B19955BE1808CE2B81B32653A.pygtex)
+Overfull \vbox (3.25401pt too high) detected at line 675
  []
 
 [23]
-Underfull \vbox (badness 10000) detected at line 631
+Underfull \vbox (badness 10000) detected at line 675
  []
 
 
-Underfull \vbox (badness 10000) detected at line 631
+Underfull \vbox (badness 10000) detected at line 675
  []
 
-[24] (./_minted-main/77CD9C8293F6F09EAC781C6C3C55D946374BFB77B1089A76075B2D133DC69DA4.pygtex)
-Overfull \vbox (3.33801pt too high) detected at line 638
- []
-
-[25]
-Underfull \vbox (badness 10000) detected at line 638
+[24]
+Underfull \vbox (badness 10000) detected at line 675
  []
 
 
-Underfull \vbox (badness 10000) detected at line 638
+Underfull \vbox (badness 10000) detected at line 675
  []
 
-[26] (./_minted-main/3C164D551678866588DFC4C1DACE4CA5D39DC2AD74E47CACD64C689AD8CB667D.pygtex) (./_minted-main/C1B88A357F33AF46D659DD44BEFF60E4495A091686F55359409EBCB61C1EB6C3.pygtex)
-Overfull \vbox (0.82861pt too high) detected at line 652
+[25] (./_minted-main/77CD9C8293F6F09EAC781C6C3C55D946374BFB77B1089A76075B2D133DC69DA4.pygtex)
+Overfull \vbox (3.33801pt too high) detected at line 682
  []
 
-[27]
-Underfull \hbox (badness 10000) in paragraph at lines 663--669
+[26]
+Underfull \vbox (badness 10000) detected at line 682
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 682
+ []
+
+[27] (./_minted-main/3C164D551678866588DFC4C1DACE4CA5D39DC2AD74E47CACD64C689AD8CB667D.pygtex) (./_minted-main/C1B88A357F33AF46D659DD44BEFF60E4495A091686F55359409EBCB61C1EB6C3.pygtex)
+Overfull \vbox (0.82861pt too high) detected at line 696
+ []
+
+[28]
+Underfull \hbox (badness 10000) in paragraph at lines 707--713
  
  []
 
 
-Package pgfplots Warning: Axis range for axis z is approximately empty; enlarging it (it is [1.0000000000:1.0000000000]) on input line 724.
+Package pgfplots Warning: Axis range for axis z is approximately empty; enlarging it (it is [1.0000000000:1.0000000000]) on input line 768.
 
  [warning /pgfplots/warning/approx empty range enlarged]
 > Step: init table outer spec.
@@ -1444,33 +1440,11 @@ Package pgfplots Warning: Axis range for axis z is approximately empty; enlargin
 > Step: execute table commands.
 > Step: calculate cell and line sizes.
 > Step: build the whole table.
-[28]
-Underfull \hbox (badness 10000) in paragraph at lines 767--773
- 
- []
-
-> Step: init table outer spec.
-> Step: parse table options.
-> Step: split table.
-> Step: init table inner spec.
-> Step: parse table inner spec.
-> Step: execute table commands.
-> Step: calculate cell and line sizes.
-> Step: build the whole table.
-> Step: init table outer spec.
-> Step: parse table options.
-> Step: split table.
-> Step: init table inner spec.
-> Step: parse table inner spec.
-> Step: execute table commands.
-> Step: calculate cell and line sizes.
-> Step: build the whole table.
-
-Underfull \hbox (badness 10000) in paragraph at lines 882--888
- 
- []
-
 [29]
+Underfull \hbox (badness 10000) in paragraph at lines 811--817
+ 
+ []
+
 > Step: init table outer spec.
 > Step: parse table options.
 > Step: split table.
@@ -1488,12 +1462,34 @@ Underfull \hbox (badness 10000) in paragraph at lines 882--888
 > Step: calculate cell and line sizes.
 > Step: build the whole table.
 
-Underfull \hbox (badness 10000) in paragraph at lines 979--985
+Underfull \hbox (badness 10000) in paragraph at lines 926--932
+ 
+ []
+
+[30]
+> Step: init table outer spec.
+> Step: parse table options.
+> Step: split table.
+> Step: init table inner spec.
+> Step: parse table inner spec.
+> Step: execute table commands.
+> Step: calculate cell and line sizes.
+> Step: build the whole table.
+> Step: init table outer spec.
+> Step: parse table options.
+> Step: split table.
+> Step: init table inner spec.
+> Step: parse table inner spec.
+> Step: execute table commands.
+> Step: calculate cell and line sizes.
+> Step: build the whole table.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1023--1029
  
  []
 
 LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 1017.
+(Font)              scaled to size 10.0pt on input line 1061.
 > Step: init table outer spec.
 > Step: parse table options.
 > Step: split table.
@@ -1511,10 +1507,12 @@ LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/n' will be
 > Step: calculate cell and line sizes.
 > Step: build the whole table.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1101--1107
+Underfull \hbox (badness 10000) in paragraph at lines 1145--1151
  
  []
 
+LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/n' will be
+(Font)              scaled to size 8.0pt on input line 1172.
 
 Overfull \vbox (16.00674pt too high) has occurred while \output is active []
 
@@ -1524,7 +1522,7 @@ Overfull \vbox (16.00674pt too high) has occurred while \output is active []
 
 Overfull \vbox (16.00674pt too high) has occurred while \output is active []
 
- [30]
+ [31]
 > Step: init table outer spec.
 > Step: parse table options.
 > Step: split table.
@@ -1541,7 +1539,7 @@ Overfull \vbox (16.00674pt too high) has occurred while \output is active []
 > Step: execute table commands.
 > Step: calculate cell and line sizes.
 > Step: build the whole table.
- [31] (./main.aux)
+ [32] (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: A6268DE9D373BD04A15FF4F00CDF8553;548.
  ) 
@@ -1554,4 +1552,4 @@ Here is how much of TeX's memory you used:
  1348 hyphenation exceptions out of 8191
  113i,10n,116p,785b,2319s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on main.pdf (31 pages).
+Output written on main.pdf (32 pages).

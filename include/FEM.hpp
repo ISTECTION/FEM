@@ -54,8 +54,8 @@ public:
     }
 
     void startLOS(const std::filesystem::path& _out) {
-        using ::Cond::HOLLESKY;                                                 /// Неполное ращложение Холецкого
-        using ::Cond::DIAGONAL;                                                 /// Диагональная предобусловленность
+        using ::Cond::HOLLESKY;                                                 /// Неполное разложение Холецкого
+        using ::Cond::DIAGONAL;                                                 /// Диагональным предобусловленность
         using ::Cond::NONE;                                                     /// Без предобусловленности
 
         const double _eps = 1E-20;
@@ -71,7 +71,7 @@ public:
                 _eps, _itr);
         #endif
 
-        _LOS.solve(DIAGONAL, true);
+        _LOS.solve(HOLLESKY, true);
         _z = std::move(_LOS.getX());
     }
 
@@ -248,12 +248,12 @@ void FEM::loc_A_to_global(
             size_t b = elem.nodeIdx[j];                                         /// min
             if (a < b) std::swap(a, b);                                         /// swap
 
-            iterator _beg = jg.begin() + ig[a];                             /// Указатель начала строки
-            iterator _end = jg.begin() + ig[a + 1];                         /// Указатель конца строки
+            iterator _beg = jg.begin() + ig[a];                                 /// Указатель начала строки
+            iterator _end = jg.begin() + ig[a + 1];                             /// Указатель конца строки
 
-            auto _itr = std::lower_bound(_beg, _end, b);                    /// Индекс + jg.begin() елемента b
-            auto _idx = _itr - jg.begin();                                  /// Индекс элемента b из вектора jg
-            gg[_idx] += locA[i][j];                                         /// Занесения локальной матрицы
+            auto _itr = std::lower_bound(_beg, _end, b);                        /// Индекс + jg.begin() елемента b
+            auto _idx = _itr - jg.begin();                                      /// Индекс элемента b из вектора jg
+            gg[_idx] += locA[i][j];                                             /// Занесения локальной матрицы
         }
     }
 }
@@ -323,15 +323,16 @@ FEM::G(const std::array<Union::XY, 3>& elem, size_t area) const {
 
     return G;
 }
-    // double _koef = Function::lambda(elem[0], area) / (det * 2);
 
 
-    // for (int i = 0; i < 3; i++)
-    // for (int j = 0; j < 3; j++)
-    //     G[i][j] = _koef * (
-    //         a[i][0] * a[j][0] +
-    //         a[i][1] * a[j][1]
-    //     );
+// double _koef = Function::lambda(elem[0], area) / (det * 2);
+
+// for (int i = 0; i < 3; i++)
+// for (int j = 0; j < 3; j++)
+//     G[i][j] = _koef * (
+//         a[i][0] * a[j][0] +
+//         a[i][1] * a[j][1]
+//     );
 
 array::xxx
 FEM::M(const std::array<Union::XY, 3>& elem, size_t area) const {

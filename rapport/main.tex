@@ -107,11 +107,11 @@ $S=S_1 \cup S_2 \cup S_3$ и краевыми условиями:
 \noindent Исходное уравнение можно переписать
 в виде: $Lu = f$, где $Lu = -div( \lambda grad u) + \gamma u$.
 
-\noindent Тогда чтобы решить исзодную задачу
-следует левую и праую части уравнения домножить
+\noindent Тогда чтобы решить исходную задачу
+следует левую и правую части уравнения домножить
 на функцию $v$ из пространства пробных функций
 и проинтегрировать по $\Omega$. Фактически это
-соответсвует скалярному умножению $Lu$ и $f$
+соответствует скалярному умножению $Lu$ и $f$
 на $v$ в пространтсве $L_2(\Omega)$:
 
 \[ (Lu, v) = (f, v) \]
@@ -170,7 +170,7 @@ $S=S_1 \cup S_2 \cup S_3$ и краевыми условиями:
 \noindent Уравнение примет вид:
 
 \[
-    \int \limits_{\Omega} (\lambda grad u \text{ } grad v) d\Omega
+    \int \limits_{\Omega} (\lambda grad u \ grad v) d\Omega
     + \int \limits_{S_3} \beta u v dS
     + \int \limits_{\Omega} \gamma u v d\Omega
     =
@@ -207,10 +207,10 @@ $S=S_1 \cup S_2 \cup S_3$ и краевыми условиями:
 \begin{spacing}{1.25}
     \noindent Поскольку исходная задача рассматривается в
     декартовой системе координат, то
-    $grad u = \left( \frac{\partial u}{\partial x}, \frac{\partial u}{\partial y} \right)$
+    $grad \ u = \left( \frac{\partial u}{\partial x}, \frac{\partial u}{\partial y} \right)$
     и, соответсвенно:
     $
-    grad u \text{ } grad v =
+    grad \ u \ grad \ v =
     \frac{\partial u}{\partial x}
     \frac{\partial u}{\partial x}
     +
@@ -368,49 +368,94 @@ $$
 
 \subsection*{Построение матрицы массы}
 
-\begin{eqnarray*}
+$$
+M_{ii} =
+    \int \limits_{\Omega_k} \gamma (\psi_i)^2 d\Omega_k =
+    \gamma \int \limits_{\Omega_k} (L_i)^2 d\Omega_k =
+    \gamma \frac{2!0!0!}{(2+0+0+2)!} \vert detD \vert =
+    \gamma \frac{det D}{12}, i = 1, \ldots, 3
+$$
+
+$$
 M_{ij} =
-    \int \limits_{\Omega_m} \gamma Y_iY_j d\Omega_m =
-    \Big \vert \gamma = Y_1\gamma_1
-                      + Y_2\gamma_2
-                      + Y_3\gamma_3
-    \Big \vert
-    =
-    \int \limits_{\Omega_m}
-        \left(
-            Y_1\gamma_1
-          + Y_2\gamma_2
-          + Y_3\gamma_3
-        \right) Y_i Y_j d \Omega_m = \\ =
-    \gamma_1 \int \limits_{\Omega_m} Y_1 Y_i Y_j d \Omega_m +
-    \gamma_2 \int \limits_{\Omega_m} Y_2 Y_i Y_j d \Omega_m +
-    \gamma_3 \int \limits_{\Omega_m} Y_3 Y_i Y_j d \Omega_m = \\ =
-    \gamma_1 \int \limits_{\Omega_m} L_1 L_i L_j d \Omega_m +
-    \gamma_2 \int \limits_{\Omega_m} L_2 L_i L_j d \Omega_m +
-    \gamma_3 \int \limits_{\Omega_m} L_3 L_i L_j d \Omega_m
-\end{eqnarray*}
+    \int \limits_{\Omega_k} \gamma \psi_i \psi_j d\Omega_k =
+    \gamma \int \limits_{\Omega_k} L_i L_j d\Omega_k =
+    \gamma \frac{1!1!0!}{(1+1+0+2)!} \vert detD \vert =
+    \gamma \frac{det D}{24}, i \neq j
+$$
+
+$$
+M = \gamma \frac{\vert det D \vert}{24}
+\begin{pmatrix}
+    2 & 1 & 1 \\
+    1 & 2 & 1 \\
+    1 & 1 & 2
+\end{pmatrix}
+$$
 
 \subsection*{Построение матрицы жёсткости}
 
-Рассмотрим первый член в выражении для k-го конечного
-эдемента:
-
 $$
-\int \limits_{\Omega_k} \lambda
-    \left(
-        \frac{\partial \psi_j}{\partial x}
+    G_{ij} =
+    \int \limits_{\Omega_k} \lambda \left(
         \frac{\partial \psi_i}{\partial x}
+        \frac{\partial \psi_j}{\partial x}
         +
-        \frac{\partial \psi_j}{\partial y}
         \frac{\partial \psi_i}{\partial y}
-        dxdy
-    \right)
+        \frac{\partial \psi_j}{\partial y}
+        \right) d \Omega_k
+        =
+        \bigg\vert \lambda = \sum \limits_{k=1}^3 \lambda_k \psi_k \bigg\vert
+        =
 $$
 
 $$
-B_{i,j}=(\alpha_1^i \alpha_1^j + \alpha_2^i \alpha_2^j)
-    \frac{\big \vert det D \big \vert}{2}
-    \hspace{15pt} i,j=\overline{0,2}
+        =
+        \lambda_1 \int \limits_{\Omega_k} \psi_1 (\alpha_1^i \alpha_1^j + \alpha_2^i \alpha_2^j) d \Omega_k
+        +
+        \lambda_2 \int \limits_{\Omega_k} \psi_2 (\alpha_1^i \alpha_1^j + \alpha_2^i \alpha_2^j) d \Omega_k
+        +
+        \lambda_3 \int \limits_{\Omega_k} \psi_3 (\alpha_1^i \alpha_1^j + \alpha_2^i \alpha_2^j) d \Omega_k
+        =
+$$
+
+$$
+        =
+        (\alpha_1^i \alpha_1^j + \alpha_2^i \alpha_2^j) \left(
+            \lambda_1 \int \limits_{\Omega_k} \psi_1  d \Omega_k +
+            \lambda_2 \int \limits_{\Omega_k} \psi_2  d \Omega_k +
+            \lambda_3 \int \limits_{\Omega_k} \psi_3  d \Omega_k
+        \right)
+        =
+$$
+
+$$
+        =
+        (\alpha_1^i \alpha_1^j + \alpha_2^i \alpha_2^j) \left(
+            \lambda_1 \int \limits_{\Omega_k} L_1 dxdy +
+            \lambda_2 \int \limits_{\Omega_k} L_2 dxdy +
+            \lambda_3 \int \limits_{\Omega_k} L_3 dxdy
+        \right)
+        =
+$$
+
+$$
+        =
+        (\alpha_1^i \alpha_1^j + \alpha_2^i \alpha_2^j)
+        (\lambda_1 + \lambda_2 + \lambda_3) \vert detD \vert
+        \left(
+            \frac{1!0!0!}{(1+0+0+2)!} +
+            \frac{0!1!0!}{(0+1+0+2)!} +
+            \frac{0!0!1!}{(0+0+1+2)!}
+        \right)
+        =
+$$
+
+$$
+        =
+        (\alpha_1^i \alpha_1^j + \alpha_2^i \alpha_2^j) \left(
+            \frac{(\lambda_1 + \lambda_2 + \lambda_3) \vert detD \vert}{6}
+        \right)
 $$
 
 \subsection*{Построение вектора правой части}
@@ -443,8 +488,8 @@ $$
 массы и жесткости, учитываем соответствие локальной
 и глобальной нумераций каждого конечного элемента.
 Глобальная нумерация каждого конечного элемента
-однозначно определяет позиции вклада его локальной м
-атрицы в глобальную. Поэтому, зная глобальные
+однозначно определяет позиции вклада его локальной
+матрицы в глобальную. Поэтому, зная глобальные
 номера соответствующих узлов конечного элемента,
 определяем и то, какие элементы глобальной матрицы
 изменятся при учете текущего конечного элемента.
@@ -490,12 +535,11 @@ $$
 
 \noindent Краевые условия второго и третьего рода задаются
 на рёбрах, т.е. определяются двумя узлами, лежащими на
-ребру. Будем считать, что параметр $\beta$ на $S_3$
-постоянен, тогда параметр $г_{\beta}$ будем
+ребре. Будем считать, что параметр $\beta$ на $S_3$
+постоянен, тогда параметр $u_{\beta}$ будем
 раскладывать по двум базисным функциям,
 определённым на этом ребре:
 $$ u_{\beta} = u_{\beta 1} \phi_1 + u_{\beta 2} \phi_2 $$
-
 
 \noindent где $\phi_i, \hspace{5pt} i=\overline{0,1}$
 - локально занумерованные линейные базисные функции,
@@ -504,8 +548,8 @@ $$ u_{\beta} = u_{\beta 1} \phi_1 + u_{\beta 2} \phi_2 $$
 $u_{\beta}$ в узлах ребра. \\
 
 \noindent Аналогично поступаем и при учете вторых
-краевых условий, раскладывая по базису ребра функцию
-$\theta = \theta_0 \phi_0 + theta_1 \phi_1$.
+краевых условий, раскладывая по базису ребра функцию:
+$$ \theta = \theta_0 \phi_0 + \theta_1 \phi_1 $$
 
 \noindent Тогда приведенные выше интегралы примут вид:
 
@@ -536,7 +580,7 @@ $$
 \noindent где $mes \varGamma$ длина ребра. При этом независимо
 от того, что на каждом из ребер присутствуют свои функции,
 интегралы, посчитанные по приведенным выше формулам,
-будут равны.
+будут равны:
 
 \renewcommand{\arraystretch}{1.25}
 \begin{equation*}
@@ -574,7 +618,7 @@ $$
 
 \noindent Очевидно, что получится та же
 матрица, только не умноженная на вектор
-констант.
+констант:
 
 $$
 I_3 = \frac{1}{6} mes S_3
@@ -592,7 +636,7 @@ $$
 \newpage
 \section{Текст программы}
 
-Весь проект:
+Ссылка к полному проэкту:
 \href{https://github.com/ISTECTION/FEM}{https://github.com/ISTECTION/FEM}
 
 \begin{myquote}
@@ -758,7 +802,7 @@ $$
 
 \newpage
 \subsection*{Тест №2}
-\subsubsection*{Количество елементов - 2}
+\subsubsection*{Количество элементов - 2}
 
 \setlength{\columnsep}{-4.5cm}
 \begin{multicols}{2}
@@ -873,7 +917,7 @@ $$
     \end{tblr}
 \end{multicols}
 
-\subsubsection*{Количество елементов - 4}
+\subsubsection*{Количество элементов - 4}
 
 \setlength{\columnsep}{-4.5cm}
 \begin{multicols}{2}
@@ -970,7 +1014,7 @@ $$
     \end{tblr}
 \end{multicols}
 
-\subsubsection*{Количество елементов - 8}
+\subsubsection*{Количество элементов - 8}
 
 \setlength{\columnsep}{-4.5cm}
 \begin{multicols}{2}
@@ -1092,7 +1136,7 @@ $$
 \end{multicols}
 
 
-\subsubsection*{Количество елементов - 16}
+\subsubsection*{Количество элементов - 16}
 
 \setlength{\columnsep}{-4.5cm}
 \begin{multicols}{2}
@@ -1254,9 +1298,10 @@ $$
 
 
 
+
+
+
 \raggedright % Прижать к левому краю
-\section{Выводы}
-    Выводы
 
 \end{document}
 
