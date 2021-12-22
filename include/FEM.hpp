@@ -45,8 +45,12 @@ private:
     std::vector<size_t> jg;                                                     /// Указатели столбцов значений
 
     std::vector<double> _z;                                                     /// Вектор решений
+
+    bool _debbuging;                                                            /// Отладочная информация
 public:
-    FEM(std::filesystem::path _path) {
+    FEM(std::filesystem::path _path, bool debbuging)
+            : _debbuging(debbuging) {
+
         assert(readJson(_path));                                                /// Читаем входные данные
         portrait(true);                                                         /// Создаём портрет
         global();                                                               /// Создание глобальной матрицы
@@ -60,19 +64,22 @@ public:
 
         const double _eps = 1E-20;
         const double _itr = 10000;
+        Cond _cond = HOLLESKY;
 
-        #if DEBUG != 0
+        if (_debbuging) {
             writeFile(_out, _eps, _itr);
             LOS<double> _LOS(_out);
-        #else
-            LOS<double> _LOS (
-                getDate(),
-                getNodes(),
-                _eps, _itr);
-        #endif
 
-        _LOS.solve(HOLLESKY, true);
-        _z = std::move(_LOS.getX());
+            _LOS.solve(_cond, true);
+            _z = std::move(_LOS.getX());
+
+        } else {
+            LOS<double> _LOS (getDate(),
+                getNodes(), _eps, _itr);
+
+            _LOS.solve(_cond, true);
+            _z = std::move(_LOS.getX());
+        }
     }
 
     void printZ()         const;                                                /// Функция печатает вектор решений
@@ -154,37 +161,39 @@ void FEM::portrait(const bool isWriteList) {
     for (size_t value : list[i])
         jg[index++] = value;
 
-    #if DEBUG != 0
-    if (isWriteList) {                                                          /// Вывод списка связности если isWriteList = true
-        std::cout << "list: " << '\n';
-        for (size_t i = 0; i < list.size(); i++) {
-            std::cout << i << ':' << ' ';
-            for (size_t j : list[i])
-                std::cout << j << ' ';
-            std::cout << std::endl;
+    if (_debbuging) {
+        if (isWriteList) {                                                      /// Вывод списка связности если isWriteList = true
+            std::cout << "list: " << '\n';
+            for (size_t i = 0; i < list.size(); i++) {
+                std::cout << i << ':' << ' ';
+                for (size_t j : list[i])
+                    std::cout << j << ' ';
+                std::cout << std::endl;
+            }
         }
     }
-    #endif
 }
 
 void FEM::global() {
-    #if DEBUG == 0
-    SetConsoleOutputCP(65001);
-    using namespace indicators;
-    show_console_cursor(false);                                                 /// Hide cursor
-    ProgressBar bar {
-        option::BarWidth  { 50  },
-        option::Start     { "[" },
-        option::Fill      { "■" },
-        option::Lead      { "■" },
-        option::Remainder { "-" },
-        option::End       { "]" },
-        option::PostfixText {
-            "Processed elements 0/" + std::to_string(_size.elems)
-        },
-        option::ForegroundColor { Color::magenta },
-        option::FontStyles { std::vector<FontStyle> { FontStyle::bold } }
-    };
+    #define LOADING 0
+
+    #if LOADING != 0
+        SetConsoleOutputCP(65001);
+        using namespace indicators;
+        show_console_cursor(false);                                                 /// Hide cursor
+        ProgressBar bar {
+            option::BarWidth  { 50  },
+            option::Start     { "[" },
+            option::Fill      { "■" },
+            option::Lead      { "■" },
+            option::Remainder { "-" },
+            option::End       { "]" },
+            option::PostfixText {
+                "Processed elements 0/" + std::to_string(_size.elems)
+            },
+            option::ForegroundColor { Color::magenta },
+            option::FontStyles { std::vector<FontStyle> { FontStyle::bold } }
+        };
     #endif
 
     std::array<Union::XY, 3> coords;                                            /// Массив координат элемента
@@ -197,38 +206,38 @@ void FEM::global() {
         array::x   local_b = localB(coords, elems[i].area);                     /// Вычисление локального вектора
         array::xxx local_A = localA(coords, elems[i].area);                     /// Вычисления локальной матрицы
 
-        #if DEBUG != 0
-        std::cout << "Element: "                                                /// Вывод на экран конечного элемента
-                    << elems[i].nodeIdx[0] << ' '                               /// который мы будем добавлять
-                    << elems[i].nodeIdx[1] << ' '                               /// в глобальную матрицу
-                    << elems[i].nodeIdx[2] << '\n';
-        pretty(local_b);                                                        /// Вывод на экран локального вектора
-        pretty(local_A);                                                        /// Вывод на экран локальной матрицы
-        #endif
+        if (_debbuging) {
+            std::cout << "Element: "                                            /// Вывод на экран конечного элемента
+                        << elems[i].nodeIdx[0] << ' '                           /// который мы будем добавлять
+                        << elems[i].nodeIdx[1] << ' '                           /// в глобальную матрицу
+                        << elems[i].nodeIdx[2] << '\n';
+            pretty(local_b);                                                    /// Вывод на экран локального вектора
+            pretty(local_A);                                                    /// Вывод на экран локальной матрицы
+        }
 
         loc_A_to_global<3>(local_A, elems[i]);                                  /// Занесение локальной матрицы в глобальную
         loc_b_to_global<3>(local_b, elems[i]);                                  /// Занесение локального вектора в глобальный
 
-        #if DEBUG != 0
-        prettyG(getSparse());                                                   /// Вывод на экран глобальной матрицы
-        pretty(gb);                                                             /// Вывод на экран глобального вектора
-        #endif
+        if (_debbuging) {
+            prettyG(getSparse());                                               /// Вывод на экран глобальной матрицы
+            pretty(gb);                                                         /// Вывод на экран глобального вектора
+        }
 
-        #if DEBUG == 0
-        bar.set_option(
-            option::PostfixText {
-                "Processed elements " + std::to_string(i + 1)     +
-                                  '/' + std::to_string(_size.elems)
-            }
-        );
-        bar.set_progress(
-            static_cast<size_t>(double(i + 1) / _size.elems * 100)
-        );
+        #if LOADING != 0
+            bar.set_option(
+                option::PostfixText {
+                    "Processed elements " + std::to_string(i + 1)     +
+                                      '/' + std::to_string(_size.elems)
+                }
+            );
+            bar.set_progress(
+                static_cast<size_t>(double(i + 1) / _size.elems * 100)
+            );
         #endif
     }
 
-    #if DEBUG == 0
-    show_console_cursor(true);                                                  /// Show cursor
+    #if LOADING != 0
+        show_console_cursor(true);                                              /// Show cursor
     #endif
 }
 
@@ -323,16 +332,6 @@ FEM::G(const std::array<Union::XY, 3>& elem, size_t area) const {
 
     return G;
 }
-
-
-// double _koef = Function::lambda(elem[0], area) / (det * 2);
-
-// for (int i = 0; i < 3; i++)
-// for (int j = 0; j < 3; j++)
-//     G[i][j] = _koef * (
-//         a[i][0] * a[j][0] +
-//         a[i][1] * a[j][1]
-//     );
 
 array::xxx
 FEM::M(const std::array<Union::XY, 3>& elem, size_t area) const {
@@ -517,7 +516,6 @@ bool FEM::readFile(const std::filesystem::path& path) {
 }
 
 bool FEM::readJson(const std::filesystem::path& path) {
-
     std::string _data;
     std::ifstream fin(path / "data.json");
     if (fin.is_open()) {
@@ -534,14 +532,11 @@ bool FEM::readJson(const std::filesystem::path& path) {
 
         json responseJson = json::parse(_data);
         json object = responseJson["params"];
-
         _size.nodes = object["nodes"];
         _size.elems = object["elems"];
         _size.areas = object["areas"];
         _size.conds = object["bords"];
-
         resize();
-
         json x = responseJson["nodes"]["x"];
         json y = responseJson["nodes"]["y"];
 
@@ -549,7 +544,6 @@ bool FEM::readJson(const std::filesystem::path& path) {
             nodes[i].x = x[i];
             nodes[i].y = y[i];
         }
-
         json elems_object = responseJson["elems"];
         for (size_t i = 0; i < _size.elems; i++) {
             json object_index = elems_object[i]["index"];
@@ -560,18 +554,14 @@ bool FEM::readJson(const std::filesystem::path& path) {
 
             elems[i].area = elems_object[i]["area"];
         }
-
         json betta = responseJson["areas"]["beta" ];
         json gamma = responseJson["areas"]["gamma"];
         for (size_t i = 0; i < _size.areas; i++) {
-
             materials[i].betta = betta[i];
             materials[i].gamma = gamma[i];
         }
-
         json bords_object = responseJson["bords"];
         for (size_t i = 0; i < _size.conds; i++) {
-
             boundarys[i].area = bords_object[i]["area"];
             json object_index = bords_object[i]["index"];
             for (size_t j = 0; j < 2; j++)

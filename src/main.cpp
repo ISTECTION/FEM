@@ -20,6 +20,11 @@ int main(int argc, char* argv[]) {
     _prs.add_argument("-o", "--output")
         .help( "path to output files" );
 
+    _prs.add_argument("-d", "--debug")
+        .help("debugging information")
+        .default_value(false)
+        .implicit_value(true);
+
     try {
         using std::string;
 
@@ -32,16 +37,18 @@ int main(int argc, char* argv[]) {
 
         Function::setFunction(_inp.string());                                   /// set function
         cxxtimer::Timer _timer(true);                                           /// start timer
-        FEM _FEM(_inp);                                                         /// start FEM
+        FEM _FEM(_inp, _prs.get<bool>("-d"));                                   /// start FEM
         _FEM.startLOS(_out);
         _timer.stop();                                                          /// stop timer
 
-        #if DEBUG != 0                                                          /// printing
-        _FEM.printAll();                                                        /// print input FEM data
-        _FEM.printSparse();                                                     /// print sparse format
-        _FEM.createTable();
-        #endif
+        if (_prs["-d"] == true) {                                               /// printing
+            _FEM.printAll();                                                    /// print input FEM data
+            _FEM.printSparse();                                                 /// print sparse format
+            _FEM.createTable();
+        } else
+            _FEM.printZ();
 
+        /// Value at the point
         // _FEM(1.125, 1.125);
         // _FEM(1.5, 2);
         // _FEM(3,   4);
