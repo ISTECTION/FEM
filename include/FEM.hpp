@@ -309,7 +309,7 @@ FEM::G(const std::array<Union::XY, 3>& elem, size_t area) const {
             Function::lambda(elem[0], area) +
             Function::lambda(elem[1], area) +
             Function::lambda(elem[2], area)
-        ) / (det * 6);
+    ) / (det * 6);
 
     std::array<std::array<double, 3>, 3> G;
     std::array<std::array<double, 2>, 3> a {

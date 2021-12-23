@@ -1,10 +1,3 @@
-#ifndef _LIGHTWEIGHT_HPP_
-#define _LIGHTWEIGHT_HPP_
-#include "../Union.hpp"
-
-#include <array>
-#include <cmath>
-
 double
 determinant(const std::array<Union::XY, 3>& elem) {
     return (
@@ -22,4 +15,3 @@ edgeLength(const std::array<Union::XY, 2>& elem) {
         )
     );
 }
-#endif // _LIGHTWEIGHT_HPP_

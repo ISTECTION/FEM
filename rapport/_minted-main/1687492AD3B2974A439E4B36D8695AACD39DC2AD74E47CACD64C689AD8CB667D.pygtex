@@ -1,11 +1,4 @@
 \begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
-\PYG{c+cp}{\PYGZsh{}ifndef \PYGZus{}LIGHTWEIGHT\PYGZus{}HPP\PYGZus{}}
-\PYG{c+cp}{\PYGZsh{}define \PYGZus{}LIGHTWEIGHT\PYGZus{}HPP\PYGZus{}}
-\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZdq{}../Union.hpp\PYGZdq{}}
-
-\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}array\PYGZgt{}}
-\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}cmath\PYGZgt{}}
-
 \PYG{k+kt}{double}
 \PYG{n+nf}{determinant}\PYG{p}{(}\PYG{k}{const}\PYG{+w}{ }\PYG{n}{std}\PYG{o}{::}\PYG{n}{array}\PYG{o}{\PYGZlt{}}\PYG{n}{Union}\PYG{o}{::}\PYG{n}{XY}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{3}\PYG{o}{\PYGZgt{}\PYGZam{}}\PYG{+w}{ }\PYG{n}{elem}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
 \PYG{+w}{    }\PYG{k}{return}\PYG{+w}{ }\PYG{p}{(}
@@ -23,5 +16,4 @@
 \PYG{+w}{        }\PYG{p}{)}
 \PYG{+w}{    }\PYG{p}{);}
 \PYG{p}{\PYGZcb{}}
-\PYG{c+cp}{\PYGZsh{}endif }\PYG{c+c1}{// \PYGZus{}LIGHTWEIGHT\PYGZus{}HPP\PYGZus{}}
 \end{Verbatim}

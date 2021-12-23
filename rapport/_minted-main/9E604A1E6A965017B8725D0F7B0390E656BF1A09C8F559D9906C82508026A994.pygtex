@@ -1,0 +1,64 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZdq{}argparse/argparse.hpp\PYGZdq{}}
+\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZdq{}timer/cxxtimer.hpp\PYGZdq{}}
+\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZdq{}FEM.hpp\PYGZdq{}}
+
+\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}iostream\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}optional\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}fstream\PYGZgt{}}
+
+\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n+nf}{main}\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{argc}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{char}\PYG{o}{*}\PYG{+w}{ }\PYG{n}{argv}\PYG{p}{[])}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{n}{std}\PYG{o}{::}\PYG{n}{ios\PYGZus{}base}\PYG{o}{::}\PYG{n}{sync\PYGZus{}with\PYGZus{}stdio}\PYG{p}{(}\PYG{n+nb}{false}\PYG{p}{);}
+
+\PYG{+w}{    }\PYG{k}{using}\PYG{+w}{ }\PYG{k}{namespace}\PYG{+w}{    }\PYG{o}{::}\PYG{n+nn}{Log}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k}{using}\PYG{+w}{ }\PYG{o}{::}\PYG{n}{std}\PYG{o}{::}\PYG{n}{chrono}\PYG{o}{::}\PYG{n}{milliseconds}\PYG{p}{;}
+
+\PYG{+w}{    }\PYG{n}{argparse}\PYG{o}{::}\PYG{n}{ArgumentParser}\PYG{+w}{ }\PYG{n+nf}{\PYGZus{}prs}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}FEM\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}1.0.0\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{    }\PYG{n}{\PYGZus{}prs}\PYG{p}{.}\PYG{n}{add\PYGZus{}argument}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZhy{}i\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}\PYGZhy{}\PYGZhy{}input\PYGZdq{}}\PYG{p}{)}
+\PYG{+w}{        }\PYG{p}{.}\PYG{n}{help}\PYG{p}{(}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}path to input files\PYGZdq{}}\PYG{+w}{ }\PYG{p}{)}
+\PYG{+w}{        }\PYG{p}{.}\PYG{n}{required}\PYG{p}{();}
+
+\PYG{+w}{    }\PYG{n}{\PYGZus{}prs}\PYG{p}{.}\PYG{n}{add\PYGZus{}argument}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZhy{}o\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}\PYGZhy{}\PYGZhy{}output\PYGZdq{}}\PYG{p}{)}
+\PYG{+w}{        }\PYG{p}{.}\PYG{n}{help}\PYG{p}{(}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}path to output files\PYGZdq{}}\PYG{+w}{ }\PYG{p}{);}
+
+\PYG{+w}{    }\PYG{n}{\PYGZus{}prs}\PYG{p}{.}\PYG{n}{add\PYGZus{}argument}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZhy{}d\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}\PYGZhy{}\PYGZhy{}debug\PYGZdq{}}\PYG{p}{)}
+\PYG{+w}{        }\PYG{p}{.}\PYG{n}{help}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}debugging information\PYGZdq{}}\PYG{p}{)}
+\PYG{+w}{        }\PYG{p}{.}\PYG{n}{default\PYGZus{}value}\PYG{p}{(}\PYG{n+nb}{false}\PYG{p}{)}
+\PYG{+w}{        }\PYG{p}{.}\PYG{n}{implicit\PYGZus{}value}\PYG{p}{(}\PYG{n+nb}{true}\PYG{p}{);}
+
+\PYG{+w}{    }\PYG{k}{try}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{k}{using}\PYG{+w}{ }\PYG{n}{std}\PYG{o}{::}\PYG{n}{string}\PYG{p}{;}
+
+\PYG{+w}{        }\PYG{n}{\PYGZus{}prs}\PYG{p}{.}\PYG{n}{parse\PYGZus{}args}\PYG{p}{(}\PYG{n}{argc}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{argv}\PYG{p}{);}
+\PYG{+w}{        }\PYG{n}{std}\PYG{o}{::}\PYG{n}{optional}\PYG{+w}{         }\PYG{n}{\PYGZus{}opt}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{\PYGZus{}prs}\PYG{p}{.}\PYG{n}{present}\PYG{+w}{    }\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZhy{}o\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{        }\PYG{n}{std}\PYG{o}{::}\PYG{n}{filesystem}\PYG{o}{::}\PYG{n}{path}\PYG{+w}{ }\PYG{n}{\PYGZus{}inp}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{\PYGZus{}prs}\PYG{p}{.}\PYG{n}{get}\PYG{o}{\PYGZlt{}}\PYG{n}{string}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZhy{}i\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{        }\PYG{n}{std}\PYG{o}{::}\PYG{n}{filesystem}\PYG{o}{::}\PYG{n}{path}\PYG{+w}{ }\PYG{n}{\PYGZus{}out}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{\PYGZus{}opt}\PYG{p}{.}\PYG{n}{has\PYGZus{}value}\PYG{p}{()}
+\PYG{+w}{                                        }\PYG{o}{?}\PYG{+w}{ }\PYG{n}{\PYGZus{}prs}\PYG{p}{.}\PYG{n}{get}\PYG{o}{\PYGZlt{}}\PYG{n}{string}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZhy{}o\PYGZdq{}}\PYG{p}{)}
+\PYG{+w}{                                        }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{\PYGZus{}inp}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}sparse\PYGZdq{}}\PYG{p}{;}
+
+\PYG{+w}{        }\PYG{n}{Function}\PYG{o}{::}\PYG{n}{setFunction}\PYG{p}{(}\PYG{n}{\PYGZus{}inp}\PYG{p}{.}\PYG{n}{string}\PYG{p}{());}
+\PYG{+w}{        }\PYG{n}{cxxtimer}\PYG{o}{::}\PYG{n}{Timer}\PYG{+w}{ }\PYG{n+nf}{\PYGZus{}timer}\PYG{p}{(}\PYG{n+nb}{true}\PYG{p}{);}
+\PYG{+w}{        }\PYG{n}{FEM}\PYG{+w}{ }\PYG{n+nf}{\PYGZus{}FEM}\PYG{p}{(}\PYG{n}{\PYGZus{}inp}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{\PYGZus{}prs}\PYG{p}{.}\PYG{n}{get}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{bool}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZhy{}d\PYGZdq{}}\PYG{p}{));}
+\PYG{+w}{        }\PYG{n}{\PYGZus{}FEM}\PYG{p}{.}\PYG{n}{startLOS}\PYG{p}{(}\PYG{n}{\PYGZus{}out}\PYG{p}{);}
+\PYG{+w}{        }\PYG{n}{\PYGZus{}timer}\PYG{p}{.}\PYG{n}{stop}\PYG{p}{();}
+
+\PYG{+w}{        }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{\PYGZus{}prs}\PYG{p}{[}\PYG{l+s}{\PYGZdq{}\PYGZhy{}d\PYGZdq{}}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{n+nb}{true}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{\PYGZus{}FEM}\PYG{p}{.}\PYG{n}{printAll}\PYG{p}{();}
+\PYG{+w}{            }\PYG{n}{\PYGZus{}FEM}\PYG{p}{.}\PYG{n}{printSparse}\PYG{p}{();}
+\PYG{+w}{            }\PYG{n}{\PYGZus{}FEM}\PYG{p}{.}\PYG{n}{createTable}\PYG{p}{();}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}\PYG{+w}{ }\PYG{k}{else}
+\PYG{+w}{            }\PYG{n}{\PYGZus{}FEM}\PYG{p}{.}\PYG{n}{printZ}\PYG{p}{();}
+
+\PYG{+w}{        }\PYG{n}{std}\PYG{o}{::}\PYG{n}{cout}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{n}{\PYGZus{}timer}\PYG{p}{;}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}\PYG{+w}{ }\PYG{k}{catch}\PYG{p}{(}\PYG{k}{const}\PYG{+w}{ }\PYG{n}{std}\PYG{o}{::}\PYG{n}{runtime\PYGZus{}error}\PYG{o}{\PYGZam{}}\PYG{+w}{ }\PYG{n}{err}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{c+cp}{\PYGZsh{}define ARGUMENTS\PYGZus{}NO\PYGZus{}RECEIVED 2}
+\PYG{+w}{        }\PYG{n}{Logger}\PYG{o}{::}\PYG{n}{append}\PYG{p}{(}\PYG{n}{getLog}\PYG{p}{(}
+\PYG{+w}{            }\PYG{l+s}{\PYGZdq{}argc != 2 (FEM \PYGZhy{}\PYGZhy{}input ./input)\PYGZdq{}}
+\PYG{+w}{        }\PYG{p}{));}
+\PYG{+w}{        }\PYG{n}{std}\PYG{o}{::}\PYG{n}{cerr}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{n}{err}\PYG{p}{.}\PYG{n}{what}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{n}{std}\PYG{o}{::}\PYG{n}{endl}\PYG{p}{;}
+\PYG{+w}{        }\PYG{n}{std}\PYG{o}{::}\PYG{n}{cerr}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{    }\PYG{n}{\PYGZus{}prs}\PYG{+w}{    }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{n}{std}\PYG{o}{::}\PYG{n}{endl}\PYG{p}{;}
+\PYG{+w}{        }\PYG{n}{std}\PYG{o}{::}\PYG{n}{exit}\PYG{p}{(}\PYG{+w}{  }\PYG{n}{ARGUMENTS\PYGZus{}NO\PYGZus{}RECEIVED}\PYG{+w}{  }\PYG{p}{);}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{    }\PYG{k}{return}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}
