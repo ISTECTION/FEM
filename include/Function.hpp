@@ -45,6 +45,7 @@ static std::unordered_map<std::string, size_t> functions = {
 
         ///      tests from textbook     ///
         {"file/study-nodes-5",          11 },
+        {"file/study-nodes-9",          12 },
 
         ///              error           ///
         {"error",                       0  }};
@@ -84,52 +85,60 @@ double Function::f(const Union::XY coord, const size_t area) {
     switch (Function::_func) {
         case 1:
                     SWITCH
-                    case 0:  return 2 * coord.x; break;
+                    case 0:  return 2 * coord.x;                    break;
                     default: std::exit(1);
                     BREAK
         case 3:
                     SWITCH
-                    case 0:  return -exp(coord.x + coord.y); break;
-                    default: std::exit(1);
-                    BREAK
-        case 11:
-                    SWITCH
-                    case 0:  return -20; break;
-                    case 1:  return  0;  break;
+                    case 0:  return -exp(coord.x + coord.y);        break;
                     default: std::exit(1);
                     BREAK
 
+        case 11:
+                    SWITCH
+                    case 0:  return -20;                            break;
+                    case 1:  return  0;                             break;
+                    default: std::exit(1);
+                    BREAK
+        case 12:
+                    SWITCH
+                    case 0:
+                        return 5 * coord.x + 30 * coord.y - 10;     break;
+                    case 1:  return 0;                              break;
+                    default: std::exit(1);
+                    BREAK
 
         case 50:
                     SWITCH
-                    case 0:  return 0; break;
+                    case 0:  return 0;                              break;
                     default: std::exit(1);
                     BREAK
         case 51:
                     SWITCH
-                    case 0:  return 0; break;
+                    case 0:  return 0;                              break;
                     default: std::exit(1);
                     BREAK
 
 
         case 100:
                     SWITCH
-                    case 0:  return 20 * coord.x + 20 * coord.y; break;
+                    case 0:  return 20 * coord.x + 20 * coord.y;    break;
                     default: std::exit(1);
                     BREAK
         case 101:
                     SWITCH
-                    case 0:  return 10 * coord.x + 4 * coord.y; break;
+                    case 0:  return 10 * coord.x + 4 * coord.y;     break;
                     default: std::exit(1);
                     BREAK
         case 200:
                     SWITCH
-                    case 0:  return 4 * coord.x - 2; break;
+                    case 0:  return 4 * coord.x - 2;                break;
                     default: std::exit(1);
                     BREAK
         case 666:
                     SWITCH
-                    case 0:  return 8 * coord.x + 12 * coord.y; break;
+                    case 0:
+                        return 8 * coord.x + 12 * coord.y;          break;
                     default: std::exit(1);
                     BREAK
         default:
@@ -158,42 +167,48 @@ double Function::analitics(const Union::XY coord, const size_t area){
                     BREAK
         case 11:
                     SWITCH
-                    case 0: return coord.y * coord.y;
-                    case 1: return 20 * coord.y - 19;
+                    case 0: return coord.y * coord.y;               break;
+                    case 1: return 20 * coord.y - 19;               break;
+                    default: std::exit(1);
+                    BREAK
+        case 12:
+                    SWITCH
+                    case 0:
+                    case 1: return coord.x + 6 * coord.y - 2;       break;
                     default: std::exit(1);
                     BREAK
 
-
         case 50:
                     SWITCH
-                    case 0:  return 1; break;
+                    case 0:  return 1;                              break;
                     default: std::exit(1);
                     BREAK
         case 51:
                     SWITCH
-                    case 0:  return coord.x;
+                    case 0:  return coord.x;                        break;
                     default: std::exit(1);
                     BREAK
 
 
         case 100:
                     SWITCH
-                    case 0: return 10 * coord.x + 10 * coord.y;
+                    case 0:
+                        return 10 * coord.x + 10 * coord.y;         break;
                     default: std::exit(1);
                     BREAK
         case 101:
                     SWITCH
-                    case 0: return 5 * coord.x + 2 * coord.y;
+                    case 0: return 5 * coord.x + 2 * coord.y;       break;
                     default: std::exit(1);
                     BREAK
         case 200:
                     SWITCH
-                    case 0: return 2 * coord.x;
+                    case 0: return 2 * coord.x;                     break;
                     default: std::exit(1);
                     BREAK
         case 666:
                     SWITCH
-                    case 0: return 2 * coord.x + 3 * coord.y;
+                    case 0: return 2 * coord.x + 3 * coord.y;       break;
                     default: std::exit(1);
                     BREAK
         default:
@@ -213,52 +228,57 @@ double Function::lambda(const Union::XY coord, const size_t area) {
     switch (Function::_func) {
         case 1:
                     SWITCH
-                    case 0:  return 1; break;
+                    case 0:  return 1;                              break;
                     default: std::exit(1);
                     BREAK
         case 3:
                     SWITCH
-                    case 0:  return 2; break;
+                    case 0:  return 2;                              break;
                     default: std::exit(1);
                     BREAK
         case 11:
                     SWITCH
-                    case 0:  return 10; break;
-                    case 1:  return 1;  break;
+                    case 0:  return 10;                             break;
+                    case 1:  return 1;                              break;
+                    default: std::exit(1);
+                    BREAK
+        case 12:
+                    SWITCH
+                    case 0:
+                    case 1: return 1;                               break;
                     default: std::exit(1);
                     BREAK
 
-
         case 50:
                     SWITCH
-                    case 0:  return 1; break;
+                    case 0:  return 1;                              break;
                     default: std::exit(1);
                     BREAK
         case 51:
                     SWITCH
-                    case 0:  return 1; break;
+                    case 0:  return 1;                              break;
                     default: std::exit(1);
                     BREAK
 
 
         case 100:
                     SWITCH
-                    case 0:  return 4; break;
+                    case 0:  return 4;                              break;
                     default: std::exit(1);
                     BREAK
         case 101:
                     SWITCH
-                    case 0:  return 2; break;
+                    case 0:  return 2;                              break;
                     default: std::exit(1);
                     BREAK
         case 200:
                     SWITCH
-                    case 0:  return coord.x; break;
+                    case 0:  return coord.x;                        break;
                     default: std::exit(1);
                     BREAK
         case 666:
                     SWITCH
-                    case 0:  return 1; break;
+                    case 0:  return 1;                              break;
                     default: std::exit(1);
                     BREAK
         default:
@@ -278,51 +298,55 @@ double Function::firstBound(const Union::XY coord, const size_t type) {
     switch (Function::_func) {
         case 1:
                     SWITCH
-                    case 0:  return coord.x; break;
+                    case 0:  return coord.x;                        break;
                     default: std::exit(1);
                     BREAK
         case 3:
                     SWITCH
-                    case 0:  return exp(coord.x); break;
+                    case 0:  return exp(coord.x);                   break;
                     default: std::exit(1);
                     BREAK
         case 11:
                     SWITCH
-                    case 0:  return coord.y * coord.y; break;
+                    case 0:  return coord.y * coord.y;              break;
+                    default: std::exit(1);
+                    BREAK
+        case 12:
+                    SWITCH
+                    case 0:  return 6 * coord.y + 2;                break;
                     default: std::exit(1);
                     BREAK
 
-
         case 50:
                     SWITCH
-                    case 0:  return 1; break;
+                    case 0:  return 1;                              break;
                     default: std::exit(1);
                     BREAK
         case 51:
                     SWITCH
-                    case 0:  return coord.x; break;
+                    case 0:  return coord.x;                        break;
                     default: std::exit(1);
                     BREAK
 
 
         case 100:
                     SWITCH
-                    case 0:  return 50 + 10 * coord.y; break;
+                    case 0:  return 50 + 10 * coord.y;              break;
                     default: std::exit(1);
                     BREAK
         case 101:
                     SWITCH
-                    case 0:  return 5 * coord.x + 2; break;
+                    case 0:  return 5 * coord.x + 2;                break;
                     default: std::exit(1);
                     BREAK
         case 200:
                     SWITCH
-                    case 0:  return 2 * coord.x; break;
+                    case 0:  return 2 * coord.x;                    break;
                     default: std::exit(1);
                     BREAK
         case 666:
                     SWITCH
-                    case 0:  return 0; break;
+                    case 0:  return 2 * coord.x;                    break;
                     default: std::exit(1);
                     BREAK
         default:
@@ -342,24 +366,30 @@ double Function::secondBound(const Union::XY coord, const size_t type) {
     switch (Function::_func) {
         case 1:
                     SWITCH
-                    case 0:  return  1; break;
-                    case 1:  return -1; break;
-                    case 2:  return  0; break;
+                    case 0:  return  1;                             break;
+                    case 1:  return -1;                             break;
+                    case 2:  return  0;                             break;
                     default: std::exit(1);
                     BREAK
         case 3:
                     SWITCH
-                    case 0:  return  2 * exp(coord.x + coord.y); break;
-                    case 1:  return -2 * exp(coord.x + coord.y); break;
+                    case 0:  return  2 * exp(coord.x + coord.y);    break;
+                    case 1:  return -2 * exp(coord.x + coord.y);    break;
                     default: std::exit(1);
                     BREAK
         case 11:
                     SWITCH
-                    case 0:  return 20; break;
-                    case 1:  return 0;  break;
+                    case 0:  return 20;                             break;
+                    case 1:  return 0;                              break;
                     default: std::exit(1);
                     BREAK
-
+        case 12:
+                    SWITCH
+                    case 0:  return -6;                             break;
+                    case 1:  return -1;                             break;
+                    case 2:  return  6;                             break;
+                    default: std::exit(1);
+                    BREAK
 
         case 50:
                     SWITCH
@@ -373,26 +403,26 @@ double Function::secondBound(const Union::XY coord, const size_t type) {
 
         case 100:
                     SWITCH
-                    case 0:  return -40; break;
-                    case 1:  return  40; break;
+                    case 0:  return -40;                            break;
+                    case 1:  return  40;                            break;
                     default: std::exit(1);
                     BREAK
         case 101:
                     SWITCH
-                    case 0:  return -10; break;
-                    case 1:  return  10; break;
+                    case 0:  return -10;                            break;
+                    case 1:  return  10;                            break;
                     default: std::exit(1);
                     BREAK
         case 200:
                     SWITCH
-                    case 0:  return -2 * coord.x; break;
-                    case 1:  return  2 * coord.x; break;
+                    case 0:  return -2 * coord.x;                   break;
+                    case 1:  return  2 * coord.x;                   break;
                     default: std::exit(1);
                     BREAK
         case 666:
                     SWITCH
-                    case 0:  return 0; break;
-                    case 1:  return 0; break;
+                    case 0:  return -2;                             break;
+                    case 1:  return  2;                             break;
                     default: std::exit(1);
                     BREAK
         default:
@@ -412,20 +442,27 @@ double Function::thirdBound(const Union::XY coord, const size_t type) {
     switch (Function::_func) {
         case 1:
                     SWITCH
-                    case 0:  return coord.x; break;
+                    case 0:  return coord.x;                            break;
                     default: std::exit(1);
                     BREAK
         case 3:
                     SWITCH
-                    case 0:  return exp(coord.x + 1) - 2 * exp(coord.x + coord.y); break;
+                    case 0:
+                        return
+                            exp(coord.x + 1) - 2 *
+                            exp(coord.x + coord.y);                     break;
                     default: std::exit(1);
                     BREAK
         case 11:
                     SWITCH
-                    case 0:  return 20 * coord.y - 27; break;
+                    case 0:  return 20 * coord.y - 27;                  break;
                     default: std::exit(1);
                     BREAK
-
+        case 12:
+                    SWITCH
+                    case 0:  return 6 * coord.y + 2.1;                  break;
+                    default: std::exit(1);
+                    BREAK
 
         case 50:
                     SWITCH
@@ -439,22 +476,22 @@ double Function::thirdBound(const Union::XY coord, const size_t type) {
 
         case 100:
                     SWITCH
-                    case 0:  return 10 * coord.x + 2; break;
+                    case 0:  return 10 * coord.x + 2;                   break;
                     default: std::exit(1);
                     BREAK
         case 101:
                     SWITCH
-                    case 0:  return 5 * coord.x + 8.8; break;
+                    case 0:  return 5 * coord.x + 8.8;                  break;
                     default: std::exit(1);
                     BREAK
         case 200:
                     SWITCH
-                    case 0:  return 2 * coord.x; break;
+                    case 0:  return 2 * coord.x;                        break;
                     default: std::exit(1);
                     BREAK
         case 666:
                     SWITCH
-                    case 0:  return 0; break;
+                    case 0:  return 2 * coord.x + 7.5;                  break;
                     default: std::exit(1);
                     BREAK
         default:
