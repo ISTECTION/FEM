@@ -73,6 +73,10 @@
         "unordered_map": "cpp",
         "xhash": "cpp",
         "unordered_set": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "codecvt": "cpp",
+        "mutex": "cpp",
+        "stop_token": "cpp",
+        "valarray": "cpp"
     }
 }
