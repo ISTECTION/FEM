@@ -1,0 +1,58 @@
+{
+    "params": {
+        "nodes": 3,
+        "elems": 1,
+        "areas": 1,
+        "bords": 3
+    },
+
+    "nodes": {
+        "x": [
+            1,
+            3,
+            2
+        ],
+        "y": [
+            1,
+            1,
+            3
+        ]
+    },
+
+    "elems": [
+        {
+            "index": [0, 1, 2],
+            "area": 0
+        }
+    ],
+
+    "areas": {
+        "beta": [
+            0
+        ],
+        "gamma": [
+            0
+        ]
+    },
+
+    "bords": [
+        {
+            "area": 0,
+            "index": [0, 1],
+            "cond": 1,
+            "type": 0
+        },
+        {
+            "area": 0,
+            "index": [1, 2],
+            "cond": 1,
+            "type": 0
+        },
+        {
+            "area": 0,
+            "index": [2, 0],
+            "cond": 1,
+            "type": 0
+        }
+    ]
+}

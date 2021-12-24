@@ -23,11 +23,9 @@ static std::unordered_map<std::string, size_t> functions = {
         {"file/split-1/elements-8",     100},
         {"file/split-1/elements-16",    100},
 
-
         ///         Verified tests       ///
         {"file/light-test-u-const",     50 },   /// Non realisation
         {"file/light-test-u-func",      51 },
-
 
         /// my test (function: u =5x+2y) ///
         {"file/split-2/elements-2",     101},
@@ -35,17 +33,22 @@ static std::unordered_map<std::string, size_t> functions = {
         {"file/split-2/elements-8",     101},
         {"file/split-2/elements-16",    101},
 
-
         /// my test (lambda - function)  ///
         {"file/l-func",                 200},
 
         ///        test Poleleyka        ///
         {"file/poleleyka",              666},
 
-
         ///      tests from textbook     ///
         {"file/study-nodes-5",          11 },
         {"file/study-nodes-9",          12 },
+
+
+
+        ///         Test non boundary           ///
+        {"file/split-2/elements-8-non-boards", 101},
+        ///         Test non boundary           ///
+
 
         ///              error           ///
         {"error",                       0  }};
