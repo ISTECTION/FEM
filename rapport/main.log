@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  25 DEC 2021 06:01
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2021.11.30)  25 DEC 2021 12:09
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1443,7 +1443,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 1016--1022
 > Step: execute table commands.
 > Step: calculate cell and line sizes.
 > Step: build the whole table.
-
+[23]
 Underfull \hbox (badness 10000) in paragraph at lines 1113--1119
  
  []
@@ -1466,19 +1466,7 @@ LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/n' will be
 > Step: execute table commands.
 > Step: calculate cell and line sizes.
 > Step: build the whole table.
-
-Overfull \vbox (39.32603pt too high) has occurred while \output is active []
-
-
-Overfull \vbox (39.32603pt too high) has occurred while \output is active []
-
-
-Overfull \vbox (38.92604pt too high) has occurred while \output is active []
-
-
-Overfull \vbox (38.92604pt too high) has occurred while \output is active []
-
- [23]
+[24]
 Underfull \hbox (badness 10000) in paragraph at lines 1234--1240
  
  []
@@ -1501,7 +1489,7 @@ LaTeX Font Info:    Font shape `TU/NotoSans(0)/m/n' will be
 > Step: execute table commands.
 > Step: calculate cell and line sizes.
 > Step: build the whole table.
-[24]
+[25]
 Underfull \hbox (badness 10000) in paragraph at lines 1382--1406
  
  []
@@ -1527,7 +1515,7 @@ Overfull \hbox (1.54883pt too wide) in paragraph at lines 1453--1454
 > Step: execute table commands.
 > Step: calculate cell and line sizes.
 > Step: build the whole table.
-[25]
+[26]
 Underfull \hbox (badness 10000) in paragraph at lines 1537--1553
  
  []
@@ -1548,7 +1536,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 1537--1553
 > Step: execute table commands.
 > Step: calculate cell and line sizes.
 > Step: build the whole table.
-[26]
+[27]
 Underfull \hbox (badness 10000) in paragraph at lines 1711--1717
  
  []
@@ -1569,53 +1557,53 @@ Underfull \hbox (badness 10000) in paragraph at lines 1711--1717
 > Step: execute table commands.
 > Step: calculate cell and line sizes.
 > Step: build the whole table.
-[27]
-Underfull \hbox (badness 10000) in paragraph at lines 1879--1903
- 
- []
-
-
-Overfull \hbox (1.54883pt too wide) in paragraph at lines 1957--1958
- [][] 
- []
-
-> Step: init table outer spec.
-> Step: parse table options.
-> Step: split table.
-> Step: init table inner spec.
-> Step: parse table inner spec.
-> Step: execute table commands.
-> Step: calculate cell and line sizes.
-> Step: build the whole table.
-> Step: init table outer spec.
-> Step: parse table options.
-> Step: split table.
-> Step: init table inner spec.
-> Step: parse table inner spec.
-> Step: execute table commands.
-> Step: calculate cell and line sizes.
-> Step: build the whole table.
 [28]
-Underfull \hbox (badness 10000) in paragraph at lines 2003--2027
+Underfull \hbox (badness 10000) in paragraph at lines 1877--1901
  
  []
 
 
-Overfull \hbox (1.54883pt too wide) in paragraph at lines 2116--2117
+Overfull \hbox (1.54883pt too wide) in paragraph at lines 1955--1956
  [][] 
  []
 
-[29] (./main.aux)
+> Step: init table outer spec.
+> Step: parse table options.
+> Step: split table.
+> Step: init table inner spec.
+> Step: parse table inner spec.
+> Step: execute table commands.
+> Step: calculate cell and line sizes.
+> Step: build the whole table.
+> Step: init table outer spec.
+> Step: parse table options.
+> Step: split table.
+> Step: init table inner spec.
+> Step: parse table inner spec.
+> Step: execute table commands.
+> Step: calculate cell and line sizes.
+> Step: build the whole table.
+[29]
+Underfull \hbox (badness 10000) in paragraph at lines 2001--2025
+ 
+ []
+
+
+Overfull \hbox (1.54883pt too wide) in paragraph at lines 2114--2115
+ [][] 
+ []
+
+[30] (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 1E427BEF09FC5EB94C0678C701F6F5E9;596.
  ) 
 Here is how much of TeX's memory you used:
  46626 strings out of 476919
  1122447 string characters out of 5821391
- 1865297 words of memory out of 5000000
+ 1865238 words of memory out of 5000000
  65817 multiletter control sequences out of 15000+600000
- 436386 words of font info for 126 fonts, out of 8000000 for 9000
+ 436320 words of font info for 126 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  113i,8n,116p,785b,2319s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on main.pdf (29 pages).
+Output written on main.pdf (30 pages).

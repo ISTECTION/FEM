@@ -13,7 +13,7 @@ debug:   remove_log compile_debug   running
 release: remove_log compile_release running
 
 running:
-	$(OUTPUT)/FEM.exe --input file/flower --debug
+	$(OUTPUT)/FEM.exe --input file/research/guard/test-1 --debug
 
 compile_debug:
 	$(CXX) $(CXXFLAGS) $(CXXFLAGS_DEBUG) $(SRC)/main.cpp -o $(OUTPUT)/FEM.exe -I$(INCLUDE)
