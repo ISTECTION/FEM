@@ -3,7 +3,8 @@
         "nodes": 3,
         "elems": 1,
         "areas": 1,
-        "bords": 3
+        "bords": 3,
+        "function": 50
     },
 
     "nodes": {

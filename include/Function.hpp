@@ -9,13 +9,10 @@
 
 using namespace ::Log;
 
-/// path to file - file/...
 static std::unordered_map<std::string, size_t> functions = {
         ///          unidentified        ///
         {"file/nodes-6",                1  },
-        {"file/nodes-unknown",          2  },
         {"file/nodes-9",                3  },
-
 
         /// Rombeo test )==( Don't touch ///
         {"file/split-1/elements-2",     100},
@@ -24,41 +21,8 @@ static std::unordered_map<std::string, size_t> functions = {
         {"file/split-1/elements-16",    100},
 
         ///         Verified tests       ///
-        {"file/light-test-u-const",     50 },   /// Non realisation
-        {"file/light-test-u-func",      51 },
-
-        /// my test (function: u =5x+2y) ///
-        {"file/split-2/elements-2",     101},
-        {"file/split-2/elements-4",     101},
-        {"file/split-2/elements-8",     101},
-        {"file/split-2/elements-16",    101},
-
-        /// my test (lambda - function)  ///
-        {"file/l-func",                 200},
-
-        ///        test Poleleyka        ///
-        {"file/poleleyka",              666},
-        {"file/polina-top",           666-1},
-
-        ///      tests from textbook     ///
-        {"file/study-nodes-5",          11 },
-        {"file/study-nodes-9",          12 },
-
-        ///  Research order convergence  ///
-        {"file/research/study-1",       11 },
-        {"file/research/study-2",       11 },
-        {"file/flower",                 22 },
-        {"file/research/guard/test-1",  30 },
-        {"file/research/guard/test-2",  30 },
-        {"file/research/guard/test-3",  30 },
-
-
-        ///         Test non boundary           ///
-        {"file/split-2/elements-8-non-boards", 101},
-        ///         Test non boundary           ///
-
-        ///              error           ///
-        {"error",                       0  }};
+        {"file/light-test-u-func",      51 }
+};
 
 
 class Function
@@ -67,7 +31,7 @@ private:
     static size_t _func;
 
 public:
-    static void setFunction(const std::string& _path);
+    static void setFunction(size_t func) { _func = func; };
     static double f(const Union::XY coord, const size_t area);
 
     static double lambda   (const Union::XY coord, const size_t area);
@@ -79,13 +43,6 @@ public:
 };
 
 size_t Function::_func = 0;
-
-
-void Function::setFunction(const std::string& _path) {
-    functions.contains(_path) ?
-        Function::_func = functions[_path]  :
-        Function::_func = functions["error"];
-}
 
 double Function::f(const Union::XY coord, const size_t area) {
 
@@ -366,8 +323,8 @@ double Function::firstBound(const Union::XY coord, const size_t type) {
                     BREAK
        case 30:
                     SWITCH
-                    case 0:  return sin(1.0);                   break;
-                    case 1:  return sin(1.2);                   break;
+                    case 0:  return sin(1.0);                           break;
+                    case 1:  return sin(1.2);                           break;
                     default: std::exit(1);
                     BREAK
 

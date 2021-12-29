@@ -13,6 +13,7 @@
 #include "utils/overload.hpp"
 #include "utils/friendly.hpp"
 #include "nlohmann/json.hpp"
+#include "utils/argv.hpp"
 #include "Function.hpp"
 #include "LOS/LOS.hpp"
 #include "Logger.hpp"
@@ -175,26 +176,24 @@ void FEM::portrait(const bool isWriteList) {
 }
 
 void FEM::global() {
-    #define LOADING 0
 
-    #if LOADING != 0
-        SetConsoleOutputCP(65001);
-        using namespace indicators;
-        show_console_cursor(false);                                                 /// Hide cursor
-        ProgressBar bar {
-            option::BarWidth  { 50  },
-            option::Start     { "[" },
-            option::Fill      { "■" },
-            option::Lead      { "■" },
-            option::Remainder { "-" },
-            option::End       { "]" },
-            option::PostfixText {
-                "Processed elements 0/" + std::to_string(_size.elems)
-            },
-            option::ForegroundColor { Color::magenta },
-            option::FontStyles { std::vector<FontStyle> { FontStyle::bold } }
-        };
-    #endif
+    SetConsoleOutputCP(65001);
+    using namespace indicators;
+    show_console_cursor(false);                                                 /// Hide cursor
+    ProgressBar bar {
+        option::BarWidth  { 50  },
+        option::Start     { "[" },
+        option::Fill      { "■" },
+        option::Lead      { "■" },
+        option::Remainder { "-" },
+        option::End       { "]" },
+        option::PostfixText {
+            "Processed elements 0/" + std::to_string(_size.elems)
+        },
+        option::ForegroundColor { Color::magenta },
+        option::FontStyles { std::vector<FontStyle> { FontStyle::bold } }
+    };
+
 
     std::array<Union::XY, 3> coords;                                            /// Массив координат элемента
     for (size_t i = 0; i < _size.elems; i++) {
@@ -223,7 +222,7 @@ void FEM::global() {
             pretty(gb);                                                         /// Вывод на экран глобального вектора
         }
 
-        #if LOADING != 0
+        if (_prs["--indicator"] == true) {
             bar.set_option(
                 option::PostfixText {
                     "Processed elements " + std::to_string(i + 1)     +
@@ -233,12 +232,9 @@ void FEM::global() {
             bar.set_progress(
                 static_cast<size_t>(double(i + 1) / _size.elems * 100)
             );
-        #endif
+        }
     }
-
-    #if LOADING != 0
-        show_console_cursor(true);                                              /// Show cursor
-    #endif
+    show_console_cursor(true);                                                  /// Show cursor
 }
 
 template<size_t N, typename _Struct>
@@ -479,6 +475,11 @@ bool FEM::readFile(const std::filesystem::path& path) {
         >> _size.elems
         >> _size.areas
         >> _size.conds;
+
+    size_t _func;
+    fin >> _func;
+    Function::setFunction(_func);
+
     fin.close();
     resize();                                                                   /// Выделение памяти под вектора
     fin.open(path / "nodes.txt");
@@ -536,6 +537,8 @@ bool FEM::readJson(const std::filesystem::path& path) {
         _size.elems = object["elems"];
         _size.areas = object["areas"];
         _size.conds = object["bords"];
+        Function::setFunction(object["function"]);
+
         resize();
         json x = responseJson["nodes"]["x"];
         json y = responseJson["nodes"]["y"];
@@ -579,7 +582,8 @@ void FEM::printAll() const {
     #define PRINTLINE \
         for (size_t i = 0; i < 58; std::cout << '-', i++);
     #define ENDLINE std::cout << '\n';
-    SetConsoleOutputCP(65001);
+    using namespace std::string_literals;
+    SetConsoleOutputCP(CP_UTF8);
     PRINTLINE ENDLINE
     std::cout << "PARAMS:         "                 << '\n';
     std::cout << "Size nodes:     " << _size.nodes  << '\n';
@@ -600,9 +604,11 @@ void FEM::printAll() const {
                   << elems[i].area       << '\n';
     PRINTLINE ENDLINE
     std::cout << "Areas: " << '\n';
+    std::string gamma = reinterpret_cast<const char*>(u8"\u03B3");
+    std::string betta = reinterpret_cast<const char*>(u8"\u03B2");
     for (size_t i = 0; i < _size.areas; i++) {
-        std::cout << "\u03B3 = " << materials[i].gamma  << ',' << ' '
-                  << "\u03B2 = " << materials[i].betta
+        std::cout << gamma << " = " << materials[i].gamma << ',' << ' '
+                  << betta << " = " << materials[i].betta
                   << " -> area " << i << '\n';
     }
     PRINTLINE ENDLINE

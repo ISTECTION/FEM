@@ -1,5 +1,6 @@
 #ifndef _LIGHTWEIGHT_HPP_
 #define _LIGHTWEIGHT_HPP_
+#include "../cross-platform/filesystem.hpp"
 #include "../Union.hpp"
 #include "friendly.hpp"
 #include <windows.h>
@@ -92,8 +93,6 @@ void printXXX(const std::array<std::array<T, _Size>, _Size>& A) {               
     #undef ENDLINE
 }
 
-
-
 template <typename T>
 void print(const std::vector<T>& _vec, std::streamsize count = 0) {             /// Примитивный вывод вектора
     std::ostringstream ostream;
@@ -114,7 +113,8 @@ void pretty(_It _beg, _It _end, const size_t _n)  {                             
     else {
         #define EPSILON 0.0000000001
         #define EQUAL(a, b) (fabs((a) - (b)) < EPSILON)
-        SetConsoleOutputCP(65001);
+        using namespace std::string_literals;
+        SetConsoleOutputCP(CP_UTF8);
 
         std::ostringstream osstr, main;
         std::vector<std::string> strs;
@@ -134,11 +134,12 @@ void pretty(_It _beg, _It _end, const size_t _n)  {                             
             }
         }
         size_t midwidth = (mwidth * _n) + ((_n + 1) << 1);
-        main << "\u250c\u2500" << std::setw(midwidth - 2)
-             << "" << "\u2500\u2510";
+        main << reinterpret_cast<const char*>(u8"\u250c\u2500")
+             << std::setw(midwidth - 2) << "" 
+             << reinterpret_cast<const char*>(u8"\u2500\u2510");
         for (size_t i = 0; i < _n; i++) {
             main << std::endl;
-            main << "\u2502";
+            main << reinterpret_cast<const char*>(u8"\u2502");
             for (size_t j = 0; j < _n; j++) {
                 std::string& str = strs[j + (i * _n)];
                 int wlen = (str.size() + mwidth + 1) >> 1;
@@ -147,10 +148,10 @@ void pretty(_It _beg, _It _end, const size_t _n)  {                             
                 main << str;
                 main << std::setw(mwidth - wlen) << "";
             }
-            main << "  \u2502";
+            main << reinterpret_cast<const char*>(u8"  \u2502");
         }
-        main << std::endl << "\u2514\u2500" << std::setw(midwidth - 2)
-             << ""        << "\u2500\u2518" << std::endl;
+        main << std::endl << reinterpret_cast<const char*>(u8"\u2514\u2500") << std::setw(midwidth - 2)
+             << ""        << reinterpret_cast<const char*>(u8"\u2500\u2518") << std::endl;
         std::cout << main.str();
         #undef EPSILON
         #undef EQUAL
@@ -163,7 +164,8 @@ void pretty(_It _beg, _It _end)  {                                              
     else {
         #define EPSILON 0.0000000001
         #define EQUAL(a, b) (fabs((a) - (b)) < EPSILON)
-        SetConsoleOutputCP(65001);
+        using namespace std::string_literals;
+        SetConsoleOutputCP(CP_UTF8);
 
         std::ostringstream osstr, main;
         std::vector<std::string> strs;
@@ -182,8 +184,10 @@ void pretty(_It _beg, _It _end)  {                                              
             _count++;
         }
         size_t midwidth = (mwidth * _count) + ((_count + 1) << 1);
-        main << "\u250c\u2500" << std::setw(midwidth - 2) << ""
-             << "\u2500\u2510" << std::endl << "\u2502";
+        main << reinterpret_cast<const char*>(u8"\u250c\u2500") 
+             << std::setw(midwidth - 2) << ""
+             << reinterpret_cast<const char*>(u8"\u2500\u2510") << std::endl 
+             << reinterpret_cast<const char*>(u8"\u2502");
         for (size_t i = 0; i < _count; i++) {
             std::string& str = strs[i];
             int wlen = (str.size() + mwidth + 1) >> 1;
@@ -192,9 +196,10 @@ void pretty(_It _beg, _It _end)  {                                              
             main << str;
             main << std::setw(mwidth - wlen) << "";
         }
-        main << "  \u2502" << std::endl
-             << "\u2514\u2500" << std::setw(midwidth - 2)
-             << ""         << "\u2500\u2518" << std::endl;
+        main << reinterpret_cast<const char*>(u8"  \u2502") << std::endl
+             << reinterpret_cast<const char*>(u8"\u2514\u2500") 
+             << std::setw(midwidth - 2) << ""   
+             << reinterpret_cast<const char*>(u8"\u2500\u2518") << std::endl;
         std::cout << main.str();
         #undef EPSILON
         #undef EQUAL

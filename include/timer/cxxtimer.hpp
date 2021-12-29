@@ -24,6 +24,7 @@ SOFTWARE.
 #ifndef CXX_TIMER_HPP
 #define CXX_TIMER_HPP
 
+#include <ostream>
 #include <chrono>
 
 
