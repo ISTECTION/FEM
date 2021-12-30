@@ -194,7 +194,6 @@ void FEM::global() {
         option::FontStyles { std::vector<FontStyle> { FontStyle::bold } }
     };
 
-
     std::array<Union::XY, 3> coords;                                            /// Массив координат элемента
     for (size_t i = 0; i < _size.elems; i++) {
         for (size_t j = 0; j < 3; j++) {
