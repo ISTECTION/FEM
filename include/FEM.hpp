@@ -25,9 +25,9 @@
 #include <cmath>
 #include <set>
 
-#define FIRST_BOUNDARY_COND  1
-#define SECOND_BOUNDARY_COND 2
-#define THIRD_BOUNDARY_COND  3
+constexpr uint8_t FIRST_BOUNDARY_COND  = 1;
+constexpr uint8_t SECOND_BOUNDARY_COND = 2;
+constexpr uint8_t THIRD_BOUNDARY_COND  = 3;
 
 class FEM
 {
@@ -811,9 +811,4 @@ void FEM::createTable() {
 }
 
 void FEM::printZ() const { print(_z, 14); }
-
-#undef FIRST_BOUNDARY_COND
-#undef SECOND_BOUNDARY_COND
-#undef THIRD_BOUNDARY_COND
-
 #endif /// _FEM_HPP_

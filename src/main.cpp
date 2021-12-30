@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
 
         std::cout << _timer;                                                    /// print time
     } catch(const std::runtime_error& err) {
-        #define ARGUMENTS_NO_RECEIVED 2
+        constexpr uint8_t ARGUMENTS_NO_RECEIVED = 2;
         Logger::append(getLog(
             "argc != 2 (FEM --input ./input)"
         ));
